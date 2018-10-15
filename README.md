@@ -1,2 +1,3 @@
 # home_page
-Test 1
+
+Everything is in the gh-pages branch

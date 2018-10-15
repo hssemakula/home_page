@@ -1,0 +1,130 @@
+<!--
+File: /usr/cs/undergrad/2019/hssemaku/public_html/index.html OR
+  http://weblab.cs.uml.edu/~hssemaku/index.html
+
+  Hillary Ssemakula
+  hillary_ssemakula@student.uml.edu
+  Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
+  Created on 10/7/2018 for assignment No. 4 of the course.
+  This an index page that provides links to all assignments
+  that I undertake in this course.
+-->
+<!DOCTYPE html>
+<!-- tag to identify as html document -->
+
+<html lang="en">
+<!--html tag with language attribute set to english
+                 marks page as english language page -->
+
+<head>
+  <!-- head tag, for head section of page
+                      contains links to css scripts, page title and character
+                      encoding-->
+  <title> Hillary Ssemakula </title>
+  <!--page title, shown in title bar-->
+  <meta charset="utf-8">
+  <!--character encoding set to utf-8-->
+  <!-- below is a link to the css script for styling this html page-->
+  <link rel="stylesheet" href="./WEB-INF/css/styles.css">
+</head>
+
+<body>
+  <!--body section of html page: contains all content displayed on page-->
+  <header>
+    <!--header element: semantic element displaying my name and link to assignments in header -->
+    <h1>
+      <!--h1 in header is coded as link to this same page-->
+      <a href=""> HILLARY SSEMAKULA </a>
+    </h1>
+    <nav>
+      <ul>
+        <li>
+          <!--this list item is coded as link to this same page-->
+          <!--needed later if there are multiple pages-->
+          <a href="http://weblab.cs.uml.edu/~hssemaku/"> HOME </a>
+        </li>
+        <li>
+          <!--this list item is coded as link to div with assignments id-->
+          <!--needed later if there is a seperate page for assignments-->
+          <a href="#assignments"> ASSIGNMENTS </a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <!-- This empty div is used a space holder for the banner image to be added later
+using CSS. It is outside main Tag so that it can stretch from end to end of browser
+window even when body other elements have reached maximum width-->
+  <div id="flag_pic">
+  </div>
+
+  <main>
+    <!--main element: displays all main content on page-->
+    <!--contains an overall div wrapper with two other divs-->
+    <div id=main_wrapper>
+      <!--MAIN div wrapper to contain smaller divs with content -->
+
+      <!--The about div contains ONLY the information about me -->
+      <div id="about" class="secs">
+        <h3> ABOUT </h3>
+        <!--smaller heading for the word ABOUT-->
+        <!--paragraph about me -->
+        <p> I am a Computer Science major at the University of Massachusetts at
+          Lowell. I am in my senior year. I joined UMass Lowell one year ago as
+          a transfer student and so far, I've enjoyed my stay!</p>
+      </div>
+
+      <!--The asssignments div contains a list of links to all completed assignments -->
+      <div id="assignments" class="secs">
+        <h3> Assignments </h3>
+        <p> Listed below are all of the links to the assignments that I've
+          completed for COMP 4610 GUI PROGRAMMING I so far, enjoy: </p>
+        <!--here I've created an unordered list that I will update with a link
+          to every new assignment I complete. -->
+        <ul>
+          <li>
+            <!--List item is global link to second assignment-->
+            <a href="http://weblab.cs.uml.edu/~hssemaku/assignment1/">
+              Assignment 2: Home Page</a>
+          </li>
+          <li>
+            <!--List item is global link to Third assignment-->
+            <a href="http://weblab.cs.uml.edu/~hssemaku/assignment3/">
+              Assignment 3: Pacific Trails Resort</a>
+          </li>
+          <li>
+            <!--List item is global link to Fourth assignment-->
+            <a href="http://weblab.cs.uml.edu/~hssemaku/">
+              Assignment 4: Home Page v.2</a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <!--as required by the source of my html background image, I've included This
+    code to credit the author of the design -->
+    <a id="credit" href="https://www.freepik.com/free-vector/bright-background-with-dots_1252906.htm">Designed by Creative_hat</a>
+  </main>
+
+  <!--Footer section includes my contact informtion. -->
+  <footer>
+    <h4> Contact me:
+
+      <!--here in the anchor tag, for the href attribute, I've used the
+  mailto attribute next to my email. When this link is clicked, the default
+  email app on the device being used is opened with my email already inserted
+  and a new email ready to send, without the content and subject ofcourse. -->
+      <a href="mailto:hillary_ssemakula@student.uml.edu">
+        <!--words that actually appear in link-->
+        hillary_ssemakula@student.uml.edu
+      </a>
+      <p id="validation">
+        <a href="http://jigsaw.w3.org/css-validator/check/referer">
+          <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid CSS!" />
+        </a>
+      </p>
+    </h4>
+  </footer>
+</body>
+
+</html>

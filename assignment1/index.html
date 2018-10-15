@@ -1,0 +1,95 @@
+<!--
+File: /usr/cs/undergrad/2019/hssemaku/public_html/index.html OR
+  http://weblab.cs.uml.edu/~hssemaku/index.html
+
+  Hillary Ssemakula
+  hillary_ssemakula@student.uml.edu
+  Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
+  Created on 9/12/2018 for assignment No. 2 of the course.
+  This an index page that provides links to all assignments
+  that I will undertake in this course.
+-->
+<!DOCTYPE html>
+<!-- tag to identify as html document -->
+
+<html lang="en">
+<!--html tag with language attribute set to english
+                 marks page as english language page -->
+
+<head>
+  <!-- head tag, for head section of page
+                      contains links to css scripts, page title and character
+                      encoding-->
+  <title> Hillary Ssemakula </title>
+  <!--page title, shown in title bar-->
+  <meta charset="utf-8">
+  <!--character encoding set to utf-8-->
+  <!-- below is a link to the css script for styling this html page-->
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+  <!--body section of html page: contains all content displayed on page-->
+  <header>
+    <!--header element: semantic element displaying my name in header -->
+    <h1>
+      <!--header is coded as link to empty string so that clicks on the header
+      lead back to this same page-->
+      <a href=""> HILLARY SSEMAKULA </a>
+    </h1>
+  </header>
+
+  <main>
+    <!--main element: displays all main information other than header-->
+    <!--image is inserted first. It is given only a height of 500px, which
+    makes it's width automatic so as to retain aspect ratio. This image is
+    stored inside the WEB-INF folder at weblab-->
+    <img src="./images/profile_image_crop.jpg" alt="profile"
+                            height="500">
+    <!--Each section, i.e ABOUT and CONTACT is organized within it's own
+    section html element -->
+    <section> <!--ABOUT section -->
+      <h3> ABOUT </h3> <!--smaller heading for the word ABOUT-->
+      <!--paragraph about me -->
+      <p> I am a  Computer Science major at the University of Massachusetts at
+        Lowell. I am in my senior year. I joined UMass Lowell one year ago as
+        a transfer student and so far, I've enjoyed my stay!</p>
+
+        <!-- assignments sub section that introduces my assignments -->
+      <h3> Assignments </h3>
+      <p> Listed below are all of the links to the assignments that I've
+        completed for COMP 4610 GUI PROGRAMMING I so far, enjoy: </p>
+        <!--here I've created an unordered list that I will update with a link
+        to every new assignment I complete, starting with this assignment -->
+      <ul>
+        <li> <!--only list item is global link to this webpage-->
+          <a href="http://weblab.cs.uml.edu/~hssemaku/assignment1/">
+                Assignment 2: First Webpage</a>
+        </li>
+        <li> <!--only list item is global link to this webpage-->
+          <a href="http://weblab.cs.uml.edu/~hssemaku/assignment3/">
+                Assignment 3: Pacific Trails Resort</a>
+        </li>
+        <li> <!--only list item is global link to this webpage-->
+          <a href="http://weblab.cs.uml.edu/~hssemaku/">
+                Assignment 4: Home Page v.2</a>
+        </li>
+      </ul>
+    </section>
+
+    <section><!-- Contact section begins here-->
+      <h4> Contact me: </h4> <!-- even smaller heading for "contact me"
+                    because I hate getting alot of emails at the sametime :) -->
+      <!--here in the anchor tag, for the href attribute, I've used the
+      mailto attribute next to my email. When this link is clicked, the default
+      email app on the device being used is opened with my email already inserted
+      and a new email ready to send, without the content and subject ofcourse. -->
+      <a href="mailto:hillary_ssemakula@student.uml.edu">
+        <!--words that actually appear in link-->
+        hillary_ssemakula@student.uml.edu
+      </a>
+    </section>
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,165 @@
+/*
+File:/usr/cs/undergrad/2019/hssemaku/public_html/assignment3/pacific.css
+
+  Hillary Ssemakula
+  hillary_ssemakula@student.uml.edu
+  Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
+  Created on 9/24/2018 for assignment No. 3 of the course.
+  This a style script for the index page "Pacific Trails Resort"
+*/
+header, hgroup, nav, footer, figure, figcaption, aside, section, article {
+  display: block;
+}
+
+
+/*
+set background color to #00569f incase image fails.
+set background image and make it repeat to create gradient pattern.
+*/
+body {
+  background-color: #00569f;
+  background-image: url("./ptrbackground.jpg");
+  background-repeat: repeat;
+  color: #666666;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* set wrapper div to 80% width of body
+  set minimum width
+  make margin-left and margin-right auto to center wrapper.
+  Set the background color of the whole wrapper. Any element under wrapper
+  without a background color will have this as its color.
+*/
+#wrapper {
+  width: 80%;
+  min-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #90C8E3;
+}
+
+/* remove margins on h1 heading for header and cahnge its color to white*/
+header h1 {
+  margin: 0px;
+  color: white;
+}
+
+/*First give the header a background color that matches the color at the left
+    end of sunset.jpg, this gives the illusion of a transition.
+ set background image to sunset.jpg and position it to the right with no repeat
+ */
+header {
+  background-color: #000032;
+  background-image: url("./sunset.jpg");
+  background-position: right;
+  background-repeat: no-repeat;
+}
+
+/*Float nav elements to the left and give the element a width. */
+nav {
+  width: 180px;
+  float: left;
+  min-height: 300px;
+  height: 100%;
+}
+
+/* Remove the ugly default styles for the nav list elements and make the words
+    bold.
+    */
+nav ul {
+  font-size: 1.3em;
+  list-style-type: none;
+  font-weight: bold;
+}
+
+nav a {
+  text-decoration: none;
+  /* remove link underlines */
+  color: #000032;
+  /*give link words a dark blue color */
+}
+
+nav a:visited {
+  color: #344873;
+}
+
+nav a:hover {
+  color: #FFFFFF;
+}
+
+/* This code moves every element under the content div away from the nav
+  elements. To create the nav column.
+  margin-left moves the whole div to the right by 200px.
+  background color changes the background of the content div to white, leaving
+  only the nav element with the original body color creating the illusion that
+  the nav bar has that color.
+  */
+#content {
+  margin-left: 200px;
+  background-color: white;
+  padding: 10px;
+}
+
+/*change bullet style to marker.gif for list items in the content div. */
+#content li {
+  list-style-image: url("./marker.gif");
+  list-style-position: inside; /*align bullet with paragraph above it */
+}
+
+/* make img, p and ul elements under content div inheret the display properties
+  of the content div
+  */
+
+#content img, #content p, #content ul {
+  display: inherit;
+}
+
+/* within the content div float the image left. and add padding to move
+other elements away from it*/
+#content img {
+  float: left;
+  padding-right: 40px;
+  margin-left: 10px;
+}
+
+/*  To specifically remove space from the top of h2 element in content div */
+#content h2 {
+  margin-top: 0px;
+}
+
+/* change color and weight of font for the words "Pacific Trails Resort" */
+.resort {
+  color: #7B90A5;
+  font-weight: bold;
+}
+
+h1 {
+  margin-bottom: 0;
+  padding: 20px;
+}
+
+h2 {
+  color: #3399CC;
+}
+
+h1,
+h2 {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+#contact {
+  font-size: 90%;
+}
+
+dt {
+  color: #000033;
+}
+
+footer {
+  margin-left: 200px; /* move to right, so that the nav column goes to bottom */
+  padding-top: 30px; /* increases space between it and elemnts above. */
+  font-family: Georgia, "Times New Roman", serif;
+  padding: 10px;
+  font-style: italic; /* italisize footer text */
+  background-color: white; /* make background to blend with content div */
+}

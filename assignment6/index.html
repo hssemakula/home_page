@@ -21,6 +21,7 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
   <title>Hillary Ssemakula Multiplication Table</title>
   <!-- Bootstrap css linked locally i.e. in my repository-->
   <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/custom_styles.css" rel="stylesheet">
 
 </head>
 
@@ -71,7 +72,7 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
       <!-- HEADER MESSAGE-->
       <!--heading with class lead and also centered -->
       <p class="pt-4 lead mx-auto font-weight-bold text-center"> DYNAMIC MULTIPLICATION TABLE </p>
-      <p> Please enter the starting and ending numbers for both the horizontal (multiplier)
+      <p> Enter the starting and ending numbers for both the horizontal (multiplier)
         and vertical (multiplicand) axes and click submit to create the multiplication table. </p>
       <hr class="bg-white">
 
@@ -142,16 +143,21 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
   <div class=" col-md-11 container-fluid text-white mx-auto pt-3 text-center" id="table">
   </div>
 
-  <!--The script element below includes the java script file that conatins the function
-  that draws the dynamic table. -->
-  <script src="js/index.js"></script>
+  <!-- Footer added to display my name and contact information along with a CSS and HTML verification icon -->
+  <div class="container-fluid pt-20 text-white" id="footer">
+    <p class="float-left"> Hillary SSemakula @ 2018: <a class="text-light" href="mailto:hillary_ssemakula@student.uml.edu?subject=feedback">hillary_ssemakula@student.uml.edu</a></p>
+    <div>
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <!-- The script below is also usefull for the functionality of the dropdown in the navbar
+      <!--The script element below includes the java script file that conatins the function
+  that draws the dynamic table. -->
+      <script src="js/index.js"></script>
+
+      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <!-- Include all compiled plugins (below), or include individual files as needed -->
+      <!-- The script below is also usefull for the functionality of the dropdown in the navbar
 without it, it dosn't function at all-->
-  <script src="js/bootstrap.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>

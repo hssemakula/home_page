@@ -1,18 +1,26 @@
+/*
+File: https://hssemakula.github.io/home_page/assignment6/css/custom_styles.css
+  Hillary Ssemakula
+  hillary_ssemakula@student.uml.edu
+  Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
+  Created on 11/6/2018 for assignment No. 6 of the course.
+  This is a minimal stylesheet to design the footer for assignment6
+*/
 html {
   position: relative;
+  /*This lets the html element fill up the height of the viewport */
   min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
+  /*This value colerates with the value of the footers height: it provides space for the footer */
   margin-bottom: 20px;
 }
 
 #footer {
   position: absolute;
+  /* postion the footer absolutely to the bottom */
   bottom: 0;
   width: 100%;
-  /* Set the fixed height of the footer here */
   height: 20px;
-  /*line-height: 60px; /* Vertically center the text there */
 }

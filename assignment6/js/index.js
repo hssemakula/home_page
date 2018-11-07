@@ -4,8 +4,9 @@ File: https://hssemakula.github.io/home_page/assignment6/js/index.js
   hillary_ssemakula@student.uml.edu
   Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
   Created on 11/5/2018 for assignment No. 6 of the course.
-  This an index page that shows a dynamically created multplication table
-  and provides links to previous assignments
+  This is a JavaScript script that enables the dynamic creation
+  of a multiplication table by the file https://hssemakula.github.io/home_page/assignment6/index.html.
+  The function in this file is used by index.html for that purpose
 */
 /* Initialize variables */
 var hstart; //to store horizontal axis start

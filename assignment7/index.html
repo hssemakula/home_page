@@ -1,0 +1,183 @@
+<!--
+File: https://hssemakula.github.io/home_page/assignment6/index.html
+
+  Hillary Ssemakula
+  hillary_ssemakula@student.uml.edu
+  Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
+  Created on 11/5/2018 for assignment No. 6 of the course.
+  This is an index page that shows a dynamically created multplication table
+  and provides links to previous assignments
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <!--character encoding -->
+  <!--meta tags required by bootstrap -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Hillary Ssemakula Multiplication Table</title>
+  <!-- Bootstrap css linked locally i.e. in my repository-->
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/custom_styles.css" rel="stylesheet">
+
+</head>
+
+<!--Bootstrap css is used heavily for all styling -->
+<!--body tag with black background created-->
+
+<body class="bg-dark">
+  <!-- This is the nav bar. The navbar-expland-lg class is used for responsiveness along many screens
+    The collapse navbar-collape class is used on the link to my assignments, so that when
+    the button is clicked a drop down menu list of my assignments can be shown -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="../assignment4/index.html"><b> Hillary Ssemakula </b> </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <a class="btn btn-light dropdown-toggle nav-item dropdown navbar-text" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Assignments
+      </a>
+      <!--list of links to assignments -->
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="../assignment2/index.html">Assignment 2: Home Page</a>
+        <a class="dropdown-item" href="../assignment3/index.html">Assignment 3: Pacific Trails Resort</a>
+        <a class="dropdown-item" href="../assignment4/index.html">Assignment 4: Home Page v.2</a>
+        <a class="dropdown-item" href="./index.html"> Assignment 6: Dynamic Multiplication Table</a>
+      </div>
+
+    </div>
+  </nav>
+  <!--container div contains all of the main content for the page. It's fluid to
+  allow responsiveness -->
+
+  <div class="container-fluid">
+
+    <!-- The div below is the container div for the header message and form
+    It is set to occupy 8 columns on medium devices and larger so that it
+    doesn't cccupy the whole page width. It appears as a centered column(mx-auto) that
+    takes up about 3/4 the width
+  -->
+    <div class=" col-md-8 text-white mx-auto">
+      <!-- HEADER MESSAGE-->
+      <!--heading with class lead and also centered -->
+      <p class="pt-4 lead mx-auto font-weight-bold text-center"> DYNAMIC MULTIPLICATION TABLE </p>
+      <p> Enter the starting and ending numbers for both the horizontal (multiplier)
+        and vertical (multiplicand) axes and click submit to create the multiplication table. </p>
+      <hr class="bg-white">
+
+      <!--Information under the line break, enclosed around the <small> tag to make
+      it smaller than rest of header text -->
+      <p>
+        <small>The default values for Horizontal Start Number(1), Horzontal End Number (10) AND Vertical Start Number(1),
+          Vertical End Number(10) create a 10 X 10 multiplication table that runs from 1 to 10
+          vertically and horizontally. <span class="text-primary"> Enter the numbers manually</span>
+          OR <span class="text-warning"> click the arrows (that "appear")
+            on the right of each textbox</span> to increae or decrease the current number</small>
+      </p>
+
+      <!-- The empty div below shows nothing. It's a place holder for warning messages.
+      If the user inputs illegal values, the JavaScript function getTable() fills it
+      with an appropriate warning message.
+      It is coded to have automatic centering using mx-auto-->
+      <div class="container-fluid mx-auto text-center" id="warning">
+      </div>
+
+      <!--This script is included to test if the user has javascript enabled or not IF not it links on instructions on how to enable it-->
+      <noscript>
+        <div class="pt-2 ">
+          <div class="alert alert-warning" role="alert">
+            For full functionality of this page it is necessary to enable JavaScript. Here are the
+            <a href="http://www.enable-javascript.com" target="_blank"> instructions how to enable JavaScript in your web browser</a>
+          </div>
+        </div>
+      </noscript>
+
+      <!--FORM
+    Given a top padding of 2em. i.e. pt-2
+  -->
+      <form class="pt-2">
+        <!-- All four textboxes have the same general structure, therefore comments
+        are provided for the first only
+      -The div below is coded to be a form element by  giving it a class form-group
+      -The class row, ensures that all elements in the div are in-line/on one line
+      -The label element and the input element are both given 4 columns(col-sm-4)
+       so that each occupies half the width of the parent container div.
+      -The input element has attributes; type: which is number to reject characters
+      that are not numbers, placeholder: to display the range the textboxes accept
+      when no text is typed in, value: to show the default input AND min and max
+      to guide the user when out-ofscope values are input.
+    -->
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Horizontal Start Number:</label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control-lg" id="hstart" placeholder="1-1500" value="1" min="1" max="1500">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Horizontal End Number:</label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control-lg" id="hend" placeholder="1-1500" value="10" min="1" max="1500">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Vertical Start Number:</label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control-lg" id="vstart" placeholder="1-1500" value="1" min="1" max="1500">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-4 col-form-label">Vertical End Number:</label>
+          <div class="col-sm-4">
+            <input type="number" class="form-control-lg" id="vend" placeholder="1-1500" value="10" min="1" max="1500">
+          </div>
+        </div>
+        <!--This div contains the button which uses the function onClick to call the getTable() function
+        in the JavaScript file that is included. type="submit" is not used here because that reloads
+      the page and erases the table drawn-->
+        <div class="text-center">
+          <button type="button" class="btn btn-primary form-control-lg" onclick="getTable()">SUBMIT</button>
+        </div>
+      </form>
+
+    </div>
+
+  </div>
+
+  <!--The empty div below is a place holder that shows nothing innitially. It is used
+  to display the dynamic table every time the submit button is clicked. The getTable()
+  function fills it with the dynamic table. -->
+  <div class=" col-md-11 container-fluid text-white mx-auto pt-3 pb-5 text-center" id="table">
+  </div>
+
+  <!-- Footer added to display my name,contact information and  CSS and HTML verification icons -->
+  <!-- HTML icon source: https://www.w3.org/html/logo/ -->
+  <!-- CSS icon source: https://www.iconfinder.com/icons/2916226/css3_marketing_media_social_website_icon -->
+  <div class="container-fluid pt-20 text-white" id="footer">
+    <p class="text-muted float-left"> Hillary SSemakula @ 2018: <a class="text-muted" href="mailto:hillary_ssemakula@student.uml.edu?subject=feedback">hillary_ssemakula@student.uml.edu</a></p>
+
+
+    <div class=" float-right">
+      <a href="https://validator.w3.org/nu/?doc=https%3A%2F%2Fhssemakula.github.io%2Fhome_page%2Fassignment6%2Findex.html&showsource=yes">
+        <img src="./images/HTML5_Logo_32.png" alt="html5 icon" />
+      </a>
+      <a href="http://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fhssemakula.github.io%2Fhome_page%2Fassignment6%2Fcss%2Fcustom_styles.css&profile=css3svg&usermedium=all&warning=1&vextwarning="> <img src="./images/CSS3.png" alt="css3 icon" /></a>
+    </div>
+  </div>
+
+  <!--The script element below includes the java script file that conatins the function
+  that draws the dynamic table. -->
+  <script src="js/index.js"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <!-- The script below is also usefull for the functionality of the dropdown in the navbar
+without it, it dosn't function at all-->
+  <script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>

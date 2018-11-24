@@ -1,9 +1,9 @@
 /*
-File: https://hssemakula.github.io/home_page/assignment6/js/index.js
+File: https://hssemakula.github.io/home_page/assignment7/js/index.js
   Hillary Ssemakula
   hillary_ssemakula@student.uml.edu
   Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
-  Created on 11/5/2018 for assignment No. 6 of the course.
+  Created on 11/20/2018 for assignment No. 7 of the course.
   This is a JavaScript script that enables the dynamic creation
   of a multiplication table by the file https://hssemakula.github.io/home_page/assignment6/index.html.
   The function in this file is used by index.html for that purpose
@@ -13,10 +13,10 @@ File: https://hssemakula.github.io/home_page/assignment6/js/index.js
 
 $(function() {
 
-  //highlight erroneous textbox
+  //highlight erroneous textbox with red
   $.validator.setDefaults({
-    errorClass: "text-danger",
-    highlight: function(element) {
+    errorClass: "text-danger", //sets error text to red
+    highlight: function(element) { //when validation function is called on element, add bootstrap calss "alert-danger", colors it red
       $(element)
         .addClass('alert-danger');
     },
@@ -26,11 +26,13 @@ $(function() {
     }
   });
 
+  //custom validation method to test whether the value of an element is greater than that of a passed parameter
   $.validator.addMethod("greaterThanEqual", function(value, element, param) {
     var target = $(param);
     return parseInt(value) >= parseInt(target.val());
   }, "Please enter a greater value.");
 
+  //custom validation method to test whether the value of an element is less than that of a passed parameter
   $.validator.addMethod("lessThanEqual", function(value, element, param) {
     var target = $(param);
 
@@ -39,13 +41,13 @@ $(function() {
 
   $("#form").validate({
 
-
+    //rules object: provides rules for validation
     rules: {
       hstart: {
         required: true,
-        min: 1,
-        max: 1500,
-        lessThanEqual: "#hend"
+        min: 1, //minimum number alllowed is 1, i.e no zeroes or negatives
+        max: 1500, //maximum number alllowed is 1500
+        lessThanEqual: "#hend" //custom validation called
 
       },
       hend: {
@@ -70,6 +72,7 @@ $(function() {
 
       },
     },
+    //messeges object: provides custom error messages for specific elements
     messages: {
       hstart: {
         required: "A starting value is required for the Horizontal axis",
@@ -92,11 +95,12 @@ $(function() {
       }
 
     },
+    //when an invalid form (i.e a form with errors) is submitted, the code below erases the table div
     invalidHandler: function(event, validator) {
       $("#table").html("");
     },
 
-    //Function that constructs the table dynamically
+    //Function that handles a valid form submitted: it constructs the table dynamically
     submitHandler: function() {
 
       var hstart = parseInt($("#hstart").val()); //The current value of the text boxes are extracted and converted into integers
@@ -135,7 +139,7 @@ $(function() {
       table_str += "</table></div>"; //after double for-loop is done, table is built so close <table> and outer div elements
 
 
-      $("#table").html(table_str);
+      $("#table").html(table_str); //set table div to bootstrap table that was constructed as string.
 
     }
   });

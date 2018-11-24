@@ -21,7 +21,13 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
   <title>Hillary Ssemakula Multiplication Table</title>
   <!-- Bootstrap css linked locally i.e. in my repository-->
   <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <script src="./js/jquery-3.3.1.min.js"></script>
+  <script src="./js/jquery.validate.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.18.0/additional-methods.js"></script>
   <link href="./css/custom_styles.css" rel="stylesheet">
+  <!--The script element below includes the java script file that conatins the function
+  that draws the dynamic table. -->
+  <script src="./js/index.js"></script>
 
 </head>
 
@@ -99,7 +105,7 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
       <!--FORM
     Given a top padding of 2em. i.e. pt-2
   -->
-      <form class="pt-2">
+      <form class="pt-2" id="form">
         <!-- All four textboxes have the same general structure, therefore comments
         are provided for the first only
       -The div below is coded to be a form element by  giving it a class form-group
@@ -114,32 +120,32 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Horizontal Start Number:</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control-lg" id="hstart" placeholder="1-1500" value="1" min="1" max="1500">
+            <input type="number" class="form-control-lg" id="hstart" name="hstart" placeholder="1-1500" value="1" min="1" max="1500">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Horizontal End Number:</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control-lg" id="hend" placeholder="1-1500" value="10" min="1" max="1500">
+            <input type="number" class="form-control-lg" id="hend" name="hend" placeholder="1-1500" value="10" min="1" max="1500">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Vertical Start Number:</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control-lg" id="vstart" placeholder="1-1500" value="1" min="1" max="1500">
+            <input type="number" class="form-control-lg" id="vstart" name="vstart" placeholder="1-1500" value="1" min="1" max="1500">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Vertical End Number:</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control-lg" id="vend" placeholder="1-1500" value="10" min="1" max="1500">
+            <input type="number" class="form-control-lg" id="vend" name="vend" placeholder="1-1500" value="10" min="1" max="1500">
           </div>
         </div>
         <!--This div contains the button which uses the function onClick to call the getTable() function
         in the JavaScript file that is included. type="submit" is not used here because that reloads
       the page and erases the table drawn-->
         <div class="text-center">
-          <button type="button" class="btn btn-primary form-control-lg" onclick="getTable()">SUBMIT</button>
+          <button type="submit" class="btn btn-primary form-control-lg" id="submit">SUBMIT</button>
         </div>
       </form>
 
@@ -168,12 +174,8 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
     </div>
   </div>
 
-  <!--The script element below includes the java script file that conatins the function
-  that draws the dynamic table. -->
-  <script src="js/index.js"></script>
 
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
   <!-- Include all compiled plugins (below), or include individual files as needed -->
   <!-- The script below is also usefull for the functionality of the dropdown in the navbar
 without it, it dosn't function at all-->

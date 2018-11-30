@@ -3,7 +3,7 @@ File: https://hssemakula.github.io/home_page/assignment7/js/index.js
   Hillary Ssemakula
   hillary_ssemakula@student.uml.edu
   Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
-  Created on 11/20/2018 for assignment No. 7 of the course.
+  Created on 11/20/2018 for assignment No. 8 of the course.
   This is a JavaScript script that enables the dynamic creation
   of a multiplication table by the file https://hssemakula.github.io/home_page/assignment6/index.html.
   The function in this file is used by index.html for that purpose
@@ -12,6 +12,15 @@ File: https://hssemakula.github.io/home_page/assignment7/js/index.js
 
 
 $(function() {
+
+  $(".slider").slider({
+    max:50,
+    min:0,
+    change:function(event, ui){
+      this.parent().find("input").value = ui.value;
+
+    }
+  });
 
   //highlight erroneous textbox with red
   $.validator.setDefaults({
@@ -23,6 +32,9 @@ $(function() {
     unhighlight: function(element) {
       $(element)
         .removeClass('alert-danger');
+    },
+    errorPlacement: function(error, element) { //because text input is smaller now put errow within form element div but outside text input  div
+      error.insertAfter(element.parent());
     }
   });
 
@@ -40,34 +52,33 @@ $(function() {
   }, "Please enter a lesser value.");
 
   $("#form").validate({
-
     //rules object: provides rules for validation
     rules: {
       hstart: {
         required: true,
-        min: 1, //minimum number alllowed is 1, i.e no zeroes or negatives
-        max: 1500, //maximum number alllowed is 1500
+        min: 0, //minimum number alllowed is 0, i.e no negatives
+        max: 50, //maximum number alllowed is 1500
         lessThanEqual: "#hend" //custom validation called
 
       },
       hend: {
         required: true,
-        min: 1,
-        max: 1500,
+        min: 0,
+        max: 50,
         greaterThanEqual: "#hstart"
 
       },
       vstart: {
         required: true,
-        min: 1,
-        max: 1500,
+        min: 0,
+        max: 50,
         lessThanEqual: "#vend"
 
       },
       vend: {
         required: true,
-        min: 1,
-        max: 1500,
+        min: 0,
+        max: 50,
         greaterThanEqual: "#vstart"
 
       },
@@ -116,6 +127,8 @@ $(function() {
       var column; //To keep track of current column being defined in table
       var row; //To keep track of current column being defined in table
       var header = 1; //flag to tell whether current row is top row OR if current column is left-most column
+
+      if(hstart == 0 && hend == 0 && vstart == 0 && vend == 0) return; //if sliders have not been moved draw nothing
 
       /* The gist of this double loop is:
           for all rows plus one, if current row is the first, make an empty cell and

@@ -1,10 +1,10 @@
 <!--
-File: https://hssemakula.github.io/home_page/assignment6/index.html
+File: https://hssemakula.github.io/home_page/assignment7/index.html
 
   Hillary Ssemakula
   hillary_ssemakula@student.uml.edu
   Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
-  Created on 11/5/2018 for assignment No. 6 of the course.
+  Created on 11/20/2018 for assignment No. 7 of the course.
   This is an index page that shows a dynamically created multplication table
   and provides links to previous assignments
 -->
@@ -22,6 +22,18 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
   <!-- Bootstrap css linked locally i.e. in my repository-->
   <link href="./css/bootstrap.min.css" rel="stylesheet">
   <link href="./css/custom_styles.css" rel="stylesheet">
+  <link href="./css/jquery-ui.min.css" rel="stylesheet">
+  <link href="./css/jquery-ui.structure.min.css" rel="stylesheet">
+  <link href="./css/jquery-ui.theme.min.css" rel="stylesheet">
+  <script src="./js/jquery-3.3.1.min.js"></script>
+  <script src="./js/jquery.validate.min.js"></script>
+  <script src="./js/jquery-ui.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="./js/additional-methods.js"></script>
+
+  <!--The script element below includes the java script file that conatins the function
+  that draws the dynamic table. -->
+  <script src="./js/index.js"></script>
 
 </head>
 
@@ -46,9 +58,9 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
         <a class="dropdown-item" href="../assignment2/index.html">Assignment 2: Home Page</a>
         <a class="dropdown-item" href="../assignment3/index.html">Assignment 3: Pacific Trails Resort</a>
         <a class="dropdown-item" href="../assignment4/index.html">Assignment 4: Home Page v.2</a>
-        <a class="dropdown-item" href="./index.html"> Assignment 6: Dynamic Multiplication Table</a>
+        <a class="dropdown-item" href="../assignment6/index.html"> Assignment 6: Dynamic Multiplication Table</a>
         <a class="dropdown-item" href="../assignment7/index.html"> Assignment 7: Dynamic Multiplication Table: JQuery</a>
-        <a class="dropdown-item" href="../assignment8/index.html"> Assignment 8: Dynamic Multiplication Table: JQuery UI Slider</a>
+        <a class="dropdown-item" href="./index.html"> Assignment 8: Dynamic Multiplication Table: JQuery UI Slider</a>
       </div>
 
     </div>
@@ -81,13 +93,6 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
             on the right of each textbox</span> to increae or decrease the current number</small>
       </p>
 
-      <!-- The empty div below shows nothing. It's a place holder for warning messages.
-      If the user inputs illegal values, the JavaScript function getTable() fills it
-      with an appropriate warning message.
-      It is coded to have automatic centering using mx-auto-->
-      <div class="container-fluid mx-auto text-center" id="warning">
-      </div>
-
       <!--This script is included to test if the user has javascript enabled or not IF not it links on instructions on how to enable it-->
       <noscript>
         <div class="pt-2 ">
@@ -101,7 +106,7 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
       <!--FORM
     Given a top padding of 2em. i.e. pt-2
   -->
-      <form class="pt-2">
+      <form class="pt-2" id="form">
         <!-- All four textboxes have the same general structure, therefore comments
         are provided for the first only
       -The div below is coded to be a form element by  giving it a class form-group
@@ -116,32 +121,32 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Horizontal Start Number:</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control-lg" id="hstart" placeholder="1-1500" value="1" min="1" max="1500">
+            <input type="number" class="form-control-lg" id="hstart" name="hstart" placeholder="1-1500" value="1" min="1" max="1500">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Horizontal End Number:</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control-lg" id="hend" placeholder="1-1500" value="10" min="1" max="1500">
+            <input type="number" class="form-control-lg" id="hend" name="hend" placeholder="1-1500" value="10" min="1" max="1500">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Vertical Start Number:</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control-lg" id="vstart" placeholder="1-1500" value="1" min="1" max="1500">
+            <input type="number" class="form-control-lg" id="vstart" name="vstart" placeholder="1-1500" value="1" min="1" max="1500">
           </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-4 col-form-label">Vertical End Number:</label>
           <div class="col-sm-4">
-            <input type="number" class="form-control-lg" id="vend" placeholder="1-1500" value="10" min="1" max="1500">
+            <input type="number" class="form-control-lg" id="vend" name="vend" placeholder="1-1500" value="10" min="1" max="1500">
           </div>
         </div>
         <!--This div contains the button which uses the function onClick to call the getTable() function
         in the JavaScript file that is included. type="submit" is not used here because that reloads
       the page and erases the table drawn-->
         <div class="text-center">
-          <button type="button" class="btn btn-primary form-control-lg" onclick="getTable()">SUBMIT</button>
+          <button type="submit" class="btn btn-primary form-control-lg" id="submit">SUBMIT</button>
         </div>
       </form>
 
@@ -163,23 +168,13 @@ File: https://hssemakula.github.io/home_page/assignment6/index.html
 
 
     <div class=" float-right">
-      <a href="https://validator.w3.org/nu/?doc=https%3A%2F%2Fhssemakula.github.io%2Fhome_page%2Fassignment6%2Findex.html&showsource=yes">
+      <a href="https://validator.w3.org/nu/?showsource=yes&doc=https%3A%2F%2Fhssemakula.github.io%2Fhome_page%2Fassignment7%2F">
         <img src="./images/HTML5_Logo_32.png" alt="html5 icon" />
       </a>
-      <a href="http://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fhssemakula.github.io%2Fhome_page%2Fassignment6%2Fcss%2Fcustom_styles.css&profile=css3svg&usermedium=all&warning=1&vextwarning="> <img src="./images/CSS3.png" alt="css3 icon" /></a>
+      <a href="http://jigsaw.w3.org/css-validator/validator?uri=https%3A%2F%2Fhssemakula.github.io%2Fhome_page%2Fassignment7%2Fcss%2Fcustom_styles.css&profile=css3svg&usermedium=all&warning=1&vextwarning="> <img src="./images/CSS3.png" alt="css3 icon" /></a>
     </div>
   </div>
 
-  <!--The script element below includes the java script file that conatins the function
-  that draws the dynamic table. -->
-  <script src="js/index.js"></script>
-
-  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <!-- Include all compiled plugins (below), or include individual files as needed -->
-  <!-- The script below is also usefull for the functionality of the dropdown in the navbar
-without it, it dosn't function at all-->
-  <script src="js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -26,6 +26,11 @@ $(function() {
     }
   });
 
+//validate form as the user types keys
+  $("input").keyup(function() {
+    $("#form").valid();
+  });
+
   //custom validation method to test whether the value of an element is greater than that of a passed parameter
   $.validator.addMethod("greaterThanEqual", function(value, element, param) {
     var target = $(param);

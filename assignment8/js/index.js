@@ -22,7 +22,7 @@ $(function() {
     }
   });
 
-  $(".input").keyup(function() {
+  $("input").keyup(function() {
     if ($("#form").valid()) drawTable();
   });
   //highlight erroneous textbox with red

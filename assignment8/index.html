@@ -1,10 +1,10 @@
 <!--
-File: https://hssemakula.github.io/home_page/assignment7/index.html
+File: https://hssemakula.github.io/home_page/assignment8/index.html
 
   Hillary Ssemakula
   hillary_ssemakula@student.uml.edu
   Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
-  Created on 11/20/2018 for assignment No. 8 of the course.
+  Created on 11/29/2018 for assignment No. 8 of the course.
   This is an index page that shows a dynamically created multplication table
   and provides links to previous assignments
 -->
@@ -101,17 +101,20 @@ File: https://hssemakula.github.io/home_page/assignment7/index.html
 
     </div>
 
+    <!--Container div to contain the form for entering table dimensions and the div where the table dynamic table is drawn.
+    It is given a class row to make it's contents display in a row -->
     <div class="container row text-white mx-auto">
       <!--FORM
-    Given a top padding of 2em. i.e. pt-2
+    Given a top padding of 2em. i.e. pt-2 and occupies 8 columns the other 4 are for the dynmaic table to drawn
   -->
       <form class="pt-2 col-md-8" id="form">
         <!-- All four textboxes have the same general structure, therefore comments
         are provided for the first only
       -The div below is coded to be a form element by  giving it a class form-group
       -The class row, ensures that all elements in the div are in-line/on one line
-      -The label element and the element are both given 4 columns(col-sm-4)
-       so that each occupies half the width of the parent container div.
+      -The label element is given 4 columns(col-sm-4), The slider is given 3 coulmns while
+      the textbox is given 1 column
+      All sliders are apart of the same class "slider"
       -The input element has attributes; type: which is number to reject characters
       that are not numbers, placeholder: to display the range the textboxes accept
       when no text is typed in, value: to show the default input AND min and max
@@ -145,16 +148,16 @@ File: https://hssemakula.github.io/home_page/assignment7/index.html
             <input type="number" class="form-control-lg" id="vend" name="vend" placeholder="0-20" value="0" min="0" max="20">
           </div>
         </div>
-        <!--This div contains the button which uses the function onClick to call the getTable() function
-        in the JavaScript file that is included. type="submit" is not used here because that reloads
-      the page and erases the table drawn-->
+        <!--This div below contains the button which uses the function saveTable()
+        in the JavaScript file that is included.  This div will also contain the DELETE ALL TABS button
+      placed there by javascript when the appropritate action happens-->
         <div class="text-left pb-3" id="buttons">
           <button type="submit" class="btn btn-primary form-control-lg " id="submit">SAVE</button>
         </div>
       </form>
 
       <!--The empty div below is a place holder that shows nothing innitially. It is used
-      to display the dynamic table every time the submit button is clicked. The getTable()
+      to display the dynamic table every time any of input textboxes/sliders change. The drawTable()
       function fills it with the dynamic table. -->
       <div class="container-fluid text-white text-center col-lg-4 pb-2" id="table">
       </div>

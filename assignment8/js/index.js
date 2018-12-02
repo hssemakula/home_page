@@ -86,7 +86,7 @@ $(function() {
 
     $(tabIdToRemove).remove(); //using content div id obtained, remove the content for the tab.
     $(this).parent().parent().remove(); //remove the tab header, itself i.e the parent to the parent of the clicked button i.e remove <li> <a> <button></button></a></li>
-    $("#tableTab").tabs("refresh"); //this refresh helps the tabs to be redrawn properly.
+    $("#tableTab").tabs("refresh"); //this refresh helps the tabs to be redrawn properly and updates number of elements after remove otherwise random null errors occur
   });
 
 

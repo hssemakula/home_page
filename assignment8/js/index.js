@@ -209,11 +209,14 @@ function saveTable() {
   $("#tableTab").show();
   var table_str = $("#table")[0].outerHTML;
   table_str = table_str.replace("id=\"table\"", "");
+  table_str = table_str.replace("container-fluid text-white text-center col-lg-4 pb-2", "text-white text-center col-md-8 mx-auto");
+
 
   $("#tableTab").append("<div id=\"" + savedTableCounter + "\">" + table_str + "</div>");
 
-  $("#tableTab ul").append("<li> <a href = \"#" + savedTableCounter + "\"> Table " +
-    (savedTableCounter + 1) + "<button type=\"button\" class=\"btn btn-sm text-muted ml-5 closeTab\">x</button></a></li>");
+  $("#tableTab ul").append("<li> <a href = \"#" + savedTableCounter + "\"> H(" +
+    $("#hstart").val() + "," + $("#hend").val() + ") " + "V(" +
+    $("#vstart").val() + "," + $("#vend").val() + ") <button type=\"button\" class=\"btn btn-sm text-muted ml-5 closeTab\">x</button></a></li>");
 
   $("#tableTab").tabs("refresh");
   $("#tableTab").tabs("option", "active", savedTableCounter);

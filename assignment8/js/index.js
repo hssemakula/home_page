@@ -1,40 +1,51 @@
 /*
-File: https://hssemakula.github.io/home_page/assignment7/js/index.js
+File: https://hssemakula.github.io/home_page/assignment8/js/index.js
   Hillary Ssemakula
   hillary_ssemakula@student.uml.edu
   Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
-  Created on 11/20/2018 for assignment No. 8 of the course.
+  Created on 11/29/2018 for assignment No. 8 of the course.
   This is a JavaScript script that enables the dynamic creation
-  of a multiplication table by the file https://hssemakula.github.io/home_page/assignment6/index.html.
+  of a multiplication table by the file https://hssemakula.github.io/home_page/assignment8/index.html.
   The function in this file is used by index.html for that purpose
 */
 
-var savedTableCounter = 0;
+var savedTableID = 0; //to provide id's for table tabs.
+var savedTableCounter = 0; //to store number of tables saved.
 
+//function is run when the page has loaded.
 $(function() {
 
+  //This function creates a slider for every div with a class "slider". animate makes the slider slide smoothly
   $(".slider").slider({
     max: 20,
     min: 0,
     animate: true,
     slide: function(event, ui) {
-      $(this).parent().find("input").val(ui.value); //one-way binding created here
-      if ($("#form").valid()) drawTable();
+      //This listener attached to the slide attribute makes slider find it's parent
+      //The parent has 3 elements, a label, a slider and a div with an input.
+      //find is executed on parent to find the input and the value of the input is changed to the slider's value.
+      $(this).parent().find("input").val(ui.value); //one-way binding achived here
+      if ($("#form").valid()) drawTable(); //table drawn if current form validation is successful
     }
   });
 
+  //This function attaches the keyup listener to every input element on the page. i.e.
+  //when a key is pressed while in an input textbox, the current input's parent is found
+  //the parent searches for it's slider, and the slider's value is changed to that of the textbox
   $("input").keyup(function() {
     $(this).parent().prev().slider('value', $(this).val()); //two way binding completed here
-    if ($("#form").valid()) drawTable();
+    if ($("#form").valid()) drawTable(); //table drawn if current form validation is successful
   });
 
-  $("#tableTab").tabs();
-  $("#tableTab").hide();
+  $("#tableTab").tabs(); //the tabs function for creating tabs in the future is invoked on the empty div with id tableTab
+  $("#tableTab").hide(); //The div is hidden here because there is no content as of now.
 
-  //becayuse at first delete button is not present
+  //a click listener is attached to the div with id buttons. but it is specifically
+  //set to listen for clicks on the element with id delete within the div.
+  //This is because at first such an element does not exist. So an error would occur if we tried to attach the listener directly.
   $("#buttons").on("click", "#delete", function() {
-    removeAllTabs();
-    $("#delete").remove();
+    removeAllTabs(); //function removeAllTabs called.
+    $("#delete").remove(); //delete button(i.e itself is removed.)
   });
 
 
@@ -45,19 +56,28 @@ $(function() {
       removeAllTabs();
       $("#delete").remove();
     } else if (typeof($(tabIdToRemove).next().attr('id')) == "undefined") {
-      var prev_tab_id = $(tabIdToRemove).prev().attr('id');
-      $("#tableTab").tabs("option", "active", prev_tab_id);
       savedTableCounter -= 1;
       if (savedTableCounter == 1) $("#delete").remove();
+      //alert("PREVIOUS ==> "+$(tabIdToRemove).prev().html());
+
+      var prevID = parseInt($("#tableTab").tabs("option", "active") - 1);
+      $("#tableTab").tabs("option", "active", prevID);
     } else {
-      var next_tab_id = $(tabIdToRemove).next().attr('id');
-      $("#tableTab").tabs("option", "active", next_tab_id);
       savedTableCounter -= 1;
       if (savedTableCounter == 1) $("#delete").remove();
+      //  alert("NEXT ==> "+$(tabIdToRemove).next().html());
+
+      var nextID = parseInt($("#tableTab").tabs("option", "active") + 1);
+      alert(nextID);
+      $("#tableTab").tabs("option", "active", nextID);
+
+
     }
-    $(this).parent().remove();
+
     $(tabIdToRemove).remove();
     $("#tableTab").tabs("refresh");
+    //alert($(this).parent().parent().html());
+    $(this).parent().parent().remove();
   });
 
 
@@ -212,14 +232,16 @@ function saveTable() {
   table_str = table_str.replace("container-fluid text-white text-center col-lg-4 pb-2", "text-white text-center col-md-8 mx-auto");
 
 
-  $("#tableTab").append("<div id=\"" + savedTableCounter + "\">" + table_str + "</div>");
+  $("#tableTab").append("<div id=\"" + savedTableID + "\">" + table_str + "</div>");
 
-  $("#tableTab ul").append("<li> <a href = \"#" + savedTableCounter + "\"> H(" +
+  $("#tableTab ul").append("<li> <a href = \"#" + savedTableID + "\"> H(" +
     $("#hstart").val() + "," + $("#hend").val() + ") " + "V(" +
     $("#vstart").val() + "," + $("#vend").val() + ") <button type=\"button\" class=\"btn btn-sm text-muted ml-5 closeTab\">x</button></a></li>");
 
   $("#tableTab").tabs("refresh");
   $("#tableTab").tabs("option", "active", savedTableCounter);
+  //("#tableTab").tabs("option", "active")
+  savedTableID += 1;
   savedTableCounter += 1;
   if (savedTableCounter == 2)
     $("#buttons").append("<button type=\"button\" class=\"btn btn-danger form-control-lg ml-3\" id=\"delete\">DELETE ALL TABS</button>");
@@ -230,5 +252,6 @@ function removeAllTabs() {
   $('div#tableTab div').remove();
   $("#tableTab").tabs("refresh");
   $("#tableTab").hide();
+  savedTableID = 0;
   savedTableCounter = 0;
 }

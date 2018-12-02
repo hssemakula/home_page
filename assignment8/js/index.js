@@ -29,7 +29,7 @@ $(function() {
     }
   });
 
-  //This function attaches the keyup listener to every input element on the page. i.e.
+  //This function attaches the keyup event to every input element on the page. i.e.
   //when a key is pressed while in an input textbox, the current input's parent is found
   //the parent searches for it's slider, and the slider's value is changed to that of the textbox
   $("input").keyup(function() {
@@ -40,7 +40,7 @@ $(function() {
   $("#tableTab").tabs(); //the tabs function for creating tabs in the future is invoked on the empty div with id tableTab
   $("#tableTab").hide(); //The div is hidden here because there is no content as of now.
 
-  //a click listener is attached to the div with id buttons. but it is specifically
+  //a click event is attached to the div with id buttons. but it is specifically
   //set to listen for clicks on the element with id delete within the div.
   //This is because at first such an element does not exist. So an error would occur if we tried to attach the listener directly.
   $("#buttons").on("click", "#delete", function() {
@@ -49,39 +49,49 @@ $(function() {
   });
 
 
+  /*The on method attaches a click event to every element that has class closeTab.
+  Basically, I create all tabs with a button with such a class. The handler function.
+  gets the the href attribute of it's parent. Remember the parent is the li element and each specific li
+  href points to a specific div that has the content that is displayed as a tab. Since the href is in the form
+  #id it can easily be queried to find what div it points to
+  */
   $("#tableTab").on("click", ".closeTab", function() {
     var tabIdToRemove = $(this).parent().attr('href');
 
+    //if div has no neihgbours then it is the last tad, delete everything by calling removeAllTabs();
+    //this if works because for all direct children of tableTabs, only content divs(i.e used for tabs) have IDS, the ul doesn't have one.
     if (typeof($(tabIdToRemove).next().attr('id')) == "undefined" && typeof($(tabIdToRemove).prev().attr('id')) == "undefined") {
       removeAllTabs();
-      $("#delete").remove();
+      $("#delete").remove(); //remove the Deletealltabs button
     } else if (typeof($(tabIdToRemove).next().attr('id')) == "undefined") {
-      savedTableCounter -= 1;
-      if (savedTableCounter == 1) $("#delete").remove();
+      //if div has neighbor to the left, then make that neighbor active before you delete current div
+      savedTableCounter -= 1; //decrement number of saved tabs
+      if (savedTableCounter == 1) $("#delete").remove(); //if only one tab left remove Deletealltabs button
       //alert("PREVIOUS ==> "+$(tabIdToRemove).prev().html());
 
+      //get current active tab index and decrement (i.e becomes left neighbor index)
       var prevID = parseInt($("#tableTab").tabs("option", "active") - 1);
-      $("#tableTab").tabs("option", "active", prevID);
+      $("#tableTab").tabs("option", "active", prevID); //make neighbor active
     } else {
+      //All code below is opposite of code above(i.e make right neighbor active)
       savedTableCounter -= 1;
       if (savedTableCounter == 1) $("#delete").remove();
       //  alert("NEXT ==> "+$(tabIdToRemove).next().html());
 
       var nextID = parseInt($("#tableTab").tabs("option", "active") + 1);
-      alert(nextID);
+      //alert(nextID);
       $("#tableTab").tabs("option", "active", nextID);
 
 
     }
 
-    $(tabIdToRemove).remove();
-    $("#tableTab").tabs("refresh");
-    //alert($(this).parent().parent().html());
-    $(this).parent().parent().remove();
+    $(tabIdToRemove).remove(); //using content div id obtained, remove the content for the tab.
+    $("#tableTab").tabs("refresh"); //this refresh helps the tabs to be redrawn properly.
+    $(this).parent().parent().remove(); //remove the tab header, itself i.e the parent to the parent of the clicked button i.e remove <li> <a> <button></button></a></li>
   });
 
 
-
+  /* PREVIOUS VALIDATION CODE */
   //highlight erroneous textbox with red
   $.validator.setDefaults({
     errorClass: "pl-3 text-danger", //sets error text to red
@@ -171,20 +181,23 @@ $(function() {
       $("#table").html("");
     },
 
-    //Function that handles a valid form submitted: it constructs the table dynamically
+    //The SAVE button is the submit button. once this is clicked and the form is valid, the saveTable() method is called
     submitHandler: function() {
-      if (($("#table").html()).trim() != "") saveTable();
+      if (($("#table").html()).trim() != "") saveTable(); //calls the sa
     }
   });
 
 
 });
 
+/*This the Function that constructs the html for the table  and send it to an empty div*/
 function drawTable() {
-  var hstart = parseInt($("#hstart").val()); //The current value of the text boxes are extracted and converted into integers
-  var hend = parseInt($("#hend").val()); //This avoids errors like when a user doesn't enter anything into the textbox
-  var vstart = parseInt($("#vstart").val());
-  var vend = parseInt($("#vend").val());
+  //The current value of the text boxes are extracted and converted into integers
+  //This avoids errors like when a user doesn't enter anything into the textbox
+  var hstart = parseInt($("#hstart").val()); //extract horizotal start value
+  var hend = parseInt($("#hend").val()); //extract horizotal end value
+  var vstart = parseInt($("#vstart").val()); //extract vertical start value
+  var vend = parseInt($("#vend").val()); //extract vertical end value
   var table_str; //string variable to be used to build up table.
 
   /*The table starts to be built. it is built as a div with class table. A table that is also dark, small, hovers and striped.
@@ -195,9 +208,10 @@ function drawTable() {
   var row; //To keep track of current column being defined in table
   var header = 1; //flag to tell whether current row is top row OR if current column is left-most column
 
+  //if sliders/textboxes are all at 0 draw nothing
   if (hstart == 0 && hend == 0 && vstart == 0 && vend == 0) {
     $("#table").html(""); //erase table
-    return; //if sliders are all at 0 draw nothing
+    return;
   }
 
   /* The gist of this double loop is:
@@ -225,33 +239,42 @@ function drawTable() {
   $("#table").html(table_str); //set table div to bootstrap table that was constructed as string.
 }
 
+/* This is the Function that saves the table */
 function saveTable() {
-  $("#tableTab").show();
-  var table_str = $("#table")[0].outerHTML;
-  table_str = table_str.replace("id=\"table\"", "");
+  if (savedTableCounter == 0) $("#tableTab").show(); //start by unhiding the div that will hold the tabs. This is only done if no saved tables exist.
+  var table_str = $("#table")[0].outerHTML; //get the html in the div with id table. when all sliders/textboxes are not zero, there is always a table, since it's drawn dynamically
+  table_str = table_str.replace("id=\"table\"", ""); //remove previous table id, so as not to confuse the script because original table still has that id
+  //remove previous bootstrap formatting and add formatting suitable for content in a tab
   table_str = table_str.replace("container-fluid text-white text-center col-lg-4 pb-2", "text-white text-center col-md-8 mx-auto");
 
-
+  //place table html in a div with an id equal to the value of savedTableID. this is later used when setting up tabs.
+  //This is the content div that the li tabs will reference using an id.
   $("#tableTab").append("<div id=\"" + savedTableID + "\">" + table_str + "</div>");
 
+  //In the html a UL element already exists within the tableTab div. append an li element
+  //that points to the above div that was created. within the li there is an anchor tag.
+  //this bears the href to the above div. the a tag also has a bootstrap styled button with class closeTab
+  //used later to close the specific tab it is a child of.
   $("#tableTab ul").append("<li> <a href = \"#" + savedTableID + "\"> H(" +
     $("#hstart").val() + "," + $("#hend").val() + ") " + "V(" +
     $("#vstart").val() + "," + $("#vend").val() + ") <button type=\"button\" class=\"btn btn-sm text-muted ml-5 closeTab\">x</button></a></li>");
 
-  $("#tableTab").tabs("refresh");
-  $("#tableTab").tabs("option", "active", savedTableCounter);
-  //("#tableTab").tabs("option", "active")
-  savedTableID += 1;
-  savedTableCounter += 1;
+  $("#tableTab").tabs("refresh"); //as usual refresh tab so css can be drawn well.
+  $("#tableTab").tabs("option", "active", savedTableCounter); //make the just-created tab active i.e open it
+  savedTableID += 1; //increment ID
+  savedTableCounter += 1; //increment counter. difference between these two is savedTableID is only reset/decremented when all tabs are deleted
+
+  //when there are two saved tables(or more). A button to delete multiple tables is provided. it has id "delete"
   if (savedTableCounter == 2)
     $("#buttons").append("<button type=\"button\" class=\"btn btn-danger form-control-lg ml-3\" id=\"delete\">DELETE ALL TABS</button>");
 }
 
+/*This function deletes all tabs */
 function removeAllTabs() {
-  $('div#tableTab ul li').remove();
-  $('div#tableTab div').remove();
-  $("#tableTab").tabs("refresh");
-  $("#tableTab").hide();
-  savedTableID = 0;
+  $('div#tableTab ul li').remove(); //remove all li elements within a ul element within a div whose id is "tableTab"
+  $('div#tableTab div').remove(); //remove all content divs
+  $("#tableTab").tabs("refresh"); //redraw the tabs widget.
+  $("#tableTab").hide(); //hide it so that it doesn't just leave an empty div on the screen
+  savedTableID = 0; //reset all ids and counters
   savedTableCounter = 0;
 }

@@ -67,7 +67,7 @@ $(function() {
       //if div has neighbor to the left, then make that neighbor active before you delete current div
       savedTableCounter -= 1; //decrement number of saved tabs
       if (savedTableCounter == 1) $("#delete").remove(); //if only one tab left remove Deletealltabs button
-      //alert("PREVIOUS ==> "+$(tabIdToRemove).prev().html());
+
 
       //get current active tab index and decrement (i.e becomes left neighbor index)
       var prevID = parseInt($("#tableTab").tabs("option", "active") - 1);
@@ -76,18 +76,17 @@ $(function() {
       //All code below is opposite of code above(i.e make right neighbor active)
       savedTableCounter -= 1;
       if (savedTableCounter == 1) $("#delete").remove();
-      //  alert("NEXT ==> "+$(tabIdToRemove).next().html());
+
 
       var nextID = parseInt($("#tableTab").tabs("option", "active") + 1);
-      //alert(nextID);
       $("#tableTab").tabs("option", "active", nextID);
 
 
     }
 
     $(tabIdToRemove).remove(); //using content div id obtained, remove the content for the tab.
-    $("#tableTab").tabs("refresh"); //this refresh helps the tabs to be redrawn properly.
     $(this).parent().parent().remove(); //remove the tab header, itself i.e the parent to the parent of the clicked button i.e remove <li> <a> <button></button></a></li>
+    $("#tableTab").tabs("refresh"); //this refresh helps the tabs to be redrawn properly.
   });
 
 

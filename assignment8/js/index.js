@@ -29,10 +29,10 @@ $(function() {
     }
   });
 
-  //This function attaches the keyup event to every input element on the page. i.e.
-  //when a key is pressed while in an input textbox, the current input's parent is found
+  //This function attaches multiple keyboard events to every input element on the page. i.e.
+  //when the value of the input textbox is changed by anything otherthan the slider, the current input's parent is found
   //the parent searches for it's slider, and the slider's value is changed to that of the textbox
-  $("input").keyup(function() {
+  $("input").on("change paste cut paste keyup keydown", function() {
     $(this).parent().prev().slider('value', $(this).val()); //two way binding completed here
     if ($("#form").valid()) drawTable(); //table drawn if current form validation is successful
   });

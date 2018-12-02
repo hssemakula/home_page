@@ -9,25 +9,62 @@ File: https://hssemakula.github.io/home_page/assignment7/js/index.js
   The function in this file is used by index.html for that purpose
 */
 
-
+var savedTableCounter = 0;
 
 $(function() {
 
   $(".slider").slider({
-    max: 50,
+    max: 20,
     min: 0,
+    animate: true,
     slide: function(event, ui) {
-      $(this).parent().find("input").val(ui.value);
+      $(this).parent().find("input").val(ui.value); //one-way binding created here
       if ($("#form").valid()) drawTable();
     }
   });
 
   $("input").keyup(function() {
+    $(this).parent().prev().slider('value', $(this).val()); //two way binding completed here
     if ($("#form").valid()) drawTable();
   });
+
+  $("#tableTab").tabs();
+  $("#tableTab").hide();
+
+  //becayuse at first delete button is not present
+  $("#buttons").on("click", "#delete", function() {
+    removeAllTabs();
+    $("#delete").remove();
+  });
+
+
+  $("#tableTab").on("click", ".closeTab", function() {
+    var tabIdToRemove = $(this).parent().attr('href');
+
+    if (typeof($(tabIdToRemove).next().attr('id')) == "undefined" && typeof($(tabIdToRemove).prev().attr('id')) == "undefined") {
+      removeAllTabs();
+      $("#delete").remove();
+    } else if (typeof($(tabIdToRemove).next().attr('id')) == "undefined") {
+      var prev_tab_id = $(tabIdToRemove).prev().attr('id');
+      $("#tableTab").tabs("option", "active", prev_tab_id);
+      savedTableCounter -= 1;
+      if (savedTableCounter == 1) $("#delete").remove();
+    } else {
+      var next_tab_id = $(tabIdToRemove).next().attr('id');
+      $("#tableTab").tabs("option", "active", next_tab_id);
+      savedTableCounter -= 1;
+      if (savedTableCounter == 1) $("#delete").remove();
+    }
+    $(this).parent().remove();
+    $(tabIdToRemove).remove();
+    $("#tableTab").tabs("refresh");
+  });
+
+
+
   //highlight erroneous textbox with red
   $.validator.setDefaults({
-    errorClass: "pl-4 text-danger", //sets error text to red
+    errorClass: "pl-3 text-danger", //sets error text to red
     highlight: function(element) { //when validation function is called on element, add bootstrap calss "alert-danger", colors it red
       $(element)
         .addClass('alert-danger');
@@ -60,28 +97,28 @@ $(function() {
       hstart: {
         required: true,
         min: 0, //minimum number alllowed is 0, i.e no negatives
-        max: 50, //maximum number alllowed is 1500
+        max: 20, //maximum number alllowed is 1500
         lessThanEqual: "#hend" //custom validation called
 
       },
       hend: {
         required: true,
         min: 0,
-        max: 50,
+        max: 20,
         greaterThanEqual: "#hstart"
 
       },
       vstart: {
         required: true,
         min: 0,
-        max: 50,
+        max: 20,
         lessThanEqual: "#vend"
 
       },
       vend: {
         required: true,
         min: 0,
-        max: 50,
+        max: 20,
         greaterThanEqual: "#vstart"
 
       },
@@ -116,7 +153,7 @@ $(function() {
 
     //Function that handles a valid form submitted: it constructs the table dynamically
     submitHandler: function() {
-      drawTable();
+      if (($("#table").html()).trim() != "") saveTable();
     }
   });
 
@@ -138,7 +175,10 @@ function drawTable() {
   var row; //To keep track of current column being defined in table
   var header = 1; //flag to tell whether current row is top row OR if current column is left-most column
 
-  if (hstart == 0 && hend == 0 && vstart == 0 && vend == 0) return; //if sliders have not been moved draw nothing
+  if (hstart == 0 && hend == 0 && vstart == 0 && vend == 0) {
+    $("#table").html(""); //erase table
+    return; //if sliders are all at 0 draw nothing
+  }
 
   /* The gist of this double loop is:
       for all rows plus one, if current row is the first, make an empty cell and
@@ -163,4 +203,29 @@ function drawTable() {
 
 
   $("#table").html(table_str); //set table div to bootstrap table that was constructed as string.
+}
+
+function saveTable() {
+  $("#tableTab").show();
+  var table_str = $("#table")[0].outerHTML;
+  table_str = table_str.replace("id=\"table\"", "");
+
+  $("#tableTab").append("<div id=\"" + savedTableCounter + "\">" + table_str + "</div>");
+
+  $("#tableTab ul").append("<li> <a href = \"#" + savedTableCounter + "\"> Table " +
+    (savedTableCounter + 1) + "<button type=\"button\" class=\"btn btn-sm text-muted ml-5 closeTab\">x</button></a></li>");
+
+  $("#tableTab").tabs("refresh");
+  $("#tableTab").tabs("option", "active", savedTableCounter);
+  savedTableCounter += 1;
+  if (savedTableCounter == 2)
+    $("#buttons").append("<button type=\"button\" class=\"btn btn-danger form-control-lg ml-3\" id=\"delete\">DELETE ALL TABS</button>");
+}
+
+function removeAllTabs() {
+  $('div#tableTab ul li').remove();
+  $('div#tableTab div').remove();
+  $("#tableTab").tabs("refresh");
+  $("#tableTab").hide();
+  savedTableCounter = 0;
 }

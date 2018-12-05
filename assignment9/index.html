@@ -1,0 +1,81 @@
+<!--
+File: https://hssemakula.github.io/home_page/assignment8/index.html
+
+  Hillary Ssemakula
+  hillary_ssemakula@student.uml.edu
+  Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
+  Created on 11/29/2018 for assignment No. 8 of the course.
+  This is an index page that shows a dynamically created multplication table
+  and provides links to previous assignments
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <!--character encoding -->
+  <!--meta tags required by bootstrap -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Hillary Ssemakula Multiplication Table</title>
+  <!-- Bootstrap css linked locally i.e. in my repository-->
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/custom_styles.css" rel="stylesheet">
+  <link href="./css/jquery-ui.min.css" rel="stylesheet">
+  <link href="./css/jquery-ui.structure.min.css" rel="stylesheet">
+  <link href="./css/jquery-ui.theme.min.css" rel="stylesheet">
+  <script src="./js/jquery-3.3.1.min.js"></script>
+  <script src="./js/jquery.validate.min.js"></script>
+  <script src="./js/jquery-ui.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="./js/additional-methods.min.js"></script>
+
+  <!--The script element below includes the java script file that conatins the function
+  that draws the dynamic table. -->
+  <script src="./js/index.js"></script>
+
+</head>
+
+<!--Bootstrap css is used heavily for all styling -->
+<!--body tag with black background created-->
+
+<body class="bg-info">
+  <!-- This is the nav bar. The navbar-expland-lg class is used for responsiveness along many screens
+    The collapse navbar-collape class is used on the link to my assignments, so that when
+    the button is clicked a drop down menu list of my assignments can be shown -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="../assignment4/index.html"><b> Hillary Ssemakula </b> </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <a class="btn btn-light dropdown-toggle nav-item dropdown navbar-text" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Assignments
+      </a>
+      <!--list of links to assignments -->
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="../assignment2/index.html">Assignment 2: Home Page</a>
+        <a class="dropdown-item" href="../assignment3/index.html">Assignment 3: Pacific Trails Resort</a>
+        <a class="dropdown-item" href="../assignment4/index.html">Assignment 4: Home Page v.2</a>
+        <a class="dropdown-item" href="../assignment6/index.html"> Assignment 6: Dynamic Multiplication Table</a>
+        <a class="dropdown-item" href="../assignment7/index.html"> Assignment 7: Dynamic Multiplication Table: JQuery</a>
+        <a class="dropdown-item" href="./index.html"> Assignment 8: Dynamic Multiplication Table: JQuery UI Slider</a>
+      </div>
+
+    </div>
+  </nav>
+  <!--container div contains all of the main content for the page. It's fluid to
+  allow responsiveness -->
+
+  <div class="container-fluid">
+    <h5 class="display-1 text-white text-center pt-5"> ROW SCRABBLE <h5>
+
+      <a href="https://www.vecteezy.com">Designed by www.vecteezy.com</a>
+
+
+  </div>
+
+</body>
+
+</html>

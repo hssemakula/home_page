@@ -60,7 +60,8 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
         <a class="dropdown-item" href="../assignment4/index.html">Assignment 4: Home Page v.2</a>
         <a class="dropdown-item" href="../assignment6/index.html"> Assignment 6: Dynamic Multiplication Table</a>
         <a class="dropdown-item" href="../assignment7/index.html"> Assignment 7: Dynamic Multiplication Table: JQuery</a>
-        <a class="dropdown-item" href="./index.html"> Assignment 8: Dynamic Multiplication Table: JQuery UI Slider</a>
+        <a class="dropdown-item" href="../assignment8/index.html"> Assignment 8: Dynamic Multiplication Table: JQuery UI Slider</a>
+        <a class="dropdown-item" href="./index.html"> Assignment 9: Row Scrabble</a>
       </div>
 
     </div>
@@ -79,18 +80,18 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
             <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info" style="border-top-left-radius:10px; border-right-left-radius:10px;margin-bottom:-1px; width:200px">TILE BAG </h5>
             <div class="border border-light p-1 " style="border-radius:3px,border-width:10px;" id="tileBag">
 
-              <img class="m-2" src="images/board/regular.png" height="100" class=".img-fluid" />
-              <img class="m-2" src="images/board/regular.png" height="100" />
-              <img class="m-2" src="images/board/double.png" height="100" />
-              <img class="m-2" src="images/board/regular.png" height="100" />
-              <img class="m-2" src="images/board/regular.png" height="100" />
-              <img class="m-2" src="images/board/regular.png" height="100" />
-              <img class="m-2" src="images/board/double.png" height="100" />
+              <img id = "1" class="m-2 draggable" src="images/board/regular.png" height="100" />
+              <img id = "2" class="m-2 draggable" src="images/board/regular.png" height="100" />
+              <img id = "3" class="m-2 draggable" src="images/board/double.png" height="100" />
+              <img id = "4" class="m-2 draggable" src="images/board/regular.png" height="100" />
+              <img id = "5" class="m-2 draggable" src="images/board/regular.png" height="100" />
+              <img id = "6" class="m-2 draggable" src="images/board/regular.png" height="100" />
+              <img id = "7" class="m-2 draggable" src="images/board/double.png" height="100" />
             </div>
 
             <div class="row">
-              <button type="button" class="btn btn-light text-info mx-auto mt-2"> GET TILES</button>
-              <button type="button" class="btn btn-light text-info mx-auto mt-2"> NEXT WORD</button>
+              <button type="button" class="btn btn-light text-info mx-auto mt-3"> GET TILES</button>
+              <button type="button" class="btn btn-light text-info mx-auto mt-3"> NEXT WORD</button>
             </div>
           </div>
 
@@ -120,7 +121,7 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
             </div>
 
             <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info" style="border-top-left-radius:10px; margin-bottom:-1px; width:200px">SCRABBLE BOARD</h5>
-            <div class="row  border border-light p-1 m-0" style="border-radius:10px;">
+            <div id ="board" class="row  border border-light p-1 m-0" style="border-radius:10px;">
               <img src="images/board/regular.png" height="100" />
               <img src="images/board/regular.png" height="100" />
               <img src="images/board/double.png" height="100" />

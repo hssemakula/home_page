@@ -14,6 +14,7 @@ html {
 
 body {
   /*This value colerates with the value of the footers height: it provides space for the footer */
+  min-width: 706px;
   margin-bottom: 20px;
 }
 

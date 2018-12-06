@@ -27,7 +27,7 @@ $(function() {
     }
   };
 
-  xhr.open('GET', './data/pieces.json', true); // comment here
+  xhr.open('GET', './assignment9/data/pieces.json', true); // comment here
   xhr.send(null);
 
 

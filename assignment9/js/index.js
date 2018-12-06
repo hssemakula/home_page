@@ -12,7 +12,7 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 //function is run when the page has loaded.
 $(function() {
 
-  $.getJSON("../data/pieces.json", function(userData) {
+  $.getJSON("./data/pieces.json", function(userData) {
     alert(userData[0].url);
   });
 

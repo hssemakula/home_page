@@ -12,24 +12,9 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 //function is run when the page has loaded.
 $(function() {
 
-  var xhr = new XMLHttpRequest(); // comment here
-
-  xhr.onload = function() { // comment here
-    // The following conditional check will not work locally - only on a server
-    if (xhr.status === 200) { // comment here
-      responseObject = JSON.parse(xhr.responseText); // comment here
-
-      // comment here
-      alert(responseObject[0].url);
-      // comment here
-      document.getElementById('content').innerHTML = newContent;
-
-    }
-  };
-
-  xhr.open('GET', './assignment9/data/pieces.json', true); // comment here
-  xhr.send(null);
-
+  $.getJSON("../data/pieces.json", function(userData) {
+    alert(userData[0].url);
+  });
 
 
   $(".draggable").draggable();

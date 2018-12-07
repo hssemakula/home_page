@@ -13,7 +13,8 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 $(function() {
 
   $.getJSON("./data/pieces.json", function(userData) {
-    alert(userData[0]);
+    var data = JSON.parse(userData);
+    alert(data[0])
   });
 
 

@@ -18,11 +18,38 @@ $.getJSON("./data/data.json", function(userData) {
 
 //function is run when the page has loaded.
 $(function() {
-  $(".draggable").draggable(); //make all images with class "draggable", draggable.
+  $(".draggable").draggable({
+    revert: 'invalid', //this ensures that if tile is not dropped at droppable object, it reverts back to its original position
+    stack: ".draggable" //ensures that tile being dragged is always on top
+  }); //make all images with class "draggable", draggable.
   $(".draggable").attr("src", ""); //clear all src attributes of img elements with class draggable
   $("#tileCount").html(tilesRemaining); //update label that shows number of tiles remaining
   $("#currentWord").html(""); //clear the current word.
   getTiles(tilesRemaining, json); //draw the first 7 tiles by calling the getTiles function with the json object
+
+  $(".droppable").droppable({
+    accept: ".draggable",
+    tolerance: 'intersect',
+    drop: function(event, ui) {
+      var droppedImg = ui.draggable;
+      droppedImg.position({
+        my: "center",
+        at: "center",
+        of: $(this),
+        using: function(pos) {
+          $(this).animate(pos, "fast", "linear");
+        }
+      });
+
+      $(this).droppable("disable");
+    }
+
+  });
+
+  $(".droppable").on("dropout", function(event, ui) {
+    $(this).droppable("enable");
+  });
+
 
 });
 

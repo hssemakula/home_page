@@ -16,12 +16,13 @@ var json_data;
 $(function() {
 
   $.getJSON("./data/data.json", function(userData) {
-    json_data = $.extend(true, {}, userData);
+      $(".draggable").attr('src', "");
+      getTiles(tilesRemaining, userData);
   });
 
   $(".draggable").draggable();
-  $(".draggable").attr('src', "");
-  getTiles(tilesRemaining, json_data);
+
+
 
 
 });

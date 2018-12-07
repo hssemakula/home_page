@@ -16,7 +16,7 @@ var json_data;
 $(function() {
 
   $.getJSON("./data/data.json", function(userData) {
-    json_data = userData;
+    json_data = $.extend(true, {}, userData);
   });
 
   $(".draggable").draggable();

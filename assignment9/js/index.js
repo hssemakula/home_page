@@ -15,52 +15,51 @@ var json_data;
 //function is run when the page has loaded.
 $(function() {
 
-      $.getJSON("./data/data.json", function(userData) {
-          $(".draggable").attr('src', "");
-          var tilesDrawn = 0;
-          var currentImgToReplace = 1;
-          while (tilesDrawn < 7 && tilesRemaining > 0) {
-            var dataSize = parseInt(userData.length); //number of elements in json object
-            var randomIndex = Math.floor(Math.random() * dataSize);
-
-
-
-            if (parseInt(userData[randomIndex].value) > 0 && $("#" + currentImgToReplace).attr('src') === "") {
-              $("#" + currentImgToReplace).attr('src', userData[randomIndex].src);
-              userData[randomIndex].amount = parseInt(userData[randomIndex].amount) - 1;
-              tilesDrawn += 1;
-              tilesRemaining -= 1;
-            }
-          }
-          }
-        });
-
-        $(".draggable").draggable();
-
-
-
-
-      });
-
-    function getTiles(tilesRemaining, json_data) {
+  $.getJSON("./data/data.json", function(userData) {
+      $(".draggable").attr('src', "");
       var tilesDrawn = 0;
       var currentImgToReplace = 1;
       while (tilesDrawn < 7 && tilesRemaining > 0) {
-        var dataSize = parseInt(json_data.length); //number of elements in json object
+        var dataSize = parseInt(userData.length); //number of elements in json object
         var randomIndex = Math.floor(Math.random() * dataSize);
 
 
 
-        if (parseInt(json_data[randomIndex].value) > 0 && $("#" + currentImgToReplace).attr('src') === "") {
-          $("#" + currentImgToReplace).attr('src', json_data[randomIndex].src);
-          json_data[randomIndex].amount = parseInt(json_data[randomIndex].amount) - 1;
+        if (parseInt(userData[randomIndex].value) > 0 && $("#" + currentImgToReplace).attr('src') === "") {
+          $("#" + currentImgToReplace).attr('src', userData[randomIndex].src);
+          userData[randomIndex].amount = parseInt(userData[randomIndex].amount) - 1;
           tilesDrawn += 1;
           tilesRemaining -= 1;
         }
-
-
-
-
       }
+    });
 
+$(".draggable").draggable();
+
+
+
+
+});
+
+function getTiles(tilesRemaining, json_data) {
+  var tilesDrawn = 0;
+  var currentImgToReplace = 1;
+  while (tilesDrawn < 7 && tilesRemaining > 0) {
+    var dataSize = parseInt(json_data.length); //number of elements in json object
+    var randomIndex = Math.floor(Math.random() * dataSize);
+
+
+
+    if (parseInt(json_data[randomIndex].value) > 0 && $("#" + currentImgToReplace).attr('src') === "") {
+      $("#" + currentImgToReplace).attr('src', json_data[randomIndex].src);
+      json_data[randomIndex].amount = parseInt(json_data[randomIndex].amount) - 1;
+      tilesDrawn += 1;
+      tilesRemaining -= 1;
     }
+
+
+
+
+  }
+
+}

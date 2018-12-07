@@ -31,7 +31,9 @@ $(function() {
               tilesDrawn += 1;
               tilesRemaining -= 1;
             }
-          });
+          }
+          }
+        });
 
         $(".draggable").draggable();
 

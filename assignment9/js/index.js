@@ -9,14 +9,42 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
   The function in this file is used by index.html for that purpose
 */
 
+var tilesRemaining = 100;
+var json_data;
+
 //function is run when the page has loaded.
 $(function() {
 
   $.getJSON("./data/data.json", function(userData) {
-      $("#1").attr('src', userData[0].url);
+    json_data = userData;
   });
 
-
   $(".draggable").draggable();
+  $(".draggable").attr('src', "");
+  getTiles(tilesRemaining, json_data);
+
 
 });
+
+function getTiles(tilesRemaining, json_data) {
+  var tilesDrawn = 0;
+  var currentImgToReplace = 1;
+  while (tilesDrawn < 7 && tilesRemaining > 0) {
+    var dataSize = parseInt(json_data.length); //number of elements in json object
+    var randomIndex = Math.floor(Math.random() * dataSize);
+
+
+
+    if (parseInt(json_data[randomIndex].value) > 0 && $("#" + currentImgToReplace).attr('src') === "") {
+      $("#" + currentImgToReplace).attr('src', json_data[randomIndex].src);
+      json_data[randomIndex].amount = parseInt(json_data[randomIndex].amount) - 1;
+      tilesDrawn += 1;
+      tilesRemaining -= 1;
+    }
+
+
+
+
+  }
+
+}

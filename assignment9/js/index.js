@@ -10,6 +10,7 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 */
 var json; //object to store json object that will be extracted from data.json
 var tilesRemaining = 100; //variable to keep count of the tiles remaining
+var currentWordArray = ["", "", "", "", "", "", ""];
 
 //getJDON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
 $.getJSON("./data/data.json", function(userData) {
@@ -28,10 +29,16 @@ $(function() {
   getTiles(tilesRemaining, json); //draw the first 7 tiles by calling the getTiles function with the json object
 
   $(".droppable").droppable({
-    accept: ".draggable",
-    tolerance: 'intersect',
+    accept: function(tile) {
+      if ($(this).hasClass("full")) return false;
+      else return true;
+    },
     drop: function(event, ui) {
       var droppedImg = ui.draggable;
+      var imgLetter = droppedImg.attr("src").charAt(15)
+      var slot = parseInt($(this).attr("id"));
+      updateWord(imgLetter, slot);
+      updateScore(imgLetter, json, $(this).find("img").attr("src").charAt(13) == "r" ? 1 : 2);
       droppedImg.position({
         my: "center",
         at: "center",
@@ -39,16 +46,20 @@ $(function() {
         using: function(pos) {
           $(this).animate(pos, "fast", "linear");
         }
+
+
       });
 
-      $(this).droppable("disable");
+      $(this).addClass("full");
+    },
+    out: function(event, ui) {
+      alert($(this).html());
+      $(this).removeClass("full");
     }
 
   });
 
-  $(".droppable").on("dropout", function(event, ui) {
-    $(this).droppable("enable");
-  });
+
 
 
 });
@@ -87,4 +98,27 @@ function getTiles(tilesRemaining, json_data) {
     }
   }
 
+}
+
+function updateWord(letter, slot) {
+
+  currentWordArray[slot - 10] = letter;
+  var word = "";
+  var i;
+  for (i = 0; i < currentWordArray.length; i++) {
+    word = word + "" + currentWordArray[i];
+  }
+  $("#currentWord").html(word);
+
+  if (letter === "b") {}
+}
+
+function updateScore(letter, json_data, slot_weight) {
+  var i;
+  for (i = 0; i < json_data.length; i++) {
+    if (json_data[i].letter === letter) {
+      $("#score").html(parseInt($("#score").html()) + (parseInt(json_data[i].value) * slot_weight));
+      break;
+    }
+  }
 }

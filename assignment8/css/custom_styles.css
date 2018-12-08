@@ -12,12 +12,6 @@ html {
   min-height: 100%;
 }
 
-.droppable {
-  height: 100px;
-  margin: 0px;
-  padding: 0px;
-}
-
 body {
   /*This value colerates with the value of the footers height: it provides space for the footer */
   margin-bottom: 20px;

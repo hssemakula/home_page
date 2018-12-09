@@ -11,6 +11,8 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 var json; //object to store json object that will be extracted from data.json
 var tilesRemaining = 100; //variable to keep count of the tiles remaining
 var currentWordArray = ["", "", "", "", "", "", ""];
+var isVacant = [true, true, true, true, true, true, true];
+var score = [0, 0, 0, 0, 0, 0, 0];
 
 //getJDON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
 $.getJSON("./data/data.json", function(userData) {
@@ -19,6 +21,7 @@ $.getJSON("./data/data.json", function(userData) {
 
 //function is run when the page has loaded.
 $(function() {
+  $(".draggable").data("onSlot", -1);
   $(".draggable").draggable({
     revert: 'invalid', //this ensures that if tile is not dropped at droppable object, it reverts back to its original position
     stack: ".draggable" //ensures that tile being dragged is always on top
@@ -30,16 +33,29 @@ $(function() {
 
   $(".droppable").droppable({
     accept: function(tile) {
-      if ($(this).hasClass("full")) return false;
-      else return true;
+      var slot_index = parseInt($(this).attr("id")) - 10;
+      if (isVacant[slot_index]) return true;
+      else return false;
     },
     drop: function(event, ui) {
-      var droppedImg = ui.draggable;
-      var imgLetter = droppedImg.attr("src").charAt(15)
-      var slot = parseInt($(this).attr("id"));
-      updateWord(imgLetter, slot);
-      updateScore(imgLetter, json, $(this).find("img").attr("src").charAt(13) == "r" ? 1 : 2);
-      droppedImg.position({
+      var slot_index = parseInt($(this).attr("id")) - 10;
+      var slot_weight = $(this).find("img").attr("src").charAt(13) == "r" ? 1 : 2;
+      var tile = ui.draggable;
+      var imgLetter = tile.attr("src").charAt(15)
+      var previous_slot_index = tile.data("onSlot");
+
+      if (!(previous_slot_index == -1)) {
+        isVacant[previous_slot_index] = true;
+        removeSlotScore(previous_slot_index);
+        updateWord("", previous_slot_index);
+      }
+
+      tile.data("onSlot", slot_index);
+      isVacant[slot_index] = false;
+      updateWord(imgLetter, slot_index);
+      updateSlotScore(imgLetter, json, slot_weight, slot_index);
+      updateTotalScore();
+      tile.position({
         my: "center",
         at: "center",
         of: $(this),
@@ -51,10 +67,6 @@ $(function() {
       });
 
       $(this).addClass("full");
-    },
-    out: function(event, ui) {
-      alert($(this).html());
-      $(this).removeClass("full");
     }
 
   });
@@ -95,14 +107,14 @@ function getTiles(tilesRemaining, json_data) {
       tilesRemaining = tilesRemaining - 1;
       currentImgToReplace = currentImgToReplace + 1;
       $("#tileCount").html(tilesRemaining); //update label showing number of tiles remaining
-    }
+    } else if (!($("#" + currentImgToReplace).attr('src') === "")) tilesDrawn = tilesDrawn + 1;
   }
 
 }
 
-function updateWord(letter, slot) {
+function updateWord(letter, slot_index) {
 
-  currentWordArray[slot - 10] = letter;
+  currentWordArray[slot_index] = letter;
   var word = "";
   var i;
   for (i = 0; i < currentWordArray.length; i++) {
@@ -113,12 +125,27 @@ function updateWord(letter, slot) {
   if (letter === "b") {}
 }
 
-function updateScore(letter, json_data, slot_weight) {
+function updateSlotScore(letter, json_data, slot_weight, slot_index) {
   var i;
   for (i = 0; i < json_data.length; i++) {
     if (json_data[i].letter === letter) {
-      $("#score").html(parseInt($("#score").html()) + (parseInt(json_data[i].value) * slot_weight));
+      score[slot_index] = (parseInt(json_data[i].value) * slot_weight);
       break;
     }
   }
+}
+
+function removeSlotScore(slot_index) {
+  score[slot_index] = 0;
+
+}
+
+function updateTotalScore() {
+  var i;
+  var scoreToshow = 0;
+  for (i = 0; i < score.length; i++) {
+    scoreToshow = scoreToshow + score[i];
+  }
+
+  $("#score").html(scoreToshow);
 }

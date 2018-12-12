@@ -21,24 +21,51 @@ $.getJSON("./data/data.json", function(userData) {
 //function is run when the page has loaded.
 $(function() {
   $(".draggable").data("onSlot", -1); //initialize all tiles to indicate that they are not on the board at any slot(-1)
+
   //make all elements with class draggable, draggable.(i.e. tiles.)
   $(".draggable").draggable({
-    revert: 'invalid', //this ensures that if tile is not dropped at droppable object, it reverts back to its original position
-    stack: ".draggable" //ensures that tile being dragged is always on top
+
+    //VERY IMPORTANT REVERT FUNCTION: enables tile to stick only to rack or board
+    revert: function(droppableReceiver) {
+
+      if (droppableReceiver === false) { //if false then no droppable object was available to receive draggable
+        //revert the postion of the draggable back
+        return true;
+      } else {
+        //some droppable object received the draggable
+        //Check if the droppable object that received draggable is either tile-rack or a slot on the board
+        if (droppableReceiver.attr('id') == "tile-rack" || droppableReceiver.hasClass("droppable")) return false; //return false so that draggable tile doesn't revert back to original position
+        else return true; //else droppable that received draggable is undesired, revert back to original position.
+      }
+    }, //this ensures that if tile is not dropped at droppable object, it reverts back to its original position
+    stack: ".draggable", //ensures that tile being dragged is always on top
+    scroll: "false"
   }); //make all images with class "draggable", draggable.
+
   $(".draggable").attr("src", ""); //clear all src attributes of img elements with class draggable
   $("#tileCount").html(tilesRemaining); //update label that shows number of tiles remaining
   $("#currentWord").html(""); //clear the current word.
   getTiles(tilesRemaining, json); //draw the first 7 tiles by calling the getTiles function with the json object
 
-  $(".droppable").droppable({
+
+
+
+  $(".droppable").droppable({ //make all slots on the scrabble board droppable.
+    /*  Accept function: recieves a draggable tile and checks if the slot associated with it
+    is empty. if it is the draggble can be accepted */
     accept: function(tile) {
       var slot_index = parseInt($(this).attr("id")) - 10;
       if (isVacant[slot_index]) return true;
       else return false;
     },
+    /* drop function: when a draggable is dropped, the index of this slot is calculated
+     the weight of this slot is calculated i.e. some slots carry double the amount of the letter
+     The letter that has been dropped is extracted.
+          the dropped tile's onSlot index is changed to the current slot's index.
+          The word on the board is updated using the extracted letter and the score is likewise.
+          */
     drop: function(event, ui) {
-      var slot_index = parseInt($(this).attr("id")) - 10;
+      var slot_index = parseInt($(this).attr("id")) - 10; //this slot's index
       var slot_weight = $(this).find("img").attr("src").charAt(13) == "r" ? 1 : 2;
       var tile = ui.draggable;
       var imgLetter = tile.attr("src").charAt(15)
@@ -50,23 +77,44 @@ $(function() {
         updateWord("", previous_slot_index);
       }
 
-      tile.data("onSlot", slot_index);
-      isVacant[slot_index] = false;
-      updateWord(imgLetter, slot_index);
-      updateSlotScore(imgLetter, json, slot_weight, slot_index);
-      updateTotalScore();
+      tile.data("onSlot", slot_index); //update tile position
+      isVacant[slot_index] = false; //indicate current slot is now full
+      updateWord(imgLetter, slot_index); //update word displayed
+      updateSlotScore(imgLetter, json, slot_weight, slot_index); //update score for slot.
+      updateTotalScore(); //update total score.
+
+      //In order for the tile to snap onto the board beautifully, the position function is used.
       tile.position({
-        my: "center",
+        my: "center", //put draggable to droppable's center
         at: "center",
         of: $(this),
         using: function(pos) {
-          $(this).animate(pos, "fast", "linear");
+          $(this).animate(pos, "fast", "linear"); //animate the repostioning.
         }
-
 
       });
     }
 
+
+  });
+
+
+  $("#tile-rack").droppable({
+    drop: function(event, ui) {
+      var tile = ui.draggable;
+      var previous_slot_index = tile.data("onSlot");
+
+      if (!(previous_slot_index == -1)) {
+        isVacant[previous_slot_index] = true;
+        removeSlotScore(previous_slot_index);
+        updateWord("", previous_slot_index);
+      }
+
+      tile.data("onSlot", -1);
+      updateTotalScore(); //update total score.
+
+
+    }
   });
 
 
@@ -75,9 +123,9 @@ $(function() {
 });
 
 
-/* This function gets 7 tiles from the tile bag. */
+/* This function gets 7 tiles from the tile rack. */
 function getTiles(tilesRemaining, json_data) {
-  var tilesDrawn = 0; //number of tiles currently drawn from bag
+  var tilesDrawn = 0; //number of tiles currently drawn from rack
   var currentImgToReplace = 1; //id number of image to replace on page
   var dataSize = parseInt(json_data.length); //number of elements in json object
 
@@ -105,7 +153,7 @@ function getTiles(tilesRemaining, json_data) {
       tilesRemaining = tilesRemaining - 1;
       currentImgToReplace = currentImgToReplace + 1;
       $("#tileCount").html(tilesRemaining); //update label showing number of tiles remaining
-    } else if (!($("#" + currentImgToReplace).attr('src') === "")) tilesDrawn = tilesDrawn + 1;
+    } else if (!($("#" + currentImgToReplace).attr('src') === "")) tilesDrawn = tilesDrawn + 1; //if src attribute is not empty then count a tile(i.e the rack has a tile)
   }
 
 }

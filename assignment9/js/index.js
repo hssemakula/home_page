@@ -3,25 +3,25 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
   Hillary Ssemakula
   hillary_ssemakula@student.uml.edu
   Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
-  Created on 11/29/2018 for assignment No. 8 of the course.
-  This is a JavaScript script that enables the dynamic creation
-  of a multiplication table by the file https://hssemakula.github.io/home_page/assignment8/index.html.
-  The function in this file is used by index.html for that purpose
+  Created on 11/29/2018 for assignment No. 9 of the course.
+  This is a JavaScript script that enables the dynamic functionality
+  of the Row Scrabble defined by the file https://hssemakula.github.io/home_page/assignment9/index.html.
 */
 var json; //object to store json object that will be extracted from data.json
 var tilesRemaining = 100; //variable to keep count of the tiles remaining
-var currentWordArray = ["", "", "", "", "", "", ""];
-var isVacant = [true, true, true, true, true, true, true];
-var score = [0, 0, 0, 0, 0, 0, 0];
+var currentWordArray = ["", "", "", "", "", "", ""]; //array of single character Strings: keeps track of the word spelled on the scrabble board
+var isVacant = [true, true, true, true, true, true, true]; //array of boolean values:keeps track of which slot the scrabble board has a tile or not.
+var score = [0, 0, 0, 0, 0, 0, 0]; //array of integers: keeps track of the values of the tiles in each slot on the scrabble board.
 
-//getJDON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
+//getJSON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
 $.getJSON("./data/data.json", function(userData) {
   json = userData;
 });
 
 //function is run when the page has loaded.
 $(function() {
-  $(".draggable").data("onSlot", -1);
+  $(".draggable").data("onSlot", -1); //initialize all tiles to indicate that they are not on the board at any slot(-1)
+  //make all elements with class draggable, draggable.(i.e. tiles.)
   $(".draggable").draggable({
     revert: 'invalid', //this ensures that if tile is not dropped at droppable object, it reverts back to its original position
     stack: ".draggable" //ensures that tile being dragged is always on top

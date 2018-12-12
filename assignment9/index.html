@@ -4,8 +4,8 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
   Hillary Ssemakula
   hillary_ssemakula@student.uml.edu
   Student in COMP 4610 GUI PROGRAMMING I at UMass Lowell
-  Created on 11/29/2018 for assignment No. 8 of the course.
-  This is an index page that shows a dynamically created multplication table
+  Created on 11/29/2018 for assignment No. 9 of the course.
+  This is an index page that shows a row Scrabble game
   and provides links to previous assignments
 -->
 <!DOCTYPE html>
@@ -21,10 +21,10 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
   <title>Hillary Ssemakula Row Scrabble</title>
   <!-- Bootstrap css linked locally i.e. in my repository-->
   <link href="./css/bootstrap.min.css" rel="stylesheet">
-  <link href="./css/custom_styles.css" rel="stylesheet">
   <link href="./css/jquery-ui.min.css" rel="stylesheet">
   <link href="./css/jquery-ui.structure.min.css" rel="stylesheet">
   <link href="./css/jquery-ui.theme.min.css" rel="stylesheet">
+  <link href="./css/custom_styles.css" rel="stylesheet">
   <script src="./js/jquery-3.3.1.min.js"></script>
   <script src="./js/jquery-ui.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
@@ -33,6 +33,28 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
   that draws the dynamic table. -->
   <script src="./js/index.js"></script>
 
+  <!-- Some Css styles applied here because bootsrap overrides them when they are placed in a
+separate file -->
+  <style>
+    .title-tab {
+      border-top-left-radius: 10px;
+
+    }
+
+    .tile-rack{
+      border-radius:3px;
+    }
+
+    .info-plaque{
+      border-radius:10px;
+      background-color:white;
+      box-shadow: 3px 3px #45483D;
+    }
+
+    .info-plaque-label{ color:#566573;}
+    .board{ border-radius:10px;}
+
+  </style>
 </head>
 
 <!--Bootstrap css is used heavily for all styling -->
@@ -75,8 +97,8 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
 
           <div class="col-lg-4">
 
-            <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info" style="border-top-left-radius:10px; border-right-left-radius:10px;margin-bottom:-1px; width:200px">TILE BAG </h5>
-            <div class="border border-light p-1 " style="border-radius:3px,border-width:10px;" id="tileBag">
+            <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info title-tab">TILE RACK </h5>
+            <div class="border border-light p-1 " id="tile-rack">
 
               <img id="1" class="m-2 draggable" src="images/board/regular.png" height="100" />
               <img id="2" class="m-2 draggable" src="images/board/regular.png" height="100" />
@@ -97,29 +119,29 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
 
 
 
-            <div class="row mb-4 pt-2 pl-2" style="border-radius:10px;background-color:white;box-shadow: 3px 3px #45483D;">
+            <div class="row mb-4 pt-2 pl-2 info-plaque">
 
-              <p class="p-1" style="color:#566573;"> Total Score: </p>
+              <p class="p-1 info-plaque-label"> Total Score: </p>
 
               <p class="p-1" id="score"> 0 </p>
             </div>
 
-            <div class="row mb-4 pt-2 pl-2" style="border-radius:10px;background-color:white;box-shadow: 3px 3px #45483D;">
+            <div class="row mb-4 pt-2 pl-2 info-plaque">
 
-              <p class="p-1" style="color:#566573;"> Word: </p>
+              <p class="p-1 info-plaque-label"> Word: </p>
 
               <p class="p-1" id="currentWord"> Something </p>
             </div>
 
-            <div class="row mb-4 pt-2 pl-2" style="border-radius:10px;background-color:white;box-shadow: 3px 3px #45483D;">
+            <div class="row mb-4 pt-2 pl-2 info-plaque">
 
-              <p class="p-1" style="color:#566573;"> Tiles Remaining: </p>
+              <p class="p-1 info-plaque-label"> Tiles Remaining: </p>
 
               <p class="p-1" id="tileCount"> 0 </p>
             </div>
 
-            <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info" style="border-top-left-radius:10px; margin-bottom:-1px; width:200px">SCRABBLE BOARD</h5>
-            <div id="board" class="row  border border-light p-1 m-0" style="border-radius:10px;">
+            <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info title-tab">SCRABBLE BOARD</h5>
+            <div id="board" class="row  border border-light p-1 m-0 board">
               <div id="10" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
               <div id="11" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
               <div id="12" class="droppable"><img src="images/board/double.png" height="100" /> </div>

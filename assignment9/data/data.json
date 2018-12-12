@@ -155,9 +155,9 @@
     "src": "./images/board/Z.png"
   },
   {
-    "letter": "_",
+    "letter": "0",
     "value": 0,
     "amount": 2,
-    "src": "./images/board/blank.png"
+    "src": "./images/board/0.png"
   }
 ]

@@ -90,7 +90,7 @@ separate file -->
   <!--container div contains all of the main content for the page. It's fluid to
   allow responsiveness -->
 
-  <div class="container-fluid">
+  <div class="container-fluid" id="body-div">
     <h5 class="display-1 text-white text-center pt-3"> ROW SCRABBLE <h5>
 
 
@@ -111,8 +111,8 @@ separate file -->
             </div>
 
             <div class="row">
-              <button type="button" class="btn btn-light text-info mx-auto mt-3"> GET TILES</button>
-              <button type="button" class="btn btn-light text-info mx-auto mt-3"> NEXT WORD</button>
+              <button id="swap" type="button" class="btn btn-light text-info mx-auto mt-3"> SWAP TILES</button>
+              <button id="next-word" type="button" class="btn btn-light text-info mx-auto mt-3"> NEXT WORD</button>
             </div>
           </div>
 
@@ -121,22 +121,25 @@ separate file -->
 
 
             <div class="row mb-4 pt-2 pl-2 info-plaque">
+              <div class="col-sm-8 row">
+                <p class="p-1 info-plaque-label text-success "> Total Score: </p>
+                <p class="p-1 text-success" id="total-score"> 0 </p>
+              </div>
 
-              <p class="p-1 info-plaque-label"> Total Score: </p>
-
-              <p class="p-1" id="score"> 0 </p>
+              <p class="p-1 ml-4  info-plaque-label"> Current Word Score: </p>
+              <p class="p-1" id="current-score"> 0 </p>
             </div>
 
             <div class="row mb-4 pt-2 pl-2 info-plaque">
 
               <p class="p-1 info-plaque-label"> Word: </p>
 
-              <p class="p-1" id="currentWord"> Something </p>
+              <p class="p-1" id="currentWord"> </p>
             </div>
 
-            <div class="row mb-4 pt-2 pl-2 info-plaque">
+            <div class="row mb-4 pt-2 pl-2 info-plaque"">
 
-              <p class="p-1 info-plaque-label"> Tiles Remaining: </p>
+              <p class=" p-1 info-plaque-label"> Tiles Remaining: </p>
 
               <p class="p-1" id="tileCount"> 0 </p>
             </div>

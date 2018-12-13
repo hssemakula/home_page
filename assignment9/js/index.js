@@ -61,6 +61,12 @@ $(function() {
       var imgLetter = tile.attr("src").charAt(15)
       var previous_slot_index = tile.data("onSlot");
 
+      //test for 0.png so that when blank is assigned letter, this test becomes false and user cant change letter.
+      if (tile.attr("src").substring(15,20) == "0.png") { //if blank tile add class to show this tile wont be swapped at rack. and make user choose letter.
+        tile.addClass("blank");
+        $("#blank-tile-dialog").dialog("open"); //open dialog to choose letter
+      }
+
       if (!(previous_slot_index == -1)) {
         isVacant[previous_slot_index] = true;
         removeSlotScore(previous_slot_index);
@@ -90,7 +96,12 @@ $(function() {
 
 
   $("#tile-rack").droppable({
-    accept: '.draggable',
+    accept: function(tile) {
+      if (tile.hasClass("blank")) { //tile is a blank tile then it can't be taken back
+        //show dialog here.
+        return false;
+      } else return true;
+    },
     drop: function(event, ui) {
       var tile = ui.draggable;
       var previous_slot_index = tile.data("onSlot");
@@ -116,8 +127,36 @@ $(function() {
     nextWord();
   });
 
+  // this initializes the dialog (and uses some common options that I do)
+  $("#blank-tile-dialog").dialog({
+    autoOpen: false,
+    modal: true,
+    show: "blind",
+    hide: "blind",
+  });
 
+  // next add the onclick handler
+  /*  $(".blank").click(function() {
+      $("#blank-tile-dialog").dialog("open");
+      return false;
+    }); */
 
+  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
+  $(".blank-tile").click(function() {
+    var currentImgToReplace = 1;
+    for(currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++){
+      img = $("#"+currentImgToReplace);
+      if(img.attr("src").substring(15,20) == "0.png" ){ //if blank symbol change letter to one with 0 score.
+        img.attr("src", $(this).attr("src"));
+          $("#blank-tile-dialog").dialog("close"); //close dialog to choose letter
+          break;
+
+      }
+    }
+  });
+
+  /***********************END OF LOADING FUNCTION ************************/
 });
 
 function attachDraggableAbility() {
@@ -269,6 +308,7 @@ function updateSlotScore(letter, json_data, slot_weight, slot_index) {
     }
   }
 }
+
 
 function removeSlotScore(slot_index) {
   currentScore[slot_index] = 0;

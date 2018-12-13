@@ -61,8 +61,20 @@ $(function() {
       var imgLetter = tile.attr("src").charAt(15)
       var previous_slot_index = tile.data("onSlot");
 
+      //In order for the tile to snap onto the board beautifully, the position function is used.
+      tile.position({
+        my: "center", //put draggable to droppable's center
+        at: "center",
+        of: $(this),
+        using: function(pos) {
+          $(this).animate(pos, "fast", "linear"); //animate the repostioning.
+        }
+      });
+
+
+
       //test for 0.png so that when blank is assigned letter, this test becomes false and user cant change letter.
-      if (tile.attr("src").substring(15,20) == "0.png") { //if blank tile add class to show this tile wont be swapped at rack. and make user choose letter.
+      if (tile.attr("src").substring(15, 20) == "0.png") { //if blank tile add class to show this tile wont be swapped at rack. and make user choose letter.
         tile.addClass("blank");
         $("#blank-tile-dialog").dialog("open"); //open dialog to choose letter
       }
@@ -75,20 +87,10 @@ $(function() {
 
       tile.data("onSlot", slot_index); //update tile position
       isVacant[slot_index] = false; //indicate current slot is now full
-      updateWord(imgLetter, slot_index); //update word displayed
+      if (tile.hasClass("blank")) updateWord(tile.attr("src").charAt(16), slot_index); //update word displayed when the symbol is blank. tile is names like 0L.png so take charAT(16) instead of 15 as usual
+      else updateWord(imgLetter, slot_index); //update word displayed
       updateSlotScore(imgLetter, json, slot_weight, slot_index); //update score for slot.
       showCurrentScore(); //show current score for letters on board.
-
-      //In order for the tile to snap onto the board beautifully, the position function is used.
-      tile.position({
-        my: "center", //put draggable to droppable's center
-        at: "center",
-        of: $(this),
-        using: function(pos) {
-          $(this).animate(pos, "fast", "linear"); //animate the repostioning.
-        }
-
-      });
     }
 
 
@@ -145,12 +147,14 @@ $(function() {
 
   $(".blank-tile").click(function() {
     var currentImgToReplace = 1;
-    for(currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++){
-      img = $("#"+currentImgToReplace);
-      if(img.attr("src").substring(15,20) == "0.png" ){ //if blank symbol change letter to one with 0 score.
+    for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
+      img = $("#" + currentImgToReplace);
+      if (img.attr("src").substring(15, 20) == "0.png") { //if blank symbol change letter to one with 0 score.
         img.attr("src", $(this).attr("src"));
-          $("#blank-tile-dialog").dialog("close"); //close dialog to choose letter
-          break;
+        $("#blank-tile-dialog").dialog("close"); //close dialog to choose letter
+        var slotWhereTileIs = img.data("onSlot"); //now we have to update the word. even though the score is zero. can only be effeciently done here
+        updateWord(img.attr("src").charAt(16), slotWhereTileIs);
+        break;
 
       }
     }

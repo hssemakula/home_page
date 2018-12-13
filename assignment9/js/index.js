@@ -84,6 +84,7 @@ $(function() {
 
 
   $("#tile-rack").droppable({
+    accept: '.draggable',
     drop: function(event, ui) {
       var tile = ui.draggable;
       var previous_slot_index = tile.data("onSlot");
@@ -136,7 +137,7 @@ function attachDraggableAbility() {
   }); //make all images with class "draggable", draggable.
 }
 /* This function gets 7 tiles from the tile rack. */
-function getTiles(json_data) {
+/*function getTiles(json_data) {
   $(".draggable").data("onSlot", -1); //initialize all tiles to indicate that they are not on the board at any slot(-1)
 
   var tilesDrawn = 0; //number of tiles currently drawn from rack
@@ -149,7 +150,7 @@ function getTiles(json_data) {
   more tiles(tilesRemaining == 0). OR if both condition sfail.
 
   */
-  while (tilesDrawn < 7 && tilesRemaining > 0) {
+/*  while (tilesDrawn < 7 && tilesRemaining > 0) {
 
     //This line of code returns a random number between 0 and 1 - size of the json object passed.
     //this acts as a random index to choose a random letter and is regenerated on every loop iteration.
@@ -160,7 +161,7 @@ function getTiles(json_data) {
     it is only executed if the current letter chosen randomly doesn't have an amount of 0 and the current IMG tag to be replaced
     has not already been replaced
     */
-    if (parseInt(json_data[randomIndex].amount) > 0 && $("#" + currentImgToReplace).attr('src') === "") {
+/*  if (parseInt(json_data[randomIndex].amount) > 0 && $("#" + currentImgToReplace).attr('src') === "") {
       $("#" + currentImgToReplace).attr('src', json_data[randomIndex].src);
       json_data[randomIndex].amount = parseInt(json_data[randomIndex].amount) - 1;
       tilesDrawn = tilesDrawn + 1;
@@ -173,34 +174,81 @@ function getTiles(json_data) {
     }
   }
 
+} */
+
+/* This function gets 7 tiles from the tile rack. */
+function getTiles(json_data) {
+  $(".draggable").data("onSlot", -1); //initialize all tiles to indicate that they are not on the board at any slot(-1)
+
+
+  var currentImgToReplace = 1; //id number of image to replace on page
+  var dataSize = parseInt(json_data.length); //number of elements in json object
+
+  /* This is a while loop that keeps relacing the src of the img tag of an image on the page whose
+  ID is  "currentImgToReplace" with the src field of a randomly chosen object in the json object passed.
+  This loop has only terminates if 7 src attributes have been cahnged(7 tiles drawn) or if there are no
+  more tiles(tilesRemaining == 0). OR if both condition sfail.
+
+  */
+  for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
+    if (tilesRemaining == 0) {
+      //show popup
+      break;
+    }
+    var imgObj = $("#" + currentImgToReplace);
+    var randomIndex = Math.floor(Math.random() * dataSize);
+    while (parseInt(json_data[randomIndex].amount) <= 0) {
+      randomIndex = Math.floor(Math.random() * dataSize);
+    }
+
+    if (imgObj.attr('src') === "") {
+      imgObj.attr('src', json_data[randomIndex].src);
+      json_data[randomIndex].amount = parseInt(json_data[randomIndex].amount) - 1;
+      tilesRemaining = tilesRemaining - 1;
+      $("#tileCount").html(tilesRemaining); //update label showing number of tiles remaining
+
+    }
+
+
+
+
+  }
 }
+
 
 /* This function swaps the tiles on the rack for others. */
 function swapTiles(json_data) {
   var dataSize = parseInt(json_data.length); //number of elements in json object
   var currentImgToReplace = 1; //id number of image to replace on page
+
   for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
-    alert($("#" + currentImgToReplace).data("onSlot"));
-    if (!($("#" + currentImgToReplace).data("onSlot") === -1)) {
+    if (tilesRemaining == 0) {
+      //show popup
+      break;
+    }
+    var imgObj = $("#" + currentImgToReplace);
+    //alert($("#" + currentImgToReplace).attr('src') + ": " + $("#" + currentImgToReplace).data("onSlot"));
+    if (!(imgObj.data("onSlot") === -1)) {
       continue;
     }
 
-    var letterToSwap = $("#" + currentImgToReplace).attr('src').charAt(15);
+    var letterToSwap = imgObj.attr('src').charAt(15);
 
     json_data.forEach(function(element) {
+
       if (element.letter === letterToSwap) {
         element.amount = element.amount + 1;
       }
     });
 
     var randomIndex = Math.floor(Math.random() * dataSize);
-    while (parseInt(json_data[randomIndex].value) <= 0) {
+    while (parseInt(json_data[randomIndex].amount) <= 0) {
       randomIndex = Math.floor(Math.random() * dataSize);
     }
-
     json_data[randomIndex].amount = json_data[randomIndex].amount - 1;
-    $("#" + currentImgToReplace).attr('src', json_data[randomIndex].src);
+    imgObj.attr('src', json_data[randomIndex].src);
   }
+  //attachDraggableAbility();
 }
 
 //This function clears the rack and board, updates total score.
@@ -212,6 +260,7 @@ function nextWord() {
   var currentImgToReplace = 1;
   for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
     var image = $("#" + currentImgToReplace);
+
     if (!(image.data("onSlot") === -1)) {
       var previous_slot_index = image.data("onSlot");
       isVacant[previous_slot_index] = true;
@@ -222,9 +271,6 @@ function nextWord() {
       image.remove();
       var newImg = "<img id=" + oldimgID + " class=\"m-2 draggable\" src=\"\" height=\"100\" />"
       $(newImg).appendTo("#tile-rack");
-      tilesRemaining = tilesRemaining - 1;
-      $("#tileCount").html(tilesRemaining);
-      //  $("#tile-rack").load(location.href + " #tile-rack");
     }
   }
 
@@ -233,7 +279,14 @@ function nextWord() {
   $("title-rack").html($("#tile-rack").html());
   attachDraggableAbility();
 
+  var deb_str = "";
+  json.forEach(function(element) {
+    deb_str += element.letter + " VAL: " + element.value + " AMNT: " + element.amount + " SRC: " + element.src + "\n";
+  });
 
+
+
+  //alert(deb_str);
 }
 
 

@@ -9,7 +9,7 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 */
 var json; //object to store json object that will be extracted from data.json
 var dictionary; //dictionary object to store dictionary.
-var tilesRemaining = 14; //variable to keep count of the tiles remaining
+var tilesRemaining = 100; //variable to keep count of the tiles remaining
 var currentWordArray = ["", "", "", "", "", "", ""]; //array of single character Strings: keeps track of the word spelled on the scrabble board
 var isVacant = [true, true, true, true, true, true, true]; //array of boolean values:keeps track of which slot the scrabble board has a tile or not.
 var currentScore = [0, 0, 0, 0, 0, 0, 0]; //array of integers: keeps track of the values of the tiles in each slot on the scrabble board.

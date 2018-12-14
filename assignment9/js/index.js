@@ -8,25 +8,26 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
   of the Row Scrabble defined by the file https://hssemakula.github.io/home_page/assignment9/index.html.
 */
 var json; //object to store json object that will be extracted from data.json
-var dictionary;
+var dictionary; //dictionary object to store dictionary.
 var tilesRemaining = 100; //variable to keep count of the tiles remaining
 var currentWordArray = ["", "", "", "", "", "", ""]; //array of single character Strings: keeps track of the word spelled on the scrabble board
 var isVacant = [true, true, true, true, true, true, true]; //array of boolean values:keeps track of which slot the scrabble board has a tile or not.
 var currentScore = [0, 0, 0, 0, 0, 0, 0]; //array of integers: keeps track of the values of the tiles in each slot on the scrabble board.
 var totalScore = 0; //keeps track of the total score
+var isValidWord = false; //keeps track of weather the current word is a valid word.
 
 //getJSON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
 $.getJSON("./data/data.json", function(userData) {
   json = userData;
 });
-
-$.getJSON("./data/dict.json", function(userData) {
-  dictionary = userData;
-  console.log(dictionary[0]);
+$.getJSON("./data/dict.json", function(data) {
+  dictionary = data;
 });
+
 
 //function is run when the page has loaded.
 $(function() {
+
   $(".draggable").data("onSlot", -1); //initialize all tiles to indicate that they are not on the board at any slot(-1)
 
   attachDraggableAbility();
@@ -160,6 +161,7 @@ $(function() {
     }
   });
 
+  $("#word-not-found").hide();
   /***********************END OF LOADING FUNCTION ************************/
 });
 
@@ -298,9 +300,18 @@ function updateWord(letter, slot_index) {
   for (i = 0; i < currentWordArray.length; i++) {
     word = word + "" + currentWordArray[i];
   }
+  if (setIsValidWord(word)) isValidWord = true;
+  else isValidWord = false;
   $("#currentWord").html(word);
-
-  if (letter === "b") {}
+  if (isValidWord) {
+    $("#currentWord").removeClass("text-danger");
+    $("#currentWord").addClass("text-success");
+    $("#word-not-found").hide();
+  } else {
+    $("#currentWord").removeClass("text-success");
+    $("#currentWord").addClass("text-danger");
+    $("#word-not-found").show();
+  }
 }
 
 function updateSlotScore(letter, json_data, slot_weight, slot_index) {
@@ -327,4 +338,9 @@ function showCurrentScore() {
   }
   $("#total-score").html(totalScore + scoreToShow);
   $("#current-score").html(scoreToShow);
+}
+
+function setIsValidWord(word) {
+  var first_letter = word.charAt(0).toLowerCase();
+  return dictionary[first_letter].indexOf(word.toLowerCase()) != -1;
 }

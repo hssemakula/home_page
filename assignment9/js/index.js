@@ -16,6 +16,9 @@ var currentScore = [0, 0, 0, 0, 0, 0, 0]; //array of integers: keeps track of th
 var totalScore = 0; //keeps track of the total score
 var isValidWord = false; //keeps track of weather the current word is a valid word.
 
+/***************dialog flags*************/
+var showBlankTileWarning = false;
+
 //getJSON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
 $.getJSON("./data/data.json", function(userData) {
   json = userData;
@@ -46,6 +49,11 @@ $(function() {
     is empty. if it is the draggble can be accepted */
     accept: function(tile) {
       var slot_index = parseInt($(this).attr("id")) - 10;
+      if (tile.attr("src").charAt(16) != "." && showBlankTileWarning == false) //if user attempts to move originally blank tile, warn that it can't be returned to rack(only once.)
+      {
+        $("#blank-tile-return-dialog").dialog("open");
+        showBlankTileWarning = true;
+      }
       if (isVacant[slot_index]) return true;
       else return false;
     },
@@ -101,7 +109,8 @@ $(function() {
   $("#tile-rack").droppable({
     accept: function(tile) {
       if (tile.hasClass("blank")) { //tile is a blank tile then it can't be taken back
-        //show dialog here.
+
+
         return false;
       } else return true;
     },
@@ -163,6 +172,31 @@ $(function() {
   });
 
   $("#word-not-found").hide();
+
+  $("#invalid-word-submit-dialog").dialog({
+    autoOpen: false,
+    modal: false,
+    width: 350,
+    show: "blind",
+    hide: "blind",
+  });
+
+  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
+
+  $("#blank-tile-return-dialog").dialog({
+    autoOpen: false,
+    modal: false,
+    width: 400,
+    show: "blind",
+    hide: "blind",
+  });
+
+  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
+  $(".ok").click(function() { //whenever an ok button is clicked, close the dialog associated with it.
+    $(this).parent().parent().dialog("close");
+  });
   /***********************END OF LOADING FUNCTION ************************/
 });
 
@@ -230,7 +264,6 @@ function swapTiles(json_data) {
       break;
     }
     var imgObj = $("#" + currentImgToReplace);
-    //alert($("#" + currentImgToReplace).attr('src') + ": " + $("#" + currentImgToReplace).data("onSlot"));
     if (!(imgObj.data("onSlot") === -1)) {
       continue;
     }
@@ -283,7 +316,7 @@ function nextWord() {
     $("title-rack").html($("#tile-rack").html());
     attachDraggableAbility();
   } else {
-    //show dialog
+    $("#invalid-word-submit-dialog").dialog("open");
   }
 }
 
@@ -343,6 +376,7 @@ function showCurrentScore() {
 function setIsValidWord(word) {
   var first_letter = word.charAt(0).toLowerCase();
   if (word == "") return true; //this is for when the board is cleared: basically it shouldn't be checked.
+  if (first_letter == ".") return true; //when a blank tile is being changed, this method is run. at that point the first letter "." this method should ignore that
   else if (word.length == 1) return false; //no single letter words
   else return dictionary[first_letter].indexOf(word.toLowerCase()) != -1;
 }

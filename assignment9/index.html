@@ -113,6 +113,7 @@ separate file -->
             <div class="row">
               <button id="swap" type="button" class="btn btn-light text-info mx-auto mt-3"> SWAP TILES</button>
               <button id="next-word" type="button" class="btn btn-light text-info mx-auto mt-3"> NEXT WORD</button>
+              <button id="invalid" type="button" class="btn btn-light text-info mx-auto mt-3"> INVALID </button>
             </div>
           </div>
 
@@ -167,7 +168,7 @@ separate file -->
   <div>
     <a href="https://www.vecteezy.com">Designed by www.vecteezy.com</a>
   </div>
-
+<!-- Dialogs -->
   <div class="bg-info border border-light" id="blank-tile-dialog">
     <img id="21" class="m-1 blank-tile " src="./images/board/0A.png" height="35" />
     <img id="22" class="m-1 blank-tile " src="./images/board/0B.png" height="35" />
@@ -196,6 +197,28 @@ separate file -->
     <img id="45" class="m-1 blank-tile " src="./images/board/0Y.png" height="35" />
     <img id="46" class="m-1 blank-tile " src="./images/board/0Z.png" height="35" />
 
+  </div>
+
+
+
+
+  <div id="invalid-word-submit-dialog" class="bg-white">
+
+    <p class="text-muted"> No Cheating! That's not a real word</p>
+
+    <div class="row">
+      <button  type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
+      <button id="give-up" type="button" class="btn btn-danger text-white mx-auto mt-2"> GIVE UP </button>
+    </div>
+  </div>
+
+  <div id="blank-tile-return-dialog" class="bg-white">
+
+    <p class="text-muted">Friendly reminder: an originally blank tile can't be returned to the rack</p>
+
+    <div class="row">
+      <button  type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
+    </div>
   </div>
 
 

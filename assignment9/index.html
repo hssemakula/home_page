@@ -52,6 +52,21 @@ separate file -->
       box-shadow: 3px 3px #45483D;
     }
 
+    #info-i{
+      border-radius:10px;
+      background-color: #566573;
+      padding-left:5px;
+      padding-right:7px;
+      color:white;
+      font-family:Monotype Corsiva;
+      font-size:1.3em;
+      margin-left:2px;
+    }
+
+    #help-text{
+      padding-top:5px;
+    }
+
     .info-plaque-label{ color:#566573;}
     .board{ border-radius:10px;}
 
@@ -111,9 +126,11 @@ separate file -->
             </div>
 
             <div class="row">
-              <button id="swap" type="button" class="btn btn-light text-info mx-auto mt-3"> SWAP TILES</button>
-              <button id="next-word" type="button" class="btn btn-light text-info mx-auto mt-3"> NEXT WORD</button>
-              <button id="invalid" type="button" class="btn btn-light text-info mx-auto mt-3"> INVALID </button>
+              <button id="swap" type="button" class="btn btn-light text-info mx-auto mt-3"> <b>SWAP TILES </b></button>
+              <button id="next-word" type="button" class="btn btn-light text-info mx-auto mt-3"> <b> NEXT WORD </b> </button>
+              <button id="help" type="button" class="btn btn-light text-info mx-auto mt-3"> <b> <span id="help-text"> HELP</span> <span id="info-i"> i </span> </b></button>
+              <button id="give-up2" type="button" class="btn btn-dark text-white mx-auto mt-3 give-up"> <b> GIVE UP </b> </button>
+
             </div>
           </div>
 
@@ -168,7 +185,7 @@ separate file -->
   <div>
     <a href="https://www.vecteezy.com">Designed by www.vecteezy.com</a>
   </div>
-<!-- Dialogs -->
+  <!-- Dialogs -->
   <div class="bg-info border border-light" id="blank-tile-dialog">
     <img id="21" class="m-1 blank-tile " src="./images/board/0A.png" height="35" />
     <img id="22" class="m-1 blank-tile " src="./images/board/0B.png" height="35" />
@@ -207,21 +224,50 @@ separate file -->
     <p class="text-muted"> No Cheating! That's not a real word</p>
 
     <div class="row">
-      <button  type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
-      <button id="give-up" type="button" class="btn btn-danger text-white mx-auto mt-2"> GIVE UP </button>
+      <button type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
+      <button id="give-up" type="button" class="btn btn-danger text-white mx-auto mt-2 give-up"> GIVE UP </button>
     </div>
   </div>
 
   <div id="blank-tile-return-dialog" class="bg-white">
 
-    <p class="text-muted">Friendly reminder: an originally blank tile can't be returned to the rack</p>
+    <p class="text-muted"><b>Friendly reminder:</b> an originally blank tile can't be returned to the rack</p>
 
     <div class="row">
-      <button  type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
+      <button type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
     </div>
   </div>
 
+  <div id="cant-swap-tile-dialog" class="bg-white">
 
+    <p class="text-danger"> Sorry, tiles cannot be swapped more than 3 times before coming up with a valid word.</p>
+
+    <div class="row">
+      <button type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
+    </div>
+  </div>
+
+  <div id="no-tiles-dialog" class="bg-white">
+
+    <p class="text-danger"> Sorry, there are no more tiles in the scrabble bag!</p>
+
+    <div class="row">
+      <button type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
+    </div>
+  </div>
+
+  <div id="end-dialog" class="bg-info">
+    <blockquote class="blockquote">
+      <h4 class="mb-0 text-white h3">ROW SCRABBLE</h4>
+      <footer class="blockquote-footer text-white">Created by in <cite title="Source Title">Hillary Ssemakula</cite></footer>
+    </blockquote>
+    <div id="results">
+
+    </div>
+    <div class="row">
+      <button type="button" class="btn btn-dark text-white mx-auto mt-2 reset"> OK </button>
+    </div>
+  </div>
 
 </body>
 

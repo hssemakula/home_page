@@ -9,7 +9,7 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 */
 var json; //object to store json object that will be extracted from data.json
 var dictionary; //dictionary object to store dictionary.
-var tilesRemaining = 100; //variable to keep count of the tiles remaining
+var tilesRemaining = 14; //variable to keep count of the tiles remaining
 var currentWordArray = ["", "", "", "", "", "", ""]; //array of single character Strings: keeps track of the word spelled on the scrabble board
 var isVacant = [true, true, true, true, true, true, true]; //array of boolean values:keeps track of which slot the scrabble board has a tile or not.
 var currentScore = [0, 0, 0, 0, 0, 0, 0]; //array of integers: keeps track of the values of the tiles in each slot on the scrabble board.
@@ -18,6 +18,8 @@ var isValidWord = false; //keeps track of weather the current word is a valid wo
 
 /***************dialog flags*************/
 var showBlankTileWarning = false;
+var invalidSubmitAttempts = 0;
+var swapCount = 0;
 
 //getJSON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
 $.getJSON("./data/data.json", function(userData) {
@@ -171,7 +173,8 @@ $(function() {
     }
   });
 
-  $("#word-not-found").hide();
+  $("#word-not-found").hide(); //at first hide the indicator that word is inavlid.
+  $("#give-up2").hide(); //hide give up button at first
 
   $("#invalid-word-submit-dialog").dialog({
     autoOpen: false,
@@ -194,9 +197,46 @@ $(function() {
 
   $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
 
+  $("#cant-swap-tile-dialog").dialog({
+    autoOpen: false,
+    modal: false,
+    width: 400,
+    show: "blind",
+    hide: "blind",
+  });
+
+  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
+  $("#no-tiles-dialog").dialog({
+    autoOpen: false,
+    modal: false,
+    width: 400,
+    show: "blind",
+    hide: "blind"
+  });
+
+  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
+  $("#end-dialog").dialog({
+    autoOpen: false,
+    modal: false,
+    show: "blind",
+    hide: "blind"
+  });
+
+  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
+  $(".give-up").click(function() { //whenever a button with class give-up is clicked.
+    if ($(this).attr("id") != "give-up2") $(this).parent().parent().dialog("close"); //if button clicked was on a dialog, first close that dialog
+    $("#end-dialog").dialog("open");
+  });
+
   $(".ok").click(function() { //whenever an ok button is clicked, close the dialog associated with it.
     $(this).parent().parent().dialog("close");
   });
+
+
+
   /***********************END OF LOADING FUNCTION ************************/
 });
 
@@ -233,7 +273,6 @@ function getTiles(json_data) {
 
   for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
     if (tilesRemaining == 0) {
-      //show popup
       break;
     }
     var imgObj = $("#" + currentImgToReplace);
@@ -255,36 +294,42 @@ function getTiles(json_data) {
 
 /* This function swaps the tiles on the rack for others. */
 function swapTiles(json_data) {
-  var dataSize = parseInt(json_data.length); //number of elements in json object
-  var currentImgToReplace = 1; //id number of image to replace on page
 
-  for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
-    if (tilesRemaining == 0) {
-      //show popup
-      break;
-    }
-    var imgObj = $("#" + currentImgToReplace);
-    if (!(imgObj.data("onSlot") === -1)) {
-      continue;
-    }
+  if (swapCount >= 3) {
+    $("#cant-swap-tile-dialog").dialog("open"); //if user has swapped tiles more than 3 times. dont execute function, show dialog.
+  } else {
+    $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).}
+    var dataSize = parseInt(json_data.length); //number of elements in json object
+    var currentImgToReplace = 1; //id number of image to replace on page
 
-    var letterToSwap = imgObj.attr('src').charAt(15);
-
-    json_data.forEach(function(element) {
-
-      if (element.letter === letterToSwap) {
-        element.amount = element.amount + 1;
+    for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
+      if (tilesRemaining == 0) {
+        $("#no-tiles-dialog").dialog("open"); //if there are no tiles to be swapped with, tell user
+        break;
       }
-    });
+      var imgObj = $("#" + currentImgToReplace);
+      if (!(imgObj.data("onSlot") === -1)) {
+        continue;
+      }
 
-    var randomIndex = Math.floor(Math.random() * dataSize);
-    while (parseInt(json_data[randomIndex].amount) <= 0) {
-      randomIndex = Math.floor(Math.random() * dataSize);
+      var letterToSwap = imgObj.attr('src').charAt(15);
+
+      json_data.forEach(function(element) {
+
+        if (element.letter === letterToSwap) {
+          element.amount = element.amount + 1;
+        }
+      });
+
+      var randomIndex = Math.floor(Math.random() * dataSize);
+      while (parseInt(json_data[randomIndex].amount) <= 0) {
+        randomIndex = Math.floor(Math.random() * dataSize);
+      }
+      json_data[randomIndex].amount = json_data[randomIndex].amount - 1;
+      imgObj.attr('src', json_data[randomIndex].src);
     }
-    json_data[randomIndex].amount = json_data[randomIndex].amount - 1;
-    imgObj.attr('src', json_data[randomIndex].src);
+    swapCount = swapCount + 1;
   }
-  //attachDraggableAbility();
 }
 
 //This function clears the rack and board, updates total score.
@@ -315,8 +360,13 @@ function nextWord() {
     getTiles(json);
     $("title-rack").html($("#tile-rack").html());
     attachDraggableAbility();
+    swapCount = 0;
+    invalidSubmitAttempts = 0;
+    $("#give-up2").hide();
   } else {
-    $("#invalid-word-submit-dialog").dialog("open");
+    $("#invalid-word-submit-dialog").dialog("open"); //tell user that word is invalid.
+    invalidSubmitAttempts = invalidSubmitAttempts + 1;
+    if (invalidSubmitAttempts == 5) $("#give-up2").show(); //after user tries to submit wrong word 5 times, show give up button
   }
 }
 

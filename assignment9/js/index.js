@@ -230,13 +230,17 @@ $(function() {
 
   $(".give-up").click(function() { //whenever a button with class give-up is clicked.
     if ($(this).attr("id") != "give-up2") $(this).parent().parent().dialog("close"); //if button clicked was on a dialog, first close that dialog
-    resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   "+ totalScore + "</div>";
+    resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   " + totalScore + "</div>";
     $("#results").html(resultsString);
     $("#end-dialog").dialog("open");
   });
 
   $(".ok").click(function() { //whenever an ok button is clicked, close the dialog associated with it.
     $(this).parent().parent().dialog("close");
+  });
+
+  $(".reset").click(function() { //whenever a reset button is clicked reload page.
+    location.reload();
   });
 
 
@@ -276,6 +280,14 @@ function getTiles(json_data) {
   var dataSize = parseInt(json_data.length); //number of elements in json object
 
   for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
+
+    if (gameOver() && tilesRemaining == 0) { //if try to get a tile and there no tiles and all images have been wiped then game is over
+      resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   " + totalScore + "</div>";
+      $("#results").html(resultsString);
+      $("#end-dialog").dialog("open");
+      break;
+    }
+
     if (tilesRemaining == 0) {
       break;
     }
@@ -346,7 +358,7 @@ function nextWord() {
     });
 
     if (wordToSubmitt != "" && wordToSubmitt != ".") {
-      resultsString = resultsString + "<div class=\"col-md row mt-1 pt-1 mb-1 pb-1\"><p >" + wordToSubmitt.toUpperCase() + "</p> <p class=\"ml-4\">+" + currScore_temp + "</p></div>";
+      resultsString = resultsString + "<div class=\"col-md row mt-1 pt-1 mb-1 pb-1 text-muted\"><p >" + wordToSubmitt.toUpperCase() + "</p> <p class=\"ml-4\">+" + currScore_temp + "</p></div>";
     }
 
     var currentImgToReplace = 1;
@@ -440,4 +452,14 @@ function setIsValidWord(word) {
   if (first_letter == ".") return true; //when a blank tile is being changed, this method is run. at that point the first letter "." this method should ignore that
   else if (word.length == 1) return false; //no single letter words
   else return dictionary[first_letter].indexOf(word.toLowerCase()) != -1;
+}
+
+function gameOver() {
+  removedTileCount = 0
+  for (var currentImage = 1; currentImage <= 7; currentImage++) {
+    img = $("#" + currentImage);
+    if (img.attr('src') == "") removedTileCount = removedTileCount + 1;
+  }
+
+  return removedTileCount == 7;
 }

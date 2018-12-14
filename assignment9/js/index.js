@@ -20,6 +20,8 @@ var isValidWord = false; //keeps track of weather the current word is a valid wo
 var showBlankTileWarning = false;
 var invalidSubmitAttempts = 0;
 var swapCount = 0;
+var resultsString = "<h5 class=\"mt-2 text-center pt-2\"> RESULTS </h5><br>";
+var wordToSubmitt = "";
 
 //getJSON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
 $.getJSON("./data/data.json", function(userData) {
@@ -219,7 +221,7 @@ $(function() {
 
   $("#end-dialog").dialog({
     autoOpen: false,
-    modal: false,
+    modal: true,
     show: "blind",
     hide: "blind"
   });
@@ -228,6 +230,8 @@ $(function() {
 
   $(".give-up").click(function() { //whenever a button with class give-up is clicked.
     if ($(this).attr("id") != "give-up2") $(this).parent().parent().dialog("close"); //if button clicked was on a dialog, first close that dialog
+    resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   "+ totalScore + "</div>";
+    $("#results").html(resultsString);
     $("#end-dialog").dialog("open");
   });
 
@@ -334,10 +338,16 @@ function swapTiles(json_data) {
 
 //This function clears the rack and board, updates total score.
 function nextWord() {
+  var currScore_temp = 0;
   if (isValidWord) { //only executed when the word on the board is valid.
     currentScore.forEach(function(element) {
       totalScore = totalScore + element;
+      currScore_temp = currScore_temp + element;
     });
+
+    if (wordToSubmitt != "" && wordToSubmitt != ".") {
+      resultsString = resultsString + "<div class=\"col-md row mt-1 pt-1 mb-1 pb-1\"><p >" + wordToSubmitt.toUpperCase() + "</p> <p class=\"ml-4\">+" + currScore_temp + "</p></div>";
+    }
 
     var currentImgToReplace = 1;
     for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
@@ -425,6 +435,7 @@ function showCurrentScore() {
 
 function setIsValidWord(word) {
   var first_letter = word.charAt(0).toLowerCase();
+  wordToSubmitt = word.toLowerCase();
   if (word == "") return true; //this is for when the board is cleared: basically it shouldn't be checked.
   if (first_letter == ".") return true; //when a blank tile is being changed, this method is run. at that point the first letter "." this method should ignore that
   else if (word.length == 1) return false; //no single letter words

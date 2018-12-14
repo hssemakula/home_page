@@ -151,19 +151,13 @@ $(function() {
     hide: "blind",
   });
 
-  // next add the onclick handler
-  /*  $(".blank").click(function() {
-      $("#blank-tile-dialog").dialog("open");
-      return false;
-    }); */
-
   $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
 
   $(".blank-tile").click(function() {
     var currentImgToReplace = 1;
     for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
       img = $("#" + currentImgToReplace);
-      if (img.attr("src").substring(15, 20) == "0.png") { //if blank symbol change letter to one with 0 score.
+      if (img.attr("src").substring(15, 20) == "0.png" && img.data("onSlot") != -1) { //if blank symbol and not on tile rack change letter to one with 0 score.
         img.attr("src", $(this).attr("src"));
         $("#blank-tile-dialog").dialog("close"); //close dialog to choose letter
         var slotWhereTileIs = img.data("onSlot"); //now we have to update the word. even though the score is zero. can only be effeciently done here
@@ -267,6 +261,7 @@ $(function() {
   });
 
   $(".exit").click(function() { //whenever an exit button is clicked go to end dialog
+    $(this).parent().parent().dialog("close");
     $("#end-dialog").dialog("open");
   });
 

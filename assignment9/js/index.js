@@ -9,7 +9,7 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 */
 var json; //object to store json object that will be extracted from data.json
 var dictionary; //dictionary object to store dictionary.
-var tilesRemaining = 100; //variable to keep count of the tiles remaining
+var tilesRemaining = 14; //variable to keep count of the tiles remaining
 var currentWordArray = ["", "", "", "", "", "", ""]; //array of single character Strings: keeps track of the word spelled on the scrabble board
 var isVacant = [true, true, true, true, true, true, true]; //array of boolean values:keeps track of which slot the scrabble board has a tile or not.
 var currentScore = [0, 0, 0, 0, 0, 0, 0]; //array of integers: keeps track of the values of the tiles in each slot on the scrabble board.
@@ -186,7 +186,7 @@ $(function() {
     hide: "blind",
   });
 
-  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
 
 
   $("#blank-tile-return-dialog").dialog({
@@ -197,7 +197,7 @@ $(function() {
     hide: "blind",
   });
 
-  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
 
   $("#cant-swap-tile-dialog").dialog({
     autoOpen: false,
@@ -207,7 +207,7 @@ $(function() {
     hide: "blind",
   });
 
-  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
 
   $("#no-tiles-dialog").dialog({
     autoOpen: false,
@@ -217,7 +217,7 @@ $(function() {
     hide: "blind"
   });
 
-  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
 
   $("#help-dialog").dialog({
     autoOpen: false,
@@ -227,7 +227,15 @@ $(function() {
     hide: "blind"
   });
 
-  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
+
+  $("#winner-dialog").dialog({
+    autoOpen: false,
+    modal: true,
+    width: 350,
+    show: "blind",
+    hide: "blind"
+  });
 
   $("#end-dialog").dialog({
     autoOpen: false,
@@ -257,6 +265,12 @@ $(function() {
   $(".reset").click(function() { //whenever a reset button is clicked reload page.
     location.reload();
   });
+
+  $(".exit").click(function() { //whenever an exit button is clicked go to end dialog
+    $("#end-dialog").dialog("open");
+  });
+
+
 
 
 
@@ -299,7 +313,7 @@ function getTiles(json_data) {
     if (gameOver() && tilesRemaining == 0) { //if try to get a tile and there no tiles and all images have been wiped then game is over
       resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   " + totalScore + "</div>";
       $("#results").html(resultsString);
-      $("#end-dialog").dialog("open");
+      $("#winner-dialog").dialog("open");
       break;
     }
 

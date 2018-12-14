@@ -155,6 +155,7 @@ $(function() {
         $("#blank-tile-dialog").dialog("close"); //close dialog to choose letter
         var slotWhereTileIs = img.data("onSlot"); //now we have to update the word. even though the score is zero. can only be effeciently done here
         updateWord(img.attr("src").charAt(16), slotWhereTileIs);
+        showCurrentScore();
         break;
 
       }
@@ -255,40 +256,35 @@ function swapTiles(json_data) {
 
 //This function clears the rack and board, updates total score.
 function nextWord() {
-  currentScore.forEach(function(element) {
-    totalScore = totalScore + element;
-  });
+  if (isValidWord) { //only executed when the word on the board is valid.
+    currentScore.forEach(function(element) {
+      totalScore = totalScore + element;
+    });
 
-  var currentImgToReplace = 1;
-  for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
-    var image = $("#" + currentImgToReplace);
+    var currentImgToReplace = 1;
+    for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
+      var image = $("#" + currentImgToReplace);
 
-    if (!(image.data("onSlot") === -1)) {
-      var previous_slot_index = image.data("onSlot");
-      isVacant[previous_slot_index] = true;
-      removeSlotScore(previous_slot_index);
-      updateWord("", previous_slot_index);
+      if (!(image.data("onSlot") === -1)) {
+        var previous_slot_index = image.data("onSlot");
+        isVacant[previous_slot_index] = true;
+        removeSlotScore(previous_slot_index);
+        updateWord("", previous_slot_index);
 
-      var oldimgID = image.attr('id');
-      image.remove();
-      var newImg = "<img id=" + oldimgID + " class=\"m-2 draggable\" src=\"\" height=\"100\" />"
-      $(newImg).appendTo("#tile-rack");
+        var oldimgID = image.attr('id');
+        image.remove();
+        var newImg = "<img id=" + oldimgID + " class=\"m-2 draggable\" src=\"\" height=\"100\" />"
+        $(newImg).appendTo("#tile-rack");
+      }
     }
+
+    showCurrentScore();
+    getTiles(json);
+    $("title-rack").html($("#tile-rack").html());
+    attachDraggableAbility();
+  } else {
+    //show dialog
   }
-
-  showCurrentScore();
-  getTiles(json);
-  $("title-rack").html($("#tile-rack").html());
-  attachDraggableAbility();
-
-  var deb_str = "";
-  json.forEach(function(element) {
-    deb_str += element.letter + " VAL: " + element.value + " AMNT: " + element.amount + " SRC: " + element.src + "\n";
-  });
-
-
-
-  //alert(deb_str);
 }
 
 
@@ -333,14 +329,20 @@ function removeSlotScore(slot_index) {
 function showCurrentScore() {
   var i;
   var scoreToShow = 0;
-  for (i = 0; i < currentScore.length; i++) {
-    scoreToShow = scoreToShow + currentScore[i];
-  }
+  if (isValidWord) {
+    for (i = 0; i < currentScore.length; i++) {
+      scoreToShow = scoreToShow + currentScore[i];
+    }
+    $("#current-score").removeClass("text-danger");
+  } else $("#current-score").addClass("text-danger");
+
   $("#total-score").html(totalScore + scoreToShow);
   $("#current-score").html(scoreToShow);
 }
 
 function setIsValidWord(word) {
   var first_letter = word.charAt(0).toLowerCase();
-  return dictionary[first_letter].indexOf(word.toLowerCase()) != -1;
+  if (word == "") return true; //this is for when the board is cleared: basically it shouldn't be checked.
+  else if (word.length == 1) return false; //no single letter words
+  else return dictionary[first_letter].indexOf(word.toLowerCase()) != -1;
 }

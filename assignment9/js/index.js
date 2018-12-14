@@ -9,7 +9,7 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
 */
 var json; //object to store json object that will be extracted from data.json
 var dictionary; //dictionary object to store dictionary.
-var tilesRemaining = 14; //variable to keep count of the tiles remaining
+var tilesRemaining = 100; //variable to keep count of the tiles remaining
 var currentWordArray = ["", "", "", "", "", "", ""]; //array of single character Strings: keeps track of the word spelled on the scrabble board
 var isVacant = [true, true, true, true, true, true, true]; //array of boolean values:keeps track of which slot the scrabble board has a tile or not.
 var currentScore = [0, 0, 0, 0, 0, 0, 0]; //array of integers: keeps track of the values of the tiles in each slot on the scrabble board.
@@ -219,9 +219,20 @@ $(function() {
 
   $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
 
+  $("#help-dialog").dialog({
+    autoOpen: false,
+    modal: true,
+    width: 900,
+    show: "blind",
+    hide: "blind"
+  });
+
+  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
   $("#end-dialog").dialog({
     autoOpen: false,
     modal: true,
+    width: 350,
     show: "blind",
     hide: "blind"
   });
@@ -233,6 +244,10 @@ $(function() {
     resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   " + totalScore + "</div>";
     $("#results").html(resultsString);
     $("#end-dialog").dialog("open");
+  });
+
+  $("#help").click(function() { //whenever the help button is clicked, show help dialog
+    $("#help-dialog").dialog("open");
   });
 
   $(".ok").click(function() { //whenever an ok button is clicked, close the dialog associated with it.

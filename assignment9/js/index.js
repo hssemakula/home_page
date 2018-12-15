@@ -183,7 +183,7 @@ $(function() {
     hide: "blind",
   });
 
-  $("#blank-tile-return-dialog, #cant-swap-tile-dialog, #no-tiles-dialog").dialog({
+  $("#blank-tile-return-dialog, #cant-swap-tile-dialog, #no-tiles-dialog, #no-tiles-on-board-dialog").dialog({
     autoOpen: false,
     modal: false,
     width: 400,
@@ -424,8 +424,12 @@ function nextWord() {
       currScore_temp = currScore_temp + element; //as value is added to total score, current slot values are tallied too.
     });
 
+    //if user tries to submit a word but there are no tiles on the board.
+    if (wordToSubmitt == "") {
+      $("#no-tiles-on-board-dialog").dialog("open");
+    }
     //if the current word that has been received for submission is valid, concatenate it to the results string along with its on-board score.
-    if (wordToSubmitt != "" && wordToSubmitt != ".") {
+    else if (wordToSubmitt != "" && wordToSubmitt != ".") {
       resultsString = resultsString + "<div class=\"col-md row mt-1 pt-1 mb-1 pb-1 text-muted\"><p >" + wordToSubmitt.toUpperCase() + "</p> <p class=\"ml-4\">+" + currScore_temp + "</p></div>";
     }
 
@@ -475,9 +479,12 @@ function updateWord(letter, slot_index) {
 
   //iterate through current word array and concatenate each letter at each position to the word variable.
   var i;
+  var numSpaces = 0; //variable keep count of number of spaces.
   for (i = 0; i < currentWordArray.length; i++) {
-    if (currentWordArray[i] == "") word = word + " "; //if index has an empty string concatenate a space.
-    else word = word + "" + currentWordArray[i];
+    if (currentWordArray[i] == "") {
+      word = word + " "; //if index has an empty string concatenate a space.
+      numSpaces = numSpaces + 1; //space encountered.
+    } else word = word + "" + currentWordArray[i];
   }
 
   /* Now to check if the built word is valid.
@@ -485,7 +492,7 @@ function updateWord(letter, slot_index) {
     else it is passed to the setIsValidWord method to do some more in depth ananalysis. but it is trimmed to get rid of all spaces.
     The isValidWord flag is set to indicate whether word is valid or not
   */
-  if (currentWordArray[0] == "" && word.length > 1) isValidWord = false;
+  if (currentWordArray[0] == "" && word.length > 1 && numSpaces != 7) isValidWord = false; //if word is not all spaces, i.e blank space.
   else if (setIsValidWord(word.trim())) isValidWord = true;
   else isValidWord = false;
 

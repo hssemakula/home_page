@@ -286,6 +286,17 @@ separate file -->
     </div>
   </div>
 
+  <!-- HTML for the dialog shown when there are no tiles on the board nd user tries to submit.-->
+  <div id="no-tiles-on-board-dialog" class="bg-white">
+
+    <p class="text-muted"> Why are you trying to submit an empty board?</p>
+
+    <div class="row">
+      <!-- a row div is also provided to hold one button. The OK button to close the dialog -->
+      <button type="button" class="btn btn-danger text-white mx-auto mt-2 ok"> I DON'T KNOW </button>
+    </div>
+  </div>
+
 
   <!-- HTML for the dialog to show the resulting score of the game.-->
   <div id="end-dialog" class="bg-info">
@@ -373,10 +384,10 @@ separate file -->
           <p> When you submit over 5 invalid words, the game will show an option to <b> "GIVE UP". </b>
             The game ends when you either submit all tiles as words or "give up".</p>
         </li>
-        </ol>
+      </ol>
 
-          <small> Hint: State initials count as words </small>
-          <p class="text-info"> GOOD LUCK </p>
+      <small> Hint: State initials count as words </small>
+      <p class="text-info"> GOOD LUCK </p>
     </div>
     <div class="row">
       <!-- a row div is also provided to hold one button. The OK button to close the dialog -->

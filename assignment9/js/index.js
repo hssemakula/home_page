@@ -18,7 +18,7 @@ var isValidWord = false; //keeps track of whether the current word is a valid wo
 
 /***************dialog flags*************/
 var showBlankTileWarning = false; //flag used to show blank-tile-dialog only once.
-var invalidSubmitAttempts = 0; //counter for every time user clicks next word and submission is invalid word.
+var invalidSubmitAttempts = 0; //counter for every time user clicks submit and submission is invalid word.
 var swapCount = 0; //counter for how many times user swaps out tiles.
 var resultsString = "<h5 class=\"mt-2 text-center pt-2\"> RESULTS </h5><br>"; //string variable to show results at the end.
 var wordToSubmitt = ""; //var to store the word submitted.
@@ -222,8 +222,8 @@ $(function() {
     else $("#cant-swap-tile-dialog2").dialog("open"); //if no board slot is empty then there are no tiles on rack, don't swap.
   });
 
-  $("#next-word").click(function() {
-    nextWord(); //call nextWord() function when the NEXT WORD button is clicked.
+  $("#submit").click(function() {
+    submit(); //call submit() function when the SUBMIT button is clicked.
   });
 
   /* all image icons that are displayed for user to choose from when they place a blank tile
@@ -420,7 +420,7 @@ function swapTiles(json_data) {
 }
 
 //This function clears the rack and board, updates total score. AND submits the word on the board.
-function nextWord() {
+function submit() {
   var currScore_temp = 0; //variable to log the score of the word that user is about to submit
   //This big chunk if statement is only executed if a word is valid
   if (isValidWord) {

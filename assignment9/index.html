@@ -30,29 +30,30 @@ File: https://hssemakula.github.io/home_page/assignment8/index.html
   <script src="./js/jquery-ui.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
 
-  <!--The script element below includes the java script file that conatins the function
-  that draws the dynamic table. -->
+  <!--The script element below includes the java script file that helps the functionality of the game. -->
   <script src="./js/index.js"></script>
 
   <!-- Some Css styles applied here because bootsrap overrides them when they are placed in a
 separate file -->
   <style>
+    /* styles for the word TILE RACK and SCRABBLE BOARD */
     .title-tab {
       border-top-left-radius: 10px;
-
     }
 
     .tile-rack{
       border-radius:3px;
-      min-height:100px;
+      min-height:100px; /* limit height so that resizing doesn't displace the components out of rack */
     }
 
+    /* styles for the divs that show the current score, total score, word and tiles remain */
     .info-plaque{
-      border-radius:10px;
+      border-radius:10px; /* This is why the border corners are round */
       background-color:white;
       box-shadow: 3px 3px #45483D;
     }
 
+    /* The i in the help button is designed using these styles */
     #info-i{
       border-radius:10px;
       background-color: #566573;
@@ -64,12 +65,14 @@ separate file -->
       margin-left:2px;
     }
 
+    /* This style centers the word HELP vertically within button */
     #help-text{
       padding-top:5px;
     }
 
+    /* set color for the components within the info-plaque divs */
     .info-plaque-label{ color:#566573;}
-    .board{ border-radius:10px;}
+    .board{ border-radius:10px;} /* rounded borders for the board div */
 
   </style>
 </head>
@@ -109,14 +112,19 @@ separate file -->
   <div class="container-fluid" id="body-div">
     <h5 class="display-1 text-white text-center pt-3"> ROW SCRABBLE <h5>
 
-
+        <!-- the div below is the conatiner div for both the board and the tile rack. It is coded
+    as a row to help keep the tile rack and board side by side. -->
         <div class="row">
 
           <div class="col-lg-4">
-
+            <!-- This is the left most overall div that  conatins the tile rack and buttons of the page. it is
+            given 4 coulmns so as not to strech and squeeze the scrabble board/ the right div.
+            -->
             <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info title-tab">TILE RACK </h5>
-            <div class="border border-light p-1" id="tile-rack">
 
+            <div class="border border-light p-1" id="tile-rack">
+              <!-- All image elemets to be used as tile images are placed within this div and given a white border
+              to show the rack. -->
               <img id="1" class="m-2 draggable" src="images/board/regular.png" height="100" />
               <img id="2" class="m-2 draggable" src="images/board/regular.png" height="100" />
               <img id="3" class="m-2 draggable" src="images/board/regular.png" height="100" />
@@ -127,6 +135,8 @@ separate file -->
             </div>
 
             <div class="row">
+              <!--This div contains all the buttons innitially shown and the give up button shown later.
+              They are all coded within bootstrap row div so that they can appear in one line -->
               <button id="swap" type="button" class="btn btn-light text-info mx-auto mt-3"> <b>SWAP TILES </b></button>
               <button id="next-word" type="button" class="btn btn-light text-info mx-auto mt-3"> <b> NEXT WORD </b> </button>
               <button id="help" type="button" class="btn btn-light text-info mx-auto mt-3"> <b> <span id="help-text"> HELP</span> <span id="info-i"> i </span> </b></button>
@@ -136,9 +146,12 @@ separate file -->
           </div>
 
           <div class="mt-5 ml-5 mx-auto">
-
-
-
+            <!-- This the right most div which contains the divs that show the current, word and tiles remainimg. It also contains the
+            scrabble board.
+            -->
+            <!-- There are 3 divs that show information all of them are styled as row divs
+            and have the styles of info-plaque applied to them -->
+            <!--TOTAL SCORE/ CURRENT SCORE DIV -->
             <div class="row mb-4 pt-2 pl-2 info-plaque">
               <div class="col-sm-8 row">
                 <p class="p-1 info-plaque-label text-success "> Total Score: </p>
@@ -148,7 +161,7 @@ separate file -->
               <p class="p-1 ml-4  info-plaque-label"> Current Word Score: </p>
               <p class="p-1" id="current-score"> 0 </p>
             </div>
-
+            <!--CURRENT WORD/WORD NOT FOUND DIV-->
             <div class="row mb-4 pt-2 pl-2 info-plaque">
               <div class="col-sm-8 row">
                 <p class="p-1 info-plaque-label"> Word: </p>
@@ -157,7 +170,7 @@ separate file -->
 
               <p id="word-not-found" class="p-1 ml-4 text-danger"> <small> ...word not found in dictionary </small> </p>
             </div>
-
+            <!--TILES REMAINING DIV-->
             <div class="row mb-4 pt-2 pl-2 info-plaque"">
 
               <p class=" p-1 info-plaque-label"> Tiles Remaining: </p>
@@ -167,6 +180,9 @@ separate file -->
 
             <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info title-tab">SCRABBLE BOARD</h5>
             <div id="board" class="row  border border-light p-1 m-0 board">
+              <!-- This is the scrabble board's div. It consists of images that represent the slots on the board
+              the images are enclosed within divs to make them more static and ficed together so that they don't
+              break apart and move -->
               <div id="10" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
               <div id="11" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
               <div id="12" class="droppable"><img src="images/board/double.png" height="100" /> </div>
@@ -181,16 +197,16 @@ separate file -->
 
   </div>
 
-  <!-- Footer added to display my name,contact information and  CSS and HTML verification icons -->
-  <!-- HTML icon source: https://www.w3.org/html/logo/ -->
-  <!-- CSS icon source: https://www.iconfinder.com/icons/2916226/css3_marketing_media_social_website_icon -->
+  <!-- Footer added to display my name,contact information -->
   <div class="container-fluid " id="footer">
     <p class="text-light text-center"> Hillary SSemakula @ 2018: <a class="text-light" href="mailto:hillary_ssemakula@student.uml.edu?subject=feedback">hillary_ssemakula@student.uml.edu</a></p>
   </div>
 
 
-  <!-- Dialogs -->
+  <!-- Below are the Dialogs Divs -->
   <div class="bg-info border border-light" id="blank-tile-dialog">
+    <!-- This Div conatins all of the 26 images that are displayed when the user drops a blank symbol: They are not displayed when the page loads
+  because they are given the id blank-tile-dialog that is initialized as a dialog in index.js-->
     <img id="21" class="m-1 blank-tile " src="./images/board/0A.png" height="35" />
     <img id="22" class="m-1 blank-tile " src="./images/board/0B.png" height="35" />
     <img id="23" class="m-1 blank-tile " src="./images/board/0C.png" height="35" />
@@ -222,17 +238,19 @@ separate file -->
 
 
 
-
+  <!-- HTML for the dialog shown when a user attempts to submit an invalid word.-->
   <div id="invalid-word-submit-dialog" class="bg-white">
-
+    <!-- The main content shown is the content in this paragraph -->
     <p class="text-muted"> No Cheating! That's not a real word</p>
-
+    <!-- a row div is also provided to hold two buttons. one is the button to close the dialog and the
+      other is the give up bottom, to reset the game when needed -->
     <div class="row">
       <button type="button" class="btn btn-dark text-white mx-auto mt-2 ok"> OK </button>
       <button id="give-up" type="button" class="btn btn-danger text-white mx-auto mt-2 give-up"> GIVE UP </button>
     </div>
   </div>
 
+<!-- HTML for the dialog shown when a user attempts to return a blank tile to the tile rack.-->
   <div id="blank-tile-return-dialog" class="bg-white">
 
     <p class="text-muted"><b>Friendly reminder:</b> an originally blank tile can't be returned to the rack</p>
@@ -263,7 +281,7 @@ separate file -->
   <div id="end-dialog" class="bg-info">
     <blockquote class="blockquote">
       <h4 class="mb-0 text-white h3">ROW SCRABBLE</h4>
-      <footer class="blockquote-footer text-white">Created by  <cite title="Source Title">Hillary Ssemakula</cite></footer>
+      <footer class="blockquote-footer text-white">Created by <cite title="Source Title">Hillary Ssemakula</cite></footer>
     </blockquote>
     <div id="results" class="mt-3 info-plaque container-fluid text-dark">
 
@@ -276,7 +294,7 @@ separate file -->
   <div id="winner-dialog" class="bg-muted">
     <blockquote class="blockquote">
       <h4 class="mb-0 text-muted h3">ROW SCRABBLE</h4>
-      <footer class="blockquote-footer text-muted">Created by  <cite title="Source Title">Hillary Ssemakula</cite></footer>
+      <footer class="blockquote-footer text-muted">Created by <cite title="Source Title">Hillary Ssemakula</cite></footer>
     </blockquote>
     <div class=" container-fluid text-success">
       <h6 class="h6"> CONGRATULATIONS </h6>
@@ -290,7 +308,7 @@ separate file -->
   <div id="help-dialog" class="bg-white">
     <blockquote class="blockquote">
       <h4 class="mb-0 text-muted h3">ROW SCRABBLE</h4>
-      <footer class="blockquote-footer text-muted">Created by  <cite title="Source Title">Hillary Ssemakula</cite></footer>
+      <footer class="blockquote-footer text-muted">Created by <cite title="Source Title">Hillary Ssemakula</cite></footer>
     </blockquote>
 
     <div class="container-fluid text-dark">

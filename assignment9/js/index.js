@@ -245,7 +245,7 @@ $(function() {
     }
   });
 
-  /* There are two buttons with the class "give-up": whenever they are clicked...
+  /* There are three buttons with the class "give-up": whenever they are clicked...
       Close the dialog on which they are.
       update the results string by showing the user's total score.
       Send the result string to the div with id results in the html.

@@ -8,22 +8,27 @@ File: https://hssemakula.github.io/home_page/assignment8/js/index.js
   of the Row Scrabble defined by the file https://hssemakula.github.io/home_page/assignment9/index.html.
 */
 var json; //object to store json object that will be extracted from data.json
-var dictionary; //dictionary object to store dictionary.
+var dictionary; // object to store dictionary data that is parsed from dict.json.
 var tilesRemaining = 100; //variable to keep count of the tiles remaining
 var currentWordArray = ["", "", "", "", "", "", ""]; //array of single character Strings: keeps track of the word spelled on the scrabble board
 var isVacant = [true, true, true, true, true, true, true]; //array of boolean values:keeps track of which slot the scrabble board has a tile or not.
 var currentScore = [0, 0, 0, 0, 0, 0, 0]; //array of integers: keeps track of the values of the tiles in each slot on the scrabble board.
 var totalScore = 0; //keeps track of the total score
-var isValidWord = false; //keeps track of weather the current word is a valid word.
+var isValidWord = false; //keeps track of whether the current word is a valid word or not
 
 /***************dialog flags*************/
-var showBlankTileWarning = false;
-var invalidSubmitAttempts = 0;
-var swapCount = 0;
-var resultsString = "<h5 class=\"mt-2 text-center pt-2\"> RESULTS </h5><br>";
-var wordToSubmitt = "";
+var showBlankTileWarning = false; //flag used to show blank-tile-dialog only once.
+var invalidSubmitAttempts = 0; //counter for every time user clicks next word and submission is invalid word.
+var swapCount = 0; //counter for how many times user swaps out tiles.
+var resultsString = "<h5 class=\"mt-2 text-center pt-2\"> RESULTS </h5><br>"; //string variable to show results at the end.
+var wordToSubmitt = ""; //var to store the word submitted.
 
-//getJSON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
+/*getJSON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
+  The following AJAX functions do the same thing for different files.
+  The first parses the letters, their amounts, value and images as a json object in JavaScript
+  The second parses all of the words in dict.json as a dictionary of words: with keys as letters and an array
+  of all possible words beginning with that letter as the value.
+*/
 $.getJSON("./data/data.json", function(userData) {
   json = userData;
 });
@@ -32,47 +37,46 @@ $.getJSON("./data/dict.json", function(data) {
 });
 
 
-//function is run when the page has loaded.
+//function run when page is loaded.
 $(function() {
 
-  $(".draggable").data("onSlot", -1); //initialize all tiles to indicate that they are not on the board at any slot(-1)
-
-  attachDraggableAbility();
-
-
-  $(".draggable").attr("src", ""); //clear all src attributes of img elements with class draggable
+  /*-----------------------------------DRAGGABLE CODE---------------------------------------------*/
+  $(".draggable").data("onSlot", -1); //initialize all tiles to indicate that they are not on the board at any slot i..e all of them are on slot -1
+  attachDraggableAbility(); //This function initializes all elements with the class draggable as draggable objects.
+  $(".draggable").attr("src", ""); //initialize all draggable images to be used as tile images by clearing their src attributes.
   $("#tileCount").html(tilesRemaining); //update label that shows number of tiles remaining
   $("#currentWord").html(""); //clear the current word.
   getTiles(json); //draw the first 7 tiles by calling the getTiles function with the json object
 
 
 
+  /*----------------------------------------------DROPPABLE CODE--------------------------------------*/
+  $(".droppable").droppable({ //all html images that represent the scrabble board have the class droppable so innitialize them as droppable
 
-  $(".droppable").droppable({ //make all slots on the scrabble board droppable.
-    /*  Accept function: recieves a draggable tile and checks if the slot associated with it
-    is empty. if it is the draggble can be accepted */
+    /*  Accept function: droppable recieves a draggable tile and checks if its slot(i.e in the isVacant array)
+    is empty. if it is, the draggable is accepted otherwise it is rejected. */
     accept: function(tile) {
-      var slot_index = parseInt($(this).attr("id")) - 10;
+      var slot_index = parseInt($(this).attr("id")) - 10; //calculate this slot's index
       if (tile.attr("src").charAt(16) != "." && showBlankTileWarning == false) //if user attempts to move originally blank tile, warn that it can't be returned to rack(only once.)
       {
         $("#blank-tile-return-dialog").dialog("open");
         showBlankTileWarning = true;
       }
-      if (isVacant[slot_index]) return true;
+      if (isVacant[slot_index]) return true; //reject if not vacant
       else return false;
     },
     /* drop function: when a draggable is dropped, the index of this slot is calculated
-     the weight of this slot is calculated i.e. some slots carry double the amount of the letter
-     The letter that has been dropped is extracted.
-          the dropped tile's onSlot index is changed to the current slot's index.
-          The word on the board is updated using the extracted letter and the score is updated likewise.
+     the weight of this slot is calculated i.e. some slots carry double for the score of the letter's value
+     The string value of the letter that has been dropped is extracted.
+          the dropped tile's onSlot index is changed to the current slot's index(to indicate that letter is now on this droppable)
+          The word on the board is updated using the extracted letter string and the score is updated likewise.
           */
     drop: function(event, ui) {
-      var slot_index = parseInt($(this).attr("id")) - 10; //this slot's index
-      var slot_weight = $(this).find("img").attr("src").charAt(13) == "r" ? 1 : 2;
-      var tile = ui.draggable;
-      var imgLetter = tile.attr("src").charAt(15)
-      var previous_slot_index = tile.data("onSlot");
+      var slot_index = parseInt($(this).attr("id")) - 10; //this this slot's index
+      var slot_weight = $(this).find("img").attr("src").charAt(13) == "r" ? 1 : 2; //to dertermine whether slot is bonus slot
+      var tile = ui.draggable; //this is the object representing the tile that was dropped here.
+      var imgLetter = tile.attr("src").charAt(15); //this is the extracted string value of the letter that was dropped here
+      var previous_slot_index = tile.data("onSlot"); //this is the slot that the tile was dragged from(-1 if from rack)
 
       //In order for the tile to snap onto the board beautifully, the position function is used.
       tile.position({
@@ -85,62 +89,83 @@ $(function() {
       });
 
 
-
-      //test for 0.png so that when blank is assigned letter, this test becomes false and user cant change letter.
-      if (tile.attr("src").substring(15, 20) == "0.png") { //if blank tile add class to show this tile wont be swapped at rack. and make user choose letter.
+      /*TEST IF BLANK TILE WAS DROPPED HERE
+        test for 0.png so that when blank is assigned letter, this test becomes false and user cant change letter.
+        if blank tile was dropped add class to show this tile wont be swapped at rack. and make user choose letter.
+        blank tile is identified by it's source image which is a number i.e 0.png
+      */
+      if (tile.attr("src").substring(15, 20) == "0.png") {
         tile.addClass("blank");
         $("#blank-tile-dialog").dialog("open"); //open dialog to choose letter
       }
 
+      /* UPDATE THE TILE'S DATA IF TILE HAS BEEN DRAGGED FROM ANOTHER SLOT ON BOARD.
+        Every tile that was on rack displays an onSlot value of -1. if this test fails
+        then tile came from another slot on the board.
+      */
       if (!(previous_slot_index == -1)) {
-        isVacant[previous_slot_index] = true;
-        removeSlotScore(previous_slot_index);
-        updateWord("", previous_slot_index);
+        isVacant[previous_slot_index] = true; //clear the the slot where this draggable came from.
+        removeSlotScore(previous_slot_index); //remove the score for the previous slot.
+        updateWord("", previous_slot_index); //display changes on the game be clearing the string at previos slot
       }
 
-      tile.data("onSlot", slot_index); //update tile position
-      isVacant[slot_index] = false; //indicate current slot is now full
-      if (tile.hasClass("blank")) updateWord(tile.attr("src").charAt(16), slot_index); //update word displayed when the symbol is blank. tile is names like 0L.png so take charAT(16) instead of 15 as usual
-      else updateWord(imgLetter, slot_index); //update word displayed
-      updateSlotScore(imgLetter, json, slot_weight, slot_index); //update score for slot.
-      showCurrentScore(); //show current score for letters on board.
+      /* UPDATE CURRENT SLOT AND DROPPABLE DATA */
+      tile.data("onSlot", slot_index); //indicate that draggable is on this droppable by changing it's onSlot value to this droppable's index
+      isVacant[slot_index] = false; //indicate current droppable slot is now full and can't accept any other draggables.
+      //If tile dropped was blank The letter that user chooses has to be calculated.
+      //blank tiles have names like 0L.png so to extract the letter choses we take charAT(16) instead of 15 as usual
+      if (tile.hasClass("blank"))
+        updateWord(tile.attr("src").charAt(16), slot_index);
+      else //else update word displayed using character that was extracted at index 15
+        updateWord(imgLetter, slot_index);
+      updateSlotScore(imgLetter, json, slot_weight, slot_index); //update individual score for slot.
+      showCurrentScore(); //show current score for letters on board to user.
     }
 
 
   });
 
-
+  /* TILE RACK DROPPABLE */
   $("#tile-rack").droppable({
+    /* Accept function: checks if the incoming tile is blank(i.e. has class blank added to it)
+      Rejects if it is the case otherwise accepts other draggables.
+    */
     accept: function(tile) {
-      if (tile.hasClass("blank")) { //tile is a blank tile then it can't be taken back
-
-
+      if (tile.hasClass("blank")) { //if tile is a blank tile then it can't be dropped here again.
         return false;
       } else return true;
     },
+    /* Tile rack drop function: updates the dropped draggable's onSlot value to -1
+        to show that tile is now not on any slot on the board.
+    */
     drop: function(event, ui) {
-      var tile = ui.draggable;
+      var tile = ui.draggable; //get the tile as a jquery object
+      //extract the slot index of the slot it was on
+      //this works because at this point it hasn't been updated and draggable still thinks it's on the board.
       var previous_slot_index = tile.data("onSlot");
 
+      /* If onSlot returns -1, then draggable was merely displaced on the rack but didn't came from a slot on the
+      board. Otherwise clear the index of the slot the draggable came from to mark it a empty for any other draggables.
+      update the word being displayed and the current score.
+      */
       if (!(previous_slot_index == -1)) {
         isVacant[previous_slot_index] = true;
         removeSlotScore(previous_slot_index);
         updateWord("", previous_slot_index);
       }
 
-      tile.data("onSlot", -1);
+      tile.data("onSlot", -1); //lastly make the onSlot value of the draggable -1 to show that it is on rack now.
       showCurrentScore(); //show current score for letters on board.
-
-
     }
   });
 
+  /*-------------------------------------------CLICK LISTENERS AND UI DIALOGS ---------------------*/
   $("#swap").click(function() {
-    swapTiles(json);
+    swapTiles(json); //call swapTiles() function when the SWAP button is clicked.
   });
 
   $("#next-word").click(function() {
-    nextWord();
+    nextWord(); //call nextWord() function when the NEXT WORD button is clicked.
   });
 
   // this initializes the dialog (and uses some common options that I do)

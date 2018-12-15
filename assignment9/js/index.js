@@ -21,7 +21,7 @@ var showBlankTileWarning = false; //flag used to show blank-tile-dialog only onc
 var invalidSubmitAttempts = 0; //counter for every time user clicks submit and submission is invalid word.
 var swapCount = 0; //counter for how many times user swaps out tiles.
 var resultsString = "<h5 class=\"mt-2 text-center pt-2\"> RESULTS </h5><br>"; //string variable to show results at the end.
-var wordToSubmitt = ""; //var to store the word submitted.
+var wordToSubmit = ""; //var to store the word submitted.
 
 /*getJSON method, used here because XMLHttpRequest() was denied access to the json file through https://hssemakula.github.io/home_page/assignment9/data/data.json
   The following AJAX functions do the same thing for different files.
@@ -435,8 +435,8 @@ function submit() {
       $("#no-tiles-on-board-dialog").dialog("open");
     }
     //if the current word that has been received for submission is valid, concatenate it to the results string along with its on-board score.
-    else if (wordToSubmitt != "" && wordToSubmitt != ".") {
-      resultsString = resultsString + "<div class=\"col-md row mt-1 pt-1 mb-1 pb-1 text-muted\"><p >" + wordToSubmitt.toUpperCase() + "</p> <p class=\"ml-4\">+" + currScore_temp + "</p></div>";
+    else if (wordToSubmit != "" && wordToSubmit != ".") {
+      resultsString = resultsString + "<div class=\"col-md row mt-1 pt-1 mb-1 pb-1 text-muted\"><p >" + wordToSubmit.toUpperCase() + "</p> <p class=\"ml-4\">+" + currScore_temp + "</p></div>";
     }
 
     var currentImgToReplace = 1; //variable to be used for iteration and as image index and ID for images of the tiles
@@ -567,7 +567,7 @@ function showCurrentScore() {
 */
 function setIsValidWord(word) {
   var first_letter = word.charAt(0).toLowerCase();
-  wordToSubmitt = word.toLowerCase();
+  wordToSubmit = word.toLowerCase();
   if (word == "") return true; //this is for when the board is cleared: basically it shouldn't be checked.
   if (first_letter == ".") return true; //when a blank tile is being changed, this method is run. at that point the first letter "." this method should ignore that
   else if (word.length == 1) return false; //no single letter words

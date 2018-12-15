@@ -162,7 +162,12 @@ $(function() {
   /*-------------------------------------------CLICK LISTENERS AND UI DIALOGS ---------------------*/
 
   /*++++++++++++++++ Dialogs ++++++++++++ */
-  // this initializes the dialog (and uses some common options that I do)
+  /* All dialogs use similar settings
+    autoOpen: set to fale to prevent dialog from automatically showing.
+    modal: true: makes the dialog override all game activity: nothing can be done until user clicks button on it.
+    show and hide: blind are animations for when the dialog pops up or closes.
+    width: where the width is defined, it's because the content was shown in a narrow window so width was to make it wider.
+  */
   $("#blank-tile-dialog").dialog({
     autoOpen: false,
     modal: true,
@@ -178,38 +183,13 @@ $(function() {
     hide: "blind",
   });
 
-
-
-
-  $("#blank-tile-return-dialog").dialog({
+  $("#blank-tile-return-dialog, #cant-swap-tile-dialog, #no-tiles-dialog").dialog({
     autoOpen: false,
     modal: false,
     width: 400,
     show: "blind",
     hide: "blind",
   });
-
-
-
-  $("#cant-swap-tile-dialog").dialog({
-    autoOpen: false,
-    modal: false,
-    width: 400,
-    show: "blind",
-    hide: "blind",
-  });
-
-
-
-  $("#no-tiles-dialog").dialog({
-    autoOpen: false,
-    modal: false,
-    width: 400,
-    show: "blind",
-    hide: "blind"
-  });
-
-
 
   $("#help-dialog").dialog({
     autoOpen: false,
@@ -219,9 +199,7 @@ $(function() {
     hide: "blind"
   });
 
-
-
-  $("#winner-dialog").dialog({
+  $("#winner-dialog, #end-dialog").dialog({
     autoOpen: false,
     modal: true,
     width: 350,
@@ -229,13 +207,10 @@ $(function() {
     hide: "blind"
   });
 
-  $("#end-dialog").dialog({
-    autoOpen: false,
-    modal: true,
-    width: 350,
-    show: "blind",
-    hide: "blind"
-  });
+  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
+
+  $("#word-not-found").hide(); //at first hide the indicator that word is inavlid, it pops up when word becomes invalid.
+  $("#give-up2").hide(); //hide second give up button at first, only shows up after 5 invalid attempted submission.
 
   $("#swap").click(function() {
     swapTiles(json); //call swapTiles() function when the SWAP button is clicked.
@@ -245,56 +220,73 @@ $(function() {
     nextWord(); //call nextWord() function when the NEXT WORD button is clicked.
   });
 
+  /* all image icons that are displayed for user to choose from when they place a blank tile
+     on the board have the class blank-tile: These are the images of the letters that have zero score.
+     They are displayed in a panel, when user clicks on one, an iteration happens that looks for the
+     blank tile that has just been placed on the board. Then the src attribute of that tile is changed
+     to the link of the zero letter image. The scores and the letters displayed to the user are updated.
+
+     When user clicks on one of those little icons diplayed run this function...
+  */
   $(".blank-tile").click(function() {
-    var currentImgToReplace = 1;
-    for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
-      img = $("#" + currentImgToReplace);
-      if (img.attr("src").substring(15, 20) == "0.png" && img.data("onSlot") != -1) { //if blank symbol and not on tile rack change letter to one with 0 score.
-        img.attr("src", $(this).attr("src"));
-        $("#blank-tile-dialog").dialog("close"); //close dialog to choose letter
+    var currentImg = 1; //variable to be used in loop.
+    for (currentImg = 1; currentImg <= 7; currentImg++) {
+      img = $("#" + currentImg); //extract tile image using id
+      //if img indicates blank tile and tile's onSlot value is not -1(i.e tile is on a slot on the board) then change img letter to
+      //the one that the user clicked on.(the zero score letter the user clicked on)
+      if (img.attr("src").substring(15, 20) == "0.png" && img.data("onSlot") != -1) {
+        img.attr("src", $(this).attr("src")); //This is where the image switch happens.
+        $("#blank-tile-dialog").dialog("close"); //close the choose letter dialog.
         var slotWhereTileIs = img.data("onSlot"); //now we have to update the word. even though the score is zero. can only be effeciently done here
-        updateWord(img.attr("src").charAt(16), slotWhereTileIs);
-        showCurrentScore();
-        break;
+        updateWord(img.attr("src").charAt(16), slotWhereTileIs); //update the word and include "zero letter chosen"
+        showCurrentScore(); //update score
+        break; //only one blank tile is updated, break because loop becomes pointless at this point.
       }
     }
   });
 
-  $("#word-not-found").hide(); //at first hide the indicator that word is inavlid.
-  $("#give-up2").hide(); //hide give up button at first
-
-
-  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
-
-  $(".give-up").click(function() { //whenever a button with class give-up is clicked.
-    if ($(this).attr("id") != "give-up2") $(this).parent().parent().dialog("close"); //if button clicked was on a dialog, first close that dialog
+  /* There are two buttons with the class "give-up": whenever they are clicked...
+      Close the dialog on which they are.
+      update the results string by showing the user's total score.
+      Send the result string to the div with id results in the html.
+      open the end-dialog that displays those results.
+  */
+  $(".give-up").click(function() {
+    //if button clicked was on a dialog, first close that dialog. One of the buttons with this class is a container div and not a dialog box
+    //so that condition has to be tested for .
+    if ($(this).attr("id") != "give-up2") $(this).parent().parent().dialog("close");
     resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   " + totalScore + "</div>";
-    $("#results").html(resultsString);
-    $("#end-dialog").dialog("open");
+    $("#results").html(resultsString); //update html
+    $("#end-dialog").dialog("open"); //open dialog.
   });
 
-  $("#help").click(function() { //whenever the help button is clicked, show help dialog
+  $("#help").click(function() { //whenever the help button is clicked, open help dialog
     $("#help-dialog").dialog("open");
   });
 
-  $(".ok").click(function() { //whenever an ok button is clicked, close the dialog associated with it.
+  //whenever an ok button is clicked, close the dialog associated with it.
+  //The dialog is it's parent's parent because the button itself is enclosed within a div
+  $(".ok").click(function() {
     $(this).parent().parent().dialog("close");
   });
 
-  $(".reset").click(function() { //whenever a reset button is clicked reload page.
+  //whenever a reset button is clicked reload page. This button is only displayed at the end of the game.
+  $(".reset").click(function() {
     location.reload();
   });
 
-  $(".exit").click(function() { //whenever an exit button is clicked go to end dialog
-    $(this).parent().parent().dialog("close");
-    $("#end-dialog").dialog("open");
+  //whenever an exit button is clicked go to end dialog. This button is shown when a player
+  //actually wins: it is displayed along the congratulating dialog and right after the results are shown.
+  $(".exit").click(function() {
+    $(this).parent().parent().dialog("close"); //close congratulating dialog.
+    $("#end-dialog").dialog("open"); //open reults summary
   });
 
 
 
 
 
-  /***********************END OF LOADING FUNCTION ************************/
+  /**************************************************************************END OF LOADING FUNCTION ***********************************************************/
 });
 
 function attachDraggableAbility() {

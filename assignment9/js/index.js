@@ -431,7 +431,7 @@ function submit() {
     });
 
     //if user tries to submit a word but there are no tiles on the board.
-    if (wordToSubmitt == "") {
+    if (wordToSubmit == "") {
       $("#no-tiles-on-board-dialog").dialog("open");
     }
     //if the current word that has been received for submission is valid, concatenate it to the results string along with its on-board score.

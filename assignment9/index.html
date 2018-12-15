@@ -112,87 +112,87 @@ separate file -->
   <div class="container-fluid" id="body-div">
     <h5 class="display-1 text-white text-center pt-3"> ROW SCRABBLE </h5>
 
-        <!-- the div below is the conatiner div for both the board and the tile rack. It is coded
+    <!-- the div below is the conatiner div for both the board and the tile rack. It is coded
     as a row to help keep the tile rack and board side by side. -->
-        <div class="row">
+    <div class="row">
 
-          <div class="col-lg-4">
-            <!-- This is the left most overall div that  conatins the tile rack and buttons of the page. it is
+      <div class="col-lg-4">
+        <!-- This is the left most overall div that  conatins the tile rack and buttons of the page. it is
             given 4 coulmns so as not to strech and squeeze the scrabble board/ the right div.
             -->
-            <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info title-tab">TILE RACK </h5>
+        <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info title-tab">TILE RACK </h5>
 
-            <div class="border border-light p-1" id="tile-rack">
-              <!-- All image elemets to be used as tile images are placed within this div and given a white border
+        <div class="border border-light p-1" id="tile-rack">
+          <!-- All image elemets to be used as tile images are placed within this div and given a white border
               to show the rack. -->
-              <img id="1" class="m-2 draggable" src="images/board/regular.png" height="100" />
-              <img id="2" class="m-2 draggable" src="images/board/regular.png" height="100" />
-              <img id="3" class="m-2 draggable" src="images/board/regular.png" height="100" />
-              <img id="4" class="m-2 draggable" src="images/board/regular.png" height="100" />
-              <img id="5" class="m-2 draggable" src="images/board/regular.png" height="100" />
-              <img id="6" class="m-2 draggable" src="images/board/regular.png" height="100" />
-              <img id="7" class="m-2 draggable" src="images/board/regular.png" height="100" />
-            </div>
+          <img id="1" class="m-2 draggable" src="images/board/regular.png" alt="tile" height="100" />
+          <img id="2" class="m-2 draggable" src="images/board/regular.png" alt="tile" height="100" />
+          <img id="3" class="m-2 draggable" src="images/board/regular.png" alt="tile" height="100" />
+          <img id="4" class="m-2 draggable" src="images/board/regular.png" alt="tile" height="100" />
+          <img id="5" class="m-2 draggable" src="images/board/regular.png" alt="tile" height="100" />
+          <img id="6" class="m-2 draggable" src="images/board/regular.png" alt="tile" height="100" />
+          <img id="7" class="m-2 draggable" src="images/board/regular.png" alt="tile" height="100" />
+        </div>
 
-            <div class="row">
-              <!--This div contains all the buttons innitially shown and the give up button shown later.
+        <div class="row">
+          <!--This div contains all the buttons innitially shown and the give up button shown later.
               They are all coded within bootstrap row div so that they can appear in one line -->
-              <button id="swap" type="button" class="btn btn-light text-info mx-auto mt-3"> <b>SWAP TILES </b></button>
-              <button id="next-word" type="button" class="btn btn-light text-info mx-auto mt-3"> <b> NEXT WORD </b> </button>
-              <button id="help" type="button" class="btn btn-light text-info mx-auto mt-3"> <b> <span id="help-text"> HELP</span> <span id="info-i"> i </span> </b></button>
-              <button id="give-up2" type="button" class="btn btn-dark text-white mx-auto mt-3 give-up"> <b> GIVE UP </b> </button>
+          <button id="swap" type="button" class="btn btn-light text-info mx-auto mt-3"> <b>SWAP TILES </b></button>
+          <button id="next-word" type="button" class="btn btn-light text-info mx-auto mt-3"> <b> NEXT WORD </b> </button>
+          <button id="help" type="button" class="btn btn-light text-info mx-auto mt-3"> <b> <span id="help-text"> HELP</span> <span id="info-i"> i </span> </b></button>
+          <button id="give-up2" type="button" class="btn btn-dark text-white mx-auto mt-3 give-up"> <b> GIVE UP </b> </button>
 
-            </div>
-          </div>
+        </div>
+      </div>
 
-          <div class="mt-5 ml-5 mx-auto">
-            <!-- This the right most div which contains the divs that show the current, word and tiles remainimg. It also contains the
+      <div class="mt-5 ml-5 mx-auto">
+        <!-- This the right most div which contains the divs that show the current, word and tiles remainimg. It also contains the
             scrabble board.
             -->
-            <!-- There are 3 divs that show information all of them are styled as row divs
+        <!-- There are 3 divs that show information all of them are styled as row divs
             and have the styles of info-plaque applied to them -->
-            <!--TOTAL SCORE/ CURRENT SCORE DIV -->
-            <div class="row mb-4 pt-2 pl-2 info-plaque">
-              <div class="col-sm-8 row">
-                <p class="p-1 info-plaque-label text-success "> Total Score: </p>
-                <p class="p-1 text-success" id="total-score"> 0 </p>
-              </div>
+        <!--TOTAL SCORE/ CURRENT SCORE DIV -->
+        <div class="row mb-4 pt-2 pl-2 info-plaque">
+          <div class="col-sm-8 row">
+            <h5 class="p-1 info-plaque-label text-success "> Total Score: </h5>
+            <h5 class="p-1 text-success" id="total-score"> 0 </h5>
+          </div>
 
-              <p class="p-1 ml-4  info-plaque-label"> Current Word Score: </p>
-              <p class="p-1" id="current-score"> 0 </p>
-            </div>
-            <!--CURRENT WORD/WORD NOT FOUND DIV-->
-            <div class="row mb-4 pt-2 pl-2 info-plaque">
-              <div class="col-sm-8 row">
-                <p class="p-1 info-plaque-label"> Word: </p>
-                <p class="p-1" id="currentWord"> </p>
-              </div>
+          <h5 class="p-1 ml-4  info-plaque-label"> Current Word Score: </h5>
+          <h5 class="p-1" id="current-score"> 0 </h5>
+        </div>
+        <!--CURRENT WORD/WORD NOT FOUND DIV-->
+        <div class="row mb-4 pt-2 pl-2 info-plaque">
+          <div class="col-sm-8 row">
+            <h5 class="p-1 info-plaque-label"> Word: </h5>
+            <h5 class="p-1" id="currentWord"> </h5>
+          </div>
 
-              <p id="word-not-found" class="p-1 ml-4 text-danger"> <small> ...word not found in dictionary </small> </p>
-            </div>
-            <!--TILES REMAINING DIV-->
-            <div class="row mb-4 pt-2 pl-2 info-plaque"">
+          <h5 id="word-not-found" class="p-1 ml-4 text-danger"> <small> ...word not found in dictionary </small> </h5>
+        </div>
+        <!--TILES REMAINING DIV-->
+        <div class="row mb-4 pt-2 pl-2 info-plaque"">
 
-              <p class=" p-1 info-plaque-label"> Tiles Remaining: </p>
+              <h5 class=" p-1 info-plaque-label"> Tiles Remaining: </h5>
 
-              <p class="p-1" id="tileCount"> 0 </p>
-            </div>
+          <h5 class="p-1" id="tileCount"> 0 </h5>
+        </div>
 
-            <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info title-tab">SCRABBLE BOARD</h5>
-            <div id="board" class="row  border border-light p-1 m-0 board">
-              <!-- This is the scrabble board's div. It consists of images that represent the slots on the board
+        <h5 class=" mt-5 mx-auto text-center bg-light p-1 text-info title-tab">SCRABBLE BOARD</h5>
+        <div id="board" class="row  border border-light p-1 m-0 board">
+          <!-- This is the scrabble board's div. It consists of images that represent the slots on the board
               the images are enclosed within divs to make them more static and ficed together so that they don't
               break apart and move -->
-              <div id="10" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
-              <div id="11" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
-              <div id="12" class="droppable"><img src="images/board/double.png" height="100" /> </div>
-              <div id="13" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
-              <div id="14" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
-              <div id="15" class="droppable"><img src="images/board/regular.png" height="100" /> </div>
-              <div id="16" class="droppable"><img src="images/board/double.png" height="100" /> </div>
-            </div>
-          </div>
+          <div id="10" class="droppable"><img src="images/board/regular.png" alt="slot" height="100" /> </div>
+          <div id="11" class="droppable"><img src="images/board/regular.png" alt="slot" height="100" /> </div>
+          <div id="12" class="droppable"><img src="images/board/double.png" alt="slot" height="100" /> </div>
+          <div id="13" class="droppable"><img src="images/board/regular.png" alt="slot" height="100" /> </div>
+          <div id="14" class="droppable"><img src="images/board/regular.png" alt="slot" height="100" /> </div>
+          <div id="15" class="droppable"><img src="images/board/regular.png" alt="slot" height="100" /> </div>
+          <div id="16" class="droppable"><img src="images/board/double.png" alt="slot" height="100" /> </div>
         </div>
+      </div>
+    </div>
 
 
   </div>
@@ -207,32 +207,32 @@ separate file -->
   <div class="bg-info border border-light" id="blank-tile-dialog">
     <!-- This Div conatins all of the 26 images that are displayed when the user drops a blank symbol: They are not displayed when the page loads
   because they are given the id blank-tile-dialog that is initialized as a dialog in index.js-->
-    <img id="21" class="m-1 blank-tile " src="./images/board/0A.png" height="35" />
-    <img id="22" class="m-1 blank-tile " src="./images/board/0B.png" height="35" />
-    <img id="23" class="m-1 blank-tile " src="./images/board/0C.png" height="35" />
-    <img id="24" class="m-1 blank-tile " src="./images/board/0D.png" height="35" />
-    <img id="25" class="m-1 blank-tile " src="./images/board/0E.png" height="35" />
-    <img id="26" class="m-1 blank-tile " src="./images/board/0F.png" height="35" />
-    <img id="27" class="m-1 blank-tile " src="./images/board/0G.png" height="35" />
-    <img id="28" class="m-1 blank-tile " src="./images/board/0H.png" height="35" />
-    <img id="29" class="m-1 blank-tile " src="./images/board/0I.png" height="35" />
-    <img id="35" class="m-1 blank-tile " src="./images/board/0J.png" height="35" />
-    <img id="31" class="m-1 blank-tile " src="./images/board/0K.png" height="35" />
-    <img id="32" class="m-1 blank-tile " src="./images/board/0L.png" height="35" />
-    <img id="33" class="m-1 blank-tile " src="./images/board/0M.png" height="35" />
-    <img id="34" class="m-1 blank-tile " src="./images/board/0N.png" height="35" />
-    <img id="35" class="m-1 blank-tile " src="./images/board/0O.png" height="35" />
-    <img id="36" class="m-1 blank-tile " src="./images/board/0P.png" height="35" />
-    <img id="37" class="m-1 blank-tile " src="./images/board/0Q.png" height="35" />
-    <img id="38" class="m-1 blank-tile " src="./images/board/0R.png" height="35" />
-    <img id="39" class="m-1 blank-tile " src="./images/board/0S.png" height="35" />
-    <img id="35" class="m-1 blank-tile " src="./images/board/0T.png" height="35" />
-    <img id="41" class="m-1 blank-tile " src="./images/board/0U.png" height="35" />
-    <img id="42" class="m-1 blank-tile " src="./images/board/0V.png" height="35" />
-    <img id="43" class="m-1 blank-tile " src="./images/board/0W.png" height="35" />
-    <img id="44" class="m-1 blank-tile " src="./images/board/0X.png" height="35" />
-    <img id="45" class="m-1 blank-tile " src="./images/board/0Y.png" height="35" />
-    <img id="46" class="m-1 blank-tile " src="./images/board/0Z.png" height="35" />
+    <img id="21" class="m-1 blank-tile " src="./images/board/0A.png" alt="zero_letter" height="35" />
+    <img id="22" class="m-1 blank-tile " src="./images/board/0B.png" alt="zero_letter" height="35" />
+    <img id="23" class="m-1 blank-tile " src="./images/board/0C.png" alt="zero_letter" height="35" />
+    <img id="24" class="m-1 blank-tile " src="./images/board/0D.png" alt="zero_letter" height="35" />
+    <img id="25" class="m-1 blank-tile " src="./images/board/0E.png" alt="zero_letter" height="35" />
+    <img id="26" class="m-1 blank-tile " src="./images/board/0F.png" alt="zero_letter" height="35" />
+    <img id="27" class="m-1 blank-tile " src="./images/board/0G.png" alt="zero_letter" height="35" />
+    <img id="28" class="m-1 blank-tile " src="./images/board/0H.png" alt="zero_letter" height="35" />
+    <img id="29" class="m-1 blank-tile " src="./images/board/0I.png" alt="zero_letter" height="35" />
+    <img id="35" class="m-1 blank-tile " src="./images/board/0J.png" alt="zero_letter" height="35" />
+    <img id="31" class="m-1 blank-tile " src="./images/board/0K.png" alt="zero_letter" height="35" />
+    <img id="32" class="m-1 blank-tile " src="./images/board/0L.png" alt="zero_letter" height="35" />
+    <img id="33" class="m-1 blank-tile " src="./images/board/0M.png" alt="zero_letter" height="35" />
+    <img id="34" class="m-1 blank-tile " src="./images/board/0N.png" alt="zero_letter" height="35" />
+    <img id="35" class="m-1 blank-tile " src="./images/board/0O.png" alt="zero_letter" height="35" />
+    <img id="36" class="m-1 blank-tile " src="./images/board/0P.png" alt="zero_letter" height="35" />
+    <img id="37" class="m-1 blank-tile " src="./images/board/0Q.png" alt="zero_letter" height="35" />
+    <img id="38" class="m-1 blank-tile " src="./images/board/0R.png" alt="zero_letter" height="35" />
+    <img id="39" class="m-1 blank-tile " src="./images/board/0S.png" alt="zero_letter" height="35" />
+    <img id="35" class="m-1 blank-tile " src="./images/board/0T.png" alt="zero_letter" height="35" />
+    <img id="41" class="m-1 blank-tile " src="./images/board/0U.png" alt="zero_letter" height="35" />
+    <img id="42" class="m-1 blank-tile " src="./images/board/0V.png" alt="zero_letter" height="35" />
+    <img id="43" class="m-1 blank-tile " src="./images/board/0W.png" alt="zero_letter" height="35" />
+    <img id="44" class="m-1 blank-tile " src="./images/board/0X.png" alt="zero_letter" height="35" />
+    <img id="45" class="m-1 blank-tile " src="./images/board/0Y.png" alt="zero_letter" height="35" />
+    <img id="46" class="m-1 blank-tile " src="./images/board/0Z.png" alt="zero_letter" height="35" />
 
   </div>
 

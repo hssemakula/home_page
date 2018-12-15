@@ -289,59 +289,76 @@ $(function() {
   /**************************************************************************END OF LOADING FUNCTION ***********************************************************/
 });
 
+/*************************************************************FUNCTIONS *********************************************************************/
+
+/* This function iterates through all html elements with the class draggable and innitializes them as draggable */
 function attachDraggableAbility() {
   //make all elements with class draggable, draggable.(i.e. tiles.)
   $(".draggable").draggable({
 
     //VERY IMPORTANT REVERT FUNCTION: enables tile to stick only to rack or board
     revert: function(droppableReceiver) {
-
-      if (droppableReceiver === false) { //if false then no droppable object was available to receive draggable
+      //if passed object is false then no droppable object was available to receive draggable
+      if (droppableReceiver === false) {
         //revert the postion of the draggable back
         return true;
       } else {
-        //some droppable object received the draggable
+        //else some droppable object received the draggable
         //Check if the droppable object that received draggable is either tile-rack or a slot on the board
         if (droppableReceiver.attr('id') == "tile-rack" || droppableReceiver.hasClass("droppable")) return false; //return false so that draggable tile doesn't revert back to original position
-        else return true; //else droppable that received draggable is undesired, revert back to original position.
+        else return true; //else draggable was dropped at an inavlid location, revert back to original position.
       }
-    }, //this ensures that if tile is not dropped at droppable object, it reverts back to its original position
+    },
     stack: ".draggable", //ensures that tile being dragged is always on top
-    scroll: "false",
-    containment: "#body-div" //keep draggable from scrolling off screen.
+    containment: "#body-div" //keep draggable from scrolling off screen. keep it within the body div.
   }); //make all images with class "draggable", draggable.
 }
 
-/* This function gets 7 tiles from the tile rack. */
+
+/* This function attempts to get 7 tiles from the bag and places them on the tile rack */
 function getTiles(json_data) {
-  $(".draggable").data("onSlot", -1); //initialize all tiles to indicate that they are not on the board at any slot(-1)
+  //Since this function aims to put 7 tiles on the rack, clear all onSlot values of all
+  //draggable elements to indicate that they are on the tile rack and not on the board.
+  $(".draggable").data("onSlot", -1);
 
+  var currentImgToReplace = 1; //variable to be used for iteration and as image index and ID for images of the tiles
+  var dataSize = parseInt(json_data.length); //number of elements in json object: useful for picking a letter at random.
 
-  var currentImgToReplace = 1; //id number of image to replace on page
-  var dataSize = parseInt(json_data.length); //number of elements in json object
-
+  //Run loop 7 times to...
   for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
-
-    if (gameOver() && tilesRemaining == 0) { //if try to get a tile and there no tiles and all images have been wiped then game is over
+    //if the gameOver function returns true and there are no tiles remaining then game has been won.
+    if (gameOver() && tilesRemaining == 0) {
+      //append the user's total score to the results string.
       resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   " + totalScore + "</div>";
-      $("#results").html(resultsString);
-      $("#winner-dialog").dialog("open");
-      break;
+      $("#results").html(resultsString); //update the html results div
+      $("#winner-dialog").dialog("open"); //open the congratulating dialog to show user that they best the game.
+      break; //stop the game.
     }
 
+    //if there are no more tiles, break out of loop but game is still not over.
     if (tilesRemaining == 0) {
       break;
     }
-    var imgObj = $("#" + currentImgToReplace);
-    var randomIndex = Math.floor(Math.random() * dataSize);
+    var imgObj = $("#" + currentImgToReplace); //extract the first tile image.
+    var randomIndex = Math.floor(Math.random() * dataSize); //calculate a random number between 0 and the the length of the json data object - 1
+
+    /* The object at the index of the random number is checked to see if the amount key returns 0.
+    basically, if all tiles of a certain letter have been used up, this will return 0.
+    This loop runs so long as that test returns 0. This ensures that the program doesn't go past This
+    point without a random number whose corresponding object has an amount that is greater than 0*/
     while (parseInt(json_data[randomIndex].amount) <= 0) {
       randomIndex = Math.floor(Math.random() * dataSize);
     }
 
+    /*Next a check is made to ensure that the current tile image is actually empty, if it is not,
+      the loop proceeds to the next index.
+      If it is empty, it's src value is changed to that of the json object at the randomIndex.
+      the json object's amount is then decremented by 1
+    */
     if (imgObj.attr('src') === "") {
       imgObj.attr('src', json_data[randomIndex].src);
-      json_data[randomIndex].amount = parseInt(json_data[randomIndex].amount) - 1;
-      tilesRemaining = tilesRemaining - 1;
+      json_data[randomIndex].amount = parseInt(json_data[randomIndex].amount) - 1; //decrement amount by 1.
+      tilesRemaining = tilesRemaining - 1; //indicate that a tile was been drawn. decrement amount
       $("#tileCount").html(tilesRemaining); //update label showing number of tiles remaining
 
     }
@@ -349,110 +366,140 @@ function getTiles(json_data) {
 }
 
 
-/* This function swaps the tiles on the rack for others. */
+/* This function swaps the tiles on the rack for others in the bag(i.e json elements whose amounts > 0) */
 function swapTiles(json_data) {
-
-  if (swapCount >= 3) {
-    $("#cant-swap-tile-dialog").dialog("open"); //if user has swapped tiles more than 3 times. dont execute function, show dialog.
+  //if user has swapped tiles more than 3 times and not submited a valid word. dont execute function, show dialog.
+  if (swapCount > 2) {
+    $("#cant-swap-tile-dialog").dialog("open");
   } else {
-    $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).}
-    var dataSize = parseInt(json_data.length); //number of elements in json object
-    var currentImgToReplace = 1; //id number of image to replace on page
+    var dataSize = parseInt(json_data.length); //number of elements in json object: useful for picking a letter at random.
+    var currentImgToReplace = 1; //variable to be used for iteration and as image index and ID for images of the tiles
 
     for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
+      //if tilesRemaining is equal to zero then there are no more tiles to be swapped with(i.e. all amounts of the json objects are 0), tell user
       if (tilesRemaining == 0) {
-        $("#no-tiles-dialog").dialog("open"); //if there are no tiles to be swapped with, tell user
-        break;
+        $("#no-tiles-dialog").dialog("open"); //popup dialog to inform user
+        break; //break out of loop.
       }
-      var imgObj = $("#" + currentImgToReplace);
+      var imgObj = $("#" + currentImgToReplace); //extract tile image that is going to replaced.
+      //if the image object's onSlot value is ont -1, then the image(hence tile) is on the board and shouldn't be swapped.
       if (!(imgObj.data("onSlot") === -1)) {
-        continue;
+        continue; //skip this number in the iteration.
       }
 
-      var letterToSwap = imgObj.attr('src').charAt(15);
+      //-----------IF all the tests above are passed proceed with swap
 
+      var letterToSwap = imgObj.attr('src').charAt(15); //extract letter of tile to be swapped.
+
+      //iterate through all of the json objects and when the letter matches, increase the inventory of that letter
+      //(i.e. it's amount to show that it has been returned to bag.)
       json_data.forEach(function(element) {
-
         if (element.letter === letterToSwap) {
           element.amount = element.amount + 1;
         }
       });
 
-      var randomIndex = Math.floor(Math.random() * dataSize);
+      var randomIndex = Math.floor(Math.random() * dataSize); //obtain random number (between 0 and json object length - 1)
+      //run loop to ensure that object at random index has amount greater than zero as in function getTiles.
       while (parseInt(json_data[randomIndex].amount) <= 0) {
         randomIndex = Math.floor(Math.random() * dataSize);
       }
+      //if json object amount was greater than zero, decrement that amount by 1 to indicate that a tile of such a letter has been taken out.
       json_data[randomIndex].amount = json_data[randomIndex].amount - 1;
+      //change the current image tiles's src value to that of the random json object.
       imgObj.attr('src', json_data[randomIndex].src);
     }
-    swapCount = swapCount + 1;
+    swapCount = swapCount + 1; //indicate that the user has made a swap by increasing swap count.
   }
 }
 
-//This function clears the rack and board, updates total score.
+//This function clears the rack and board, updates total score. AND submits the word on the board.
 function nextWord() {
-  var currScore_temp = 0;
-  if (isValidWord) { //only executed when the word on the board is valid.
-    currentScore.forEach(function(element) {
+  var currScore_temp = 0; //variable to log the score of the word that user is about to submit
+  //This big chunk if statement is only executed if a word is valid
+  if (isValidWord) {
+    //  calculates the score for the word on the board and adds it to the total score
+    currentScore.forEach(function(element) { //iterate through scores on the slots.
       totalScore = totalScore + element;
-      currScore_temp = currScore_temp + element;
+      currScore_temp = currScore_temp + element; //as value is added to total score, current slot values are tallied too.
     });
 
+    //if the current word that has been received for submission is valid, concatenate it to the results string along with its on-board score.
     if (wordToSubmitt != "" && wordToSubmitt != ".") {
       resultsString = resultsString + "<div class=\"col-md row mt-1 pt-1 mb-1 pb-1 text-muted\"><p >" + wordToSubmitt.toUpperCase() + "</p> <p class=\"ml-4\">+" + currScore_temp + "</p></div>";
     }
 
-    var currentImgToReplace = 1;
+    var currentImgToReplace = 1; //variable to be used for iteration and as image index and ID for images of the tiles
+    //This loop is run 7 times, a tile for each tile image.
     for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
-      var image = $("#" + currentImgToReplace);
+      var image = $("#" + currentImgToReplace); //extract tile image jquery object.
 
+      //if the tile image is not on rack(i.e. not on slot -1)
       if (!(image.data("onSlot") === -1)) {
-        var previous_slot_index = image.data("onSlot");
-        isVacant[previous_slot_index] = true;
-        removeSlotScore(previous_slot_index);
-        updateWord("", previous_slot_index);
+        var previous_slot_index = image.data("onSlot"); //estract the slot index of the slot that it is on.
+        isVacant[previous_slot_index] = true; //mark that slot as vacant
+        removeSlotScore(previous_slot_index); //remove the slot's score.
+        updateWord("", previous_slot_index); //remove the letter and update that on the display that the user is looking at.
 
-        var oldimgID = image.attr('id');
-        image.remove();
+        var oldimgID = image.attr('id'); //extract the id of the current tile image.
+        image.remove(); //discard the tile image.
+        //using the image id extracted. construct a new image that is identical to the one that was discarded.
+        //but give it an src attribute of ""
         var newImg = "<img id=" + oldimgID + " class=\"m-2 draggable\" src=\"\" height=\"100\" />"
-        $(newImg).appendTo("#tile-rack");
+        $(newImg).appendTo("#tile-rack"); //append new constructed image to tile rack.
       }
     }
 
-    showCurrentScore();
-    getTiles(json);
-    $("title-rack").html($("#tile-rack").html());
-    attachDraggableAbility();
-    swapCount = 0;
-    invalidSubmitAttempts = 0;
-    $("#give-up2").hide();
-  } else {
-    $("#invalid-word-submit-dialog").dialog("open"); //tell user that word is invalid.
-    invalidSubmitAttempts = invalidSubmitAttempts + 1;
+    showCurrentScore(); //always update the score after an operation.
+    getTiles(json); //call the getTiles() method, which fills all tile images that have no src attribute with an src attribute from the json object.
+    $("title-rack").html($("#tile-rack").html()); //refresh the tile rack's html: still doesn't work well. When user moves tiles alot images are drawn in weird places.
+    attachDraggableAbility(); //make the new images on the tile rack draggable.
+    swapCount = 0; //reset the swap count so that user gets 3 new swap chances.
+    invalidSubmitAttempts = 0; //reset counter for showing give up button.
+    $("#give-up2").hide(); //hide "give up" button  once user submits valid word.
+  } else //else if word is not valid.
+  {
+    $("#invalid-word-submit-dialog").dialog("open"); //open dialog that tells the user that the word they are tring to submit is invalid.
+    invalidSubmitAttempts = invalidSubmitAttempts + 1; //increment the number of inavlid attempts(5 of them show the give up button)
     if (invalidSubmitAttempts == 5) $("#give-up2").show(); //after user tries to submit wrong word 5 times, show give up button
   }
 }
 
-
+/* This function updates the current word displayed.
+    It takes the letter to be inserted into the word and the slot on the board as parameters
+  */
 function updateWord(letter, slot_index) {
 
-  currentWordArray[slot_index] = letter;
-  var word = "";
+  currentWordArray[slot_index] = letter; //insert letter into current word array at slot index: this is the array used to build the string.
+  var word = ""; //string variable to store built word.
+
+  //iterate through current word array and concatenate each letter at each position to the word variable.
   var i;
   for (i = 0; i < currentWordArray.length; i++) {
-    word = word + "" + currentWordArray[i];
+    if (currentWordArray[i] == "") word = word + " "; //if index has an empty string concatenate a space.
+    else word = word + "" + currentWordArray[i];
   }
-  if (setIsValidWord(word)) isValidWord = true;
+
+  /* Now to check if the built word is valid.
+    First if the character at first slot of the board is a space and the string is a word(i.e greater than 1) then that's an invalid word.
+    else it is passed to the setIsValidWord method to do some more in depth ananalysis. but it is trimmed to get rid of all spaces.
+    The isValidWord flag is set to indicate whether word is valid or not
+  */
+  if (currentWordArray[0] == "" && word.length > 1) isValidWord = false;
+  else if (setIsValidWord(word.trim())) isValidWord = true;
   else isValidWord = false;
-  $("#currentWord").html(word);
+
+  $("#currentWord").html(word); //word is displayed to the user.
   if (isValidWord) {
+    //when word is valid, the text is made green by adding the bootstrap class text-success and removing the
+    //the class bootstrap class text-danger, if word was previously invalid.
     $("#currentWord").removeClass("text-danger");
     $("#currentWord").addClass("text-success");
     $("#word-not-found").hide();
   } else {
     $("#currentWord").removeClass("text-success");
     $("#currentWord").addClass("text-danger");
-    $("#word-not-found").show();
+    $("#word-not-found").show(); //if word invalid show the red text that states that it was not found in the dictionary
   }
 }
 

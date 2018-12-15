@@ -326,8 +326,8 @@ function getTiles(json_data) {
 
   //Run loop 7 times to...
   for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
-    //if the gameOver function returns true and there are no tiles remaining then game has been won.
-    if (gameOver() && tilesRemaining == 0) {
+    //if the gameOver function returns true then the player has successfully won the game.
+    if (gameOver()) {
       //append the user's total score to the results string.
       resultsString = resultsString + "<br> <div class=\"col-md row text-success h4\"> TOTAL SCORE:   " + totalScore + "</div>";
       $("#results").html(resultsString); //update the html results div
@@ -503,6 +503,13 @@ function updateWord(letter, slot_index) {
   }
 }
 
+/* This function tallies the individual slot scores on the board
+    It takes the slot weight(which indicates if the slot is a bonus slot)
+    multiplies it with the value of the letter passed as a parameter.
+    The value is extracted from the json object also passed as a parameter.
+    The value is then stored in the currentScore's slotindex to indicate the
+    value in the particular slot at that point.
+*/
 function updateSlotScore(letter, json_data, slot_weight, slot_index) {
   var i;
   for (i = 0; i < json_data.length; i++) {
@@ -513,12 +520,18 @@ function updateSlotScore(letter, json_data, slot_weight, slot_index) {
   }
 }
 
-
+/* This function resets the individual slot score. E.g when a letter is moved
+from one slot to another */
 function removeSlotScore(slot_index) {
   currentScore[slot_index] = 0;
 
 }
 
+/* This function displays the current tallied score to the user
+  If the current word is valid, it iterates through the currentScore
+  array and adds up all of the individual slot scores and updates the
+  current-score div which displays the html
+*/
 function showCurrentScore() {
   var i;
   var scoreToShow = 0;
@@ -526,13 +539,19 @@ function showCurrentScore() {
     for (i = 0; i < currentScore.length; i++) {
       scoreToShow = scoreToShow + currentScore[i];
     }
-    $("#current-score").removeClass("text-danger");
-  } else $("#current-score").addClass("text-danger");
+    $("#current-score").removeClass("text-danger"); //return gtext to normal if word is valid.
+  } else $("#current-score").addClass("text-danger"); //make text red if word is invalid.
 
-  $("#total-score").html(totalScore + scoreToShow);
-  $("#current-score").html(scoreToShow);
+  $("#total-score").html(totalScore + scoreToShow); //show total score.
+  $("#current-score").html(scoreToShow); //show current score.
 }
 
+/* This function looks up a given word in the dictionary object parsed from dict.json
+    First the word is converted to lowercase because all words in the dictionary are lowercase.
+    Then the first letter of the word is used as a key to check the array of all words that
+    begin with that letter in the dictionary. For efficiency, only the index of the word is checked
+    for. If a -1 is returned then the word is not in the array.
+*/
 function setIsValidWord(word) {
   var first_letter = word.charAt(0).toLowerCase();
   wordToSubmitt = word.toLowerCase();
@@ -542,6 +561,11 @@ function setIsValidWord(word) {
   else return dictionary[first_letter].indexOf(word.toLowerCase()) != -1;
 }
 
+/* This function checks, whether the game has been successfully beated by the player
+  It iterates through the 7 tile images. If all of them have no source attributes
+  and there are no tiles remaining that means that there are no tiles currently displayed
+  on the rack or board and no tiles in the back. User has won!
+*/
 function gameOver() {
   removedTileCount = 0
   for (var currentImage = 1; currentImage <= 7; currentImage++) {
@@ -549,5 +573,5 @@ function gameOver() {
     if (img.attr('src') == "") removedTileCount = removedTileCount + 1;
   }
 
-  return removedTileCount == 7;
+  return removedTileCount == 7 && tilesRemaining == 0;
 }

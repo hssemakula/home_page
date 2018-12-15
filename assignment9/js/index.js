@@ -160,14 +160,8 @@ $(function() {
   });
 
   /*-------------------------------------------CLICK LISTENERS AND UI DIALOGS ---------------------*/
-  $("#swap").click(function() {
-    swapTiles(json); //call swapTiles() function when the SWAP button is clicked.
-  });
 
-  $("#next-word").click(function() {
-    nextWord(); //call nextWord() function when the NEXT WORD button is clicked.
-  });
-
+  /*++++++++++++++++ Dialogs ++++++++++++ */
   // this initializes the dialog (and uses some common options that I do)
   $("#blank-tile-dialog").dialog({
     autoOpen: false,
@@ -175,27 +169,6 @@ $(function() {
     show: "blind",
     hide: "blind",
   });
-
-  $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
-
-  $(".blank-tile").click(function() {
-    var currentImgToReplace = 1;
-    for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
-      img = $("#" + currentImgToReplace);
-      if (img.attr("src").substring(15, 20) == "0.png" && img.data("onSlot") != -1) { //if blank symbol and not on tile rack change letter to one with 0 score.
-        img.attr("src", $(this).attr("src"));
-        $("#blank-tile-dialog").dialog("close"); //close dialog to choose letter
-        var slotWhereTileIs = img.data("onSlot"); //now we have to update the word. even though the score is zero. can only be effeciently done here
-        updateWord(img.attr("src").charAt(16), slotWhereTileIs);
-        showCurrentScore();
-        break;
-
-      }
-    }
-  });
-
-  $("#word-not-found").hide(); //at first hide the indicator that word is inavlid.
-  $("#give-up2").hide(); //hide give up button at first
 
   $("#invalid-word-submit-dialog").dialog({
     autoOpen: false,
@@ -263,6 +236,33 @@ $(function() {
     show: "blind",
     hide: "blind"
   });
+
+  $("#swap").click(function() {
+    swapTiles(json); //call swapTiles() function when the SWAP button is clicked.
+  });
+
+  $("#next-word").click(function() {
+    nextWord(); //call nextWord() function when the NEXT WORD button is clicked.
+  });
+
+  $(".blank-tile").click(function() {
+    var currentImgToReplace = 1;
+    for (currentImgToReplace = 1; currentImgToReplace <= 7; currentImgToReplace++) {
+      img = $("#" + currentImgToReplace);
+      if (img.attr("src").substring(15, 20) == "0.png" && img.data("onSlot") != -1) { //if blank symbol and not on tile rack change letter to one with 0 score.
+        img.attr("src", $(this).attr("src"));
+        $("#blank-tile-dialog").dialog("close"); //close dialog to choose letter
+        var slotWhereTileIs = img.data("onSlot"); //now we have to update the word. even though the score is zero. can only be effeciently done here
+        updateWord(img.attr("src").charAt(16), slotWhereTileIs);
+        showCurrentScore();
+        break;
+      }
+    }
+  });
+
+  $("#word-not-found").hide(); //at first hide the indicator that word is inavlid.
+  $("#give-up2").hide(); //hide give up button at first
+
 
   $(".ui-dialog-titlebar").hide(); //hide dialog title(The thing is ugly).
 

@@ -183,7 +183,7 @@ $(function() {
     hide: "blind",
   });
 
-  $("#blank-tile-return-dialog, #cant-swap-tile-dialog, #no-tiles-dialog, #no-tiles-on-board-dialog").dialog({
+  $("#blank-tile-return-dialog, #cant-swap-tile-dialog, #no-tiles-dialog, #no-tiles-on-board-dialog, #cant-swap-tile-dialog2").dialog({
     autoOpen: false,
     modal: false,
     width: 400,
@@ -212,8 +212,14 @@ $(function() {
   $("#word-not-found").hide(); //at first hide the indicator that word is inavlid, it pops up when word becomes invalid.
   $("#give-up2").hide(); //hide second give up button at first, only shows up after 5 invalid attempted submission.
 
+/* click function for the swap button */
   $("#swap").click(function() {
-    swapTiles(json); //call swapTiles() function when the SWAP button is clicked.
+    var numVacant = 0; //variable to count how many board slots are empty.
+    for (var i = 0; i < isVacant.length; i++) {
+      if (isVacant[i]) numVacant = numVacant + 1;
+    }
+    if (numVacant > 0) swapTiles(json); // if there is atleast one slot that has tile perform a swap.
+    else $("#cant-swap-tile-dialog2").dialog("open"); //if no board slot is empty then there are no tiles on rack, don't swap.
   });
 
   $("#next-word").click(function() {

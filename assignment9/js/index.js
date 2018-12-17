@@ -212,7 +212,7 @@ $(function() {
   $("#word-not-found").hide(); //at first hide the indicator that word is inavlid, it pops up when word becomes invalid.
   $("#give-up2").hide(); //hide second give up button at first, only shows up after 5 invalid attempted submission.
 
-/* click function for the swap button */
+  /* click function for the swap button */
   $("#swap").click(function() {
     var numVacant = 0; //variable to count how many board slots are empty.
     for (var i = 0; i < isVacant.length; i++) {
@@ -462,8 +462,7 @@ function submit() {
 
     showCurrentScore(); //always update the score after an operation.
     getTiles(json); //call the getTiles() method, which fills all tile images that have no src attribute with an src attribute from the json object.
-    $("title-rack").html($("#tile-rack").html()); //refresh the tile rack's html: still doesn't work well. When user moves tiles alot images are drawn in weird places.
-    attachDraggableAbility(); //make the new images on the tile rack draggable.
+    rearrangeTiles(); //reorganize tile positions
     swapCount = 0; //reset the swap count so that user gets 3 new swap chances.
     invalidSubmitAttempts = 0; //reset counter for showing give up button.
     $("#give-up2").hide(); //hide "give up" button  once user submits valid word.
@@ -587,4 +586,25 @@ function gameOver() {
   }
 
   return removedTileCount == 7 && tilesRemaining == 0;
+}
+
+/*This function repositions tiles properly on rack after successful submit.
+  It is useful because if the user doesn't submit all tiles and getTiles() adds new tiles, new tiles
+  push old ones out of the rack to the point that they can go off the screen.
+*/
+function rearrangeTiles() {
+  var srcAttributes = ["", "", "", "", "", "", ""]; //array to save current tile image src attributes
+  for (var img = 1; img <= 7; img++) {
+    srcAttributes[img - 1] = $("#" + img).attr('src'); //save src attributes into array.
+  }
+  $("#tile-rack").load(location.href + " #tile-rack>*", function(response, status, xhr) {
+    if (!(status == "error")) {
+      for (var img = 1; img <= 7; img++) {
+        $("#" + img).attr('src', srcAttributes[img - 1]); //restore src attributes to draw tile images.
+      }
+      $(".draggable").data("onSlot", -1); //initialize onSlot value again to indicate that tiles are on tile rack.
+      attachDraggableAbility(); //make the new images on the tile rack draggable.
+    }
+  }); //refresh tile rack div with ajax
+
 }

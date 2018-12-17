@@ -601,6 +601,7 @@ function rearrangeTiles() {
     if (!(status == "error")) {
       for (var img = 1; img <= 7; img++) {
         $("#" + img).attr('src', srcAttributes[img - 1]); //restore src attributes to draw tile images.
+        if ($("#" + img).attr('src') == "") $("#" + img).hide(); //hide tile, if it has a blank src attrbute, usually when there are no tiles to draw.
       }
       $(".draggable").data("onSlot", -1); //initialize onSlot value again to indicate that tiles are on tile rack.
       attachDraggableAbility(); //make the new images on the tile rack draggable.
